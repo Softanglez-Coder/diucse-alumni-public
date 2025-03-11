@@ -1,6 +1,16 @@
 {
-  "hosting": {
-    "site": "diu-cse-alumni-public-dev",
-    "public": "public"
-  }
+  "hosting": [
+    {
+      "site": "diu-cse-alumni-public-dev",
+      "public": "public"
+    },
+    {
+      "site": "diu-cse-alumni-public-test",
+      "public": "public"
+    },
+    {
+      "site": "diu-cse-alumni-public-prod",
+      "public": "public"
+    }
+  ]
 }
