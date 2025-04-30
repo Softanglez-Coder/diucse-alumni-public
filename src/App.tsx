@@ -1,14 +1,7 @@
-import './App.css'
-import './MemberReqForm'
-import MemberRequestForm from './MemberReqForm';
+import HomePage from "./pages/HomePage";
 
 function App() {
-
-  return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <MemberRequestForm/>
-    </div>
-  );
+  return <HomePage />;
 }
 
-export default App
+export default App;
