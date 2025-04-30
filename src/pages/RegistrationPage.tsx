@@ -1,4 +1,4 @@
-import Registration from "../components/auth/registration";
+import Registration from "../components/auth/Registration";
 import Footer from "../components/home/Footer";
 import MainNav from "../components/layout/MainNav";
 
