@@ -10,7 +10,7 @@ export default function AboutSection() {
         {/* About Section */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
           <img
-            src="../../public/image/logo/roundLogo.png"
+            src="/image/logo/roundLogo.png"
             alt="About"
             className="w-64 h-64 object-fit rounded"
           />
