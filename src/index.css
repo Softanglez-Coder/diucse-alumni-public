@@ -1,5 +1,6 @@
-/* @import "tailwindcss";
+@import "tailwindcss";
 
+/*
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -68,3 +69,21 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }  */
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-scroll {
+    animation: scroll 120s linear infinite;
+    width: max-content;
+}
+
+.animate-scroll.paused {
+    animation-play-state: paused;
+}
