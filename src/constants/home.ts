@@ -13,7 +13,7 @@ export const navLinks = [
 
 export const carouselImages = [
     {
-      img: "../../public/event1.jpg",
+      img: "/event1.jpg",
       title: "Welcome to DIU Alumni Network",
       desc: "Connecting past and present for a better future.",
     }
@@ -63,7 +63,7 @@ export const recentBlog = [
     title: "Annual General Meeting held successfully",
     date: "2025-03-15",
     summary: "The AGM 2025 brought together alumni from across the country...",
-    image: "../../public/event1.jpg",
+    image: "/event1.jpg",
     link: "/news/1"
   }
 ];
@@ -73,7 +73,7 @@ export const events = [
       id: 1,
       title: "Long March for Palestine",
       date: "2025-04-12",
-      image: "../../public/event1.jpg",
+      image: "/event1.jpg",
       link: "#",
       description: "Join us for a long march to raise",
       remainingTime: "2 days",
@@ -91,13 +91,13 @@ export const recentNews = [
       title: "Annual General Meeting held successfully",
       date: "2025-03-15",
       summary: "The AGM 2025 brought together alumni from across the country...",
-      image: "../../public/event1.jpg",
+      image: "/event1.jpg",
       link: "/news/1"
     }
 ];
 
 export const presidentMessage = {
-  image: "../../public/vite.svg",
+  image: "/vite.svg",
   name: "Dr. Md. Abu Taseen",
   position: "President, Alumni Association",
   description: "Dr. Md. Abu Taseen is a distinguished academic and leader in the field of computer science. He has been instrumental in shaping the curriculum and fostering a culture of innovation at Dhaka International University.",
@@ -118,7 +118,7 @@ export const alumniList = [
 ];
 
 export const footerContent = {
-  footerLogo: "../../public/image/logo/roundLogo.png",
+  footerLogo: "/image/logo/roundLogo.png",
   description: "Dhaka International University, rated among the top private universities of Bangladesh.is an institution that promotes eastern culture and values, and meaningfully blends eastern and western thoughts and innovation.",
   importantLinks: [
     { name: "Privacy Policy", href: "/privacy" },
@@ -139,4 +139,3 @@ export const footerContent = {
 
 }
 
-  
