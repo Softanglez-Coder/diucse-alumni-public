@@ -13,6 +13,8 @@
     "@tailwindcss/vite": "^4.1.2",
     "autoprefixer": "^10.4.21",
     "firebase": "^11.4.0",
+    "i18n-iso-countries": "^7.14.0",
+    "libphonenumber-js": "^1.12.7",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.503.0",
     "postcss": "^8.5.3",
