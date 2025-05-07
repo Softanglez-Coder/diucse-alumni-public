@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export default function TopNav() {
   return (
     <motion.div
-      className="bg-[#A7D3F5] text-[#002D72] py-3 px-4 sm:px-6 flex justify-between items-center shadow-md text-xs sm:text-sm"
+      className="bg-blue-300 text-black py-3 px-4 sm:px-6 flex justify-between items-center shadow-md text-xs sm:text-sm"
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
@@ -28,7 +28,7 @@ export default function TopNav() {
         href={contactInfo.portalLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-green-600 hover:bg-green-700 text-white font-semibold px-3 py-1 sm:px-4 sm:py-2 rounded transition-all duration-300 shadow hover:shadow-md"
+        className="bg-blue-900 hover:bg-blue-500 text-white font-semibold px-3 py-1 sm:px-4 sm:py-2 rounded transition-all duration-300 shadow hover:shadow-md"
       >
         Go to Alumni Portal
       </a>

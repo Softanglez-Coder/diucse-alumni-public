@@ -23,9 +23,9 @@ export default function AboutHero() {
             alt="CSE Logo"
             className="absolute top-8 left-8 w-36 md:w-48 rounded-xl shadow-xl rotate-[4deg] border-4 border-white"
           />
-          <div className="absolute bottom-[-20px] left-0 md:left-8 bg-[#FFD600] w-24 h-24 md:w-28 md:h-28 flex items-center justify-center rounded-full text-center text-[#002D72] font-semibold text-xs md:text-sm rotate-[12deg] shadow-lg">
+          {/* <div className="absolute bottom-[-20px] left-0 md:left-8 bg-blue-900 w-24 h-24 md:w-28 md:h-28 flex items-center justify-center rounded-full text-center text-[#002D72] font-semibold text-xs md:text-sm rotate-[12deg] shadow-lg">
             Get <br /> Membership
-          </div>
+          </div> */}
         </div>
       </motion.div>
 
@@ -36,7 +36,7 @@ export default function AboutHero() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <p className="text-[#FFD600] uppercase font-semibold tracking-wide mb-3 text-sm">
+        <p className="text-green-700 uppercase font-semibold tracking-wide mb-3 text-sm">
           About Us
         </p>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6 text-[#002D72]">
@@ -62,7 +62,7 @@ export default function AboutHero() {
             },
           ].map((item, idx) => (
             <div className="flex items-start space-x-3" key={idx}>
-              <span className="text-[#FFD600] text-xl mt-1">✔️</span>
+              <span className="text-green-700 text-xl mt-1">✔️</span>
               <div>
                 <p className="font-semibold text-[#002D72]">{item.title}</p>
                 <p className="text-[#4A5568] text-sm">{item.desc}</p>
@@ -73,7 +73,7 @@ export default function AboutHero() {
 
         <Link
           to="/membership"
-          className="inline-block mt-10 px-6 py-3 bg-[#FFD600] text-[#002D72] font-semibold rounded-full hover:bg-[#e6c300] transition-all duration-300 shadow-md hover:shadow-lg"
+          className="inline-block mt-10 px-6 py-3 bg-green-700 text-white font-semibold rounded-full hover:bg-green-800  transition-all duration-300 shadow-md hover:shadow-lg"
         >
           Join the Network
         </Link>

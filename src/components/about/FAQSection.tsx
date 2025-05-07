@@ -33,38 +33,38 @@ export default function FAQSection() {
 
   return (
     <section className="bg-[#fffef8] py-16 px-6">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 items-start">
-        {/* Images Section */}
-        <div className="space-y-6">
-          <img
-            src="/image/logo/diucselogo.png"
-            alt="Alumni Kid"
-            className="rounded-xl shadow-xl hover:scale-105 transition-transform duration-300"
-          />
-          <div className="bg-[#FFD600] p-4 rounded-lg flex items-center gap-3 shadow-md">
-            <div className="text-[#002D72] font-semibold">
-              <p>Got Questions?</p>
-              <p>We're Here to Help!</p>
-            </div>
-          </div>
+  <div className="max-w-6xl mx-auto grid md:grid-cols-12 gap-10 items-start">
+    {/* Images Section - Smaller (col-span-3) */}
+    <div className="space-y-6 col-span-12 md:col-span-3">
+      <img
+        src="/image/logo/diucselogo.png"
+        alt="Alumni Kid"
+        className="rounded-xl shadow-xl hover:scale-105 transition-transform duration-300 w-full max-w-xs mx-auto"
+      />
+      <div className="bg-green-700 p-4 rounded-lg flex items-center gap-3 shadow-md">
+        <div className="text-white font-semibold">
+          <p>Got Questions?</p>
+          <p>We're Here to Help!</p>
         </div>
+      </div>
+    </div>
 
-        {/* Second Image */}
-        <div>
-          <img
-            src="/image/logo/roundLogo.png"
-            alt="Alumni Main"
-            className="rounded-xl shadow-xl hover:scale-105 transition-transform duration-300"
-          />
-        </div>
+    {/* Second Image - Smaller (col-span-3) */}
+    <div className="col-span-12 md:col-span-3">
+      <img
+        src="/image/logo/roundLogo.png"
+        alt="Alumni Main"
+        className="rounded-xl shadow-xl hover:scale-105 transition-transform duration-300 w-full max-w-xs mx-auto"
+      />
+    </div>
 
-        {/* FAQ Section */}
-        <div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#002D72]">
-            Frequently Asked Questions
-            <br />
-            About Our Alumni Network
-          </h2>
+    {/* FAQ Section - Larger (col-span-6) */}
+    <div className="col-span-12 md:col-span-6">
+      <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#002D72]">
+        Frequently Asked Questions
+        <br />
+        About Our Alumni Network
+      </h2>
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
@@ -73,8 +73,8 @@ export default function FAQSection() {
                 onClick={() => toggleFAQ(index)}
                 className={`rounded-xl px-5 py-4 shadow-md border-2 cursor-pointer transition-all duration-300 ${
                   openIndex === index
-                    ? "bg-[#002D72] text-white border-[#FFD600]"
-                    : "bg-white text-[#002D72] border-[#e0e0e0] hover:border-[#FFD600]"
+                    ? "bg-[#002D72] text-white border-green-700"
+                    : "bg-white text-[#002D72] border-[#e0e0e0] hover:border-green-700"
                 }`}
               >
                 <h3 className="font-semibold text-lg flex justify-between items-center">

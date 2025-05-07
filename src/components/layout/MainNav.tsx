@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { navLinks } from "../../constants/home";
 import { NavLink } from "../../types";
-import logo from "../../../public/image/logo/logo.png";
-import colors from "../../theme/colors";
+import logo from "../../../public/vite.svg";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function MainNav() {
@@ -10,17 +9,13 @@ export default function MainNav() {
 
   return (
     <header
-      className="sticky top-0 z-50 px-4 py-3 shadow-md backdrop-blur-md"
-      style={{
-        backgroundColor: colors.accent,
-        fontFamily: "Arial, sans-serif",
-      }}
+      className="sticky top-0 z-50 px-4 py-3 shadow-md backdrop-blur-md bg-blue-900"
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
         <img
           src={logo}
-          alt="SOSB Logo"
+          alt="Logo"
           className="h-10 sm:h-12 cursor-pointer transition-transform duration-300 hover:scale-105"
         />
 
