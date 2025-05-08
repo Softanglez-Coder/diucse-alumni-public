@@ -6,6 +6,17 @@ import MainNav from "../components/layout/MainNav";
 import Footer from "../components/layout/Footer";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
+// Define types for blog and props
+interface Blog {
+  id: string;
+  title: string;
+  image: string;
+  excerpt: string;
+  tag: string;
+  author: string;
+  date: string;
+}
+
 export default function BlogPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -23,17 +34,17 @@ export default function BlogPage() {
   const authors = ["All", ...new Set(blogs.map((blog) => blog.author))];
   const tags = ["All", ...new Set(blogs.map((blog) => blog.tag))];
 
-  const filteredBlogs = blogs.filter((blog) => {
+  const filteredBlogs = blogs.filter((blog: Blog) => {
     return (
       (selectedAuthor === "All" || blog.author === selectedAuthor) &&
       (selectedTag === "All" || blog.tag === selectedTag)
     );
   });
 
-  const handleAuthorClick = (author) => navigate(`?author=${author}`);
-  const handleTagClick = (tag) => navigate(`?tag=${tag}`);
+  const handleAuthorClick = (author: string) => navigate(`?author=${author}`);
+  const handleTagClick = (tag: string) => navigate(`?tag=${tag}`);
 
-  const shareLinks = (blog) => ({
+  const shareLinks = (blog: Blog) => ({
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
       window.location.origin + `/blog/${blog.id}`
     )}`,
