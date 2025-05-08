@@ -24,10 +24,6 @@ export default function Carousel() {
     };
   }, [isHovered]);
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
-
   return (
     <div
       className="relative w-full h-80 md:h-[500px] overflow-hidden rounded-lg shadow-lg"

@@ -16,6 +16,8 @@
     "autoprefixer": "^10.4.21",
     "firebase": "^11.4.0",
     "framer-motion": "^12.10.0",
+    "i18n-iso-countries": "^7.14.0",
+    "libphonenumber-js": "^1.12.8",
     "lodash-es": "^4.17.21",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.503.0",
