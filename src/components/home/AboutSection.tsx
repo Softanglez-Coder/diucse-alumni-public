@@ -1,6 +1,5 @@
 import { events } from "../../constants/events";
 import { motion } from "framer-motion";
-import { FaArrowRight, FaInfoCircle } from "react-icons/fa";
 import FeaturedEventCard from "../layout/GetUpcomingEvent ";
 
 export default function AboutSection() {
