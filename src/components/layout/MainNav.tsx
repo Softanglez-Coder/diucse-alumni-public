@@ -1,51 +1,74 @@
 import { useState } from "react";
 import { navLinks } from "../../constants/home";
 import { NavLink } from "../../types";
-import logo from "../../../public/image/logo/logo.png";
+import logo from "../../../public/vite.svg";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function MainNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div
-      className=" sticky top-0 z-50 shadow-md bg-[#ddf1ff] px-4 py-3 flex items-center justify-between  "
-      style={{ fontFamily: "Arial, sans-serif" }}
+    <header
+      className="sticky top-0 z-50 px-4 py-3 shadow-md backdrop-blur-md bg-blue-900"
     >
-      {/* Logo */}
-      <img
-        src={logo}
-        alt="SOSB Logo"
-        className="h-10 sm:h-12 cursor-pointer"
-      />
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
+        {/* Logo */}
+        <img
+          src={logo}
+          alt="Logo"
+          className="h-10 sm:h-12 cursor-pointer transition-transform duration-300 hover:scale-105"
+        />
 
-      {/* Hamburger Menu Button (Visible on Mobile) */}
-      <button
-        className="md:hidden text-gray-800 text-xl focus:outline-none"
-        onClick={() => setIsOpen(!isOpen)} // Toggle the dropdown menu
-      >
-        {isOpen ? "✕" : "☰"}
-      </button>
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-3xl text-white focus:outline-none transition-transform duration-300 hover:scale-110"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle navigation menu"
+        >
+          {isOpen ? "✕" : "☰"}
+        </button>
 
-      {/* Navigation Links */}
-      <nav
-        className={`${
-          isOpen ? "block" : "hidden" // Show/hide the dropdown based on `isOpen`
-        } md:flex md:space-x-6 absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none mt-2 md:mt-0 z-50`}
-      >
-        <ul className="md:flex space-y-2 md:space-y-0 md:space-x-6 text-gray-800 font-medium p-4 md:p-0">
+        {/* Desktop Nav Links */}
+        <nav className="hidden md:flex space-x-8 text-sm sm:text-base font-medium">
           {navLinks.map((link: NavLink) => (
-            <li key={link.name}>
-              <a
-                href={link.href}
-                className="block text-sm sm:text-base hover:text-green-600 transition duration-300"
-                onClick={() => setIsOpen(false)} // Close the dropdown after clicking a link
-              >
-                {link.name}
-              </a>
-            </li>
+            <a
+              key={link.name}
+              href={link.href}
+              className="text-white hover:text-green-200 transition-colors duration-300 relative group"
+            >
+              {link.name}
+              <span className="block w-0 group-hover:w-full h-0.5 bg-green-400 transition-all duration-300"></span>
+            </a>
           ))}
-        </ul>
-      </nav>
-    </div>
+        </nav>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.nav
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white text-sm text-gray-800 rounded-md shadow-lg mt-2 overflow-hidden"
+          >
+            <ul className="flex flex-col px-4 py-3 space-y-3">
+              {navLinks.map((link: NavLink) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block px-2 py-1 rounded hover:bg-gray-100 transition-colors"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }
