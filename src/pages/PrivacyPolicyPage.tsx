@@ -4,8 +4,8 @@ import MainNav from "../components/layout/MainNav"
 export default function PrivacyPolicyPage() {
     return (
       <div>
-        <MainNav/>
-        <div className="bg-white text-gray-800 px-6 py-16 max-w-4xl mx-auto">
+      <MainNav/>
+      <div className="bg-white text-gray-800 px-6 py-16 max-w-4xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center text-[#1A2F80]">
           Privacy Policy
         </h1>

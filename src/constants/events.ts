@@ -1,71 +1,99 @@
 export const events = [
   {
-    id: "smart-bootcamp",
-    title: "Smart Student Bootcamp",
-    description: "A 3-day intensive learning experience to level up your academic and tech skills.",
-    longDescription: "This bootcamp focuses on academic excellence, tech empowerment, and personal development. Get real mentorship, peer learning, and exposure to practical challenges.",
-    date: "2025-04-01",
-    duration: "3 days",
-    location: "Dhaka Campus Auditorium",
-    image: "/event1.jpg",
-    contact: "support@sosb.com",
+    id: "1",
+    title: "Smart Bootcamp",
+    image: "https://media.geeksforgeeks.org/wp-content/uploads/20230927184335/Best-Free-Coding-Bootcamps.png",
+    shortDescription: "Join us for a 3-day coding bootcamp.",
+    longDescription: "A 3-day intensive bootcamp to level up your coding skills.",
     features: [
-      { title: "Live Workshops", desc: "Hands-on sessions with mentors and professionals." },
-      { title: "Smart Study Plan", desc: "Curated academic roadmaps for efficient learning." },
-      { title: "Team Collaboration", desc: "Learn in groups and build your personal network." },
-      { title: "Certificates & Rewards", desc: "Earn certificates and get recognized." }
+      { title: "Live Mentoring", desc: "One-on-one sessions with industry experts." },
+      { title: "Career Guidance", desc: "Dedicated career support for job seekers." }
+    ],
+    courseInfo: {
+      name: "Smart Bootcamp",
+      cost: "500tk",
+      location: "Dhaka Campus",
+      date: "01 Jun, 2025",
+      duration: "3 Days"
+    },
+    faq:[
+      {
+        question: "What is the duration of the bootcamp?",
+        answer: "The bootcamp lasts for 3 days."
+      },
+      {
+        question: "Is there any cost involved?",
+        answer: "No, the bootcamp is completely free."
+      },
+      {
+        question: "Will I receive a certificate?",
+        answer: "Yes, all participants will receive a certificate upon completion."
+      },
     ]
   },
   {
-    id: "tech-expo",
-    title: "University Tech Expo 2025",
-    description: "Showcasing cutting-edge student projects and innovations.",
-    longDescription: "Join us for a full-day technology exhibition featuring AI, robotics, software, and IoT projects created by students. Judges from industry will attend and award the best innovations.",
-    date: "2025-07-15",
-    duration: "1 day",
-    location: "Innovation Hall, Main Campus",
-    image: "/event1.jpg",
-    contact: "expo@unitech.com",
+    id: "2",
+    title: "AI & ML Workshop",
+    image: "https://miro.medium.com/v2/resize:fit:1400/0*tEaf_aACR6mo-qrK.png",
+    shortDescription: "Explore the world of AI and Machine Learning.",
+    longDescription: "A comprehensive workshop on AI and ML technologies.",
     features: [
-      { title: "Project Displays", desc: "Explore AI, robotics, and software projects." },
-      { title: "Live Demos", desc: "Witness innovative technology in real-time." },
-      { title: "Awards & Recognition", desc: "Top projects win exciting rewards." },
-      { title: "Networking", desc: "Connect with peers, mentors, and industry experts." }
+      { title: "Hands-on Projects", desc: "Work on real-world AI projects." },
+      { title: "Expert Speakers", desc: "Learn from industry leaders." }
+    ],
+    courseInfo: {
+      name: "AI & ML Workshop",
+      cost: "1000tk",
+      location: "Dhaka Campus",
+      date: "15 Jun, 2025",
+      duration: "5 Days"
+    },
+    faq:[
+      {
+        question: "What is the duration of the workshop?",
+        answer: "The workshop lasts for 5 days."
+      },
+      {
+        question: "Is there any cost involved?",
+        answer: "Yes, the workshop costs 1000tk."
+      },
+      {
+        question: "Will I receive a certificate?",
+        answer: "Yes, all participants will receive a certificate upon completion."
+      },
     ]
   },
+  
   {
-    id: "career-summit",
-    title: "Career Summit 2025",
-    description: "A one-stop event for internships, job opportunities, and career guidance.",
-    longDescription: "Meet recruiters from top companies, join resume building workshops, and get career advice directly from professionals. Open to final year and pre-final year students.",
-    date: "2025-08-10",
-    duration: "2 days",
-    location: "Conference Center, City Campus",
-    image: "/event1.jpg",
-    contact: "career@uniconnect.com",
+    id: "3",
+    title: "Web Development Bootcamp",
+    image: "https://process.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/resize=width:705/https://www.filepicker.io/api/file/FSIjaoI2QtKWZL65cogd",
+    shortDescription: "Learn the latest in web development.",
+    longDescription: "A bootcamp focused on modern web technologies.",
     features: [
-      { title: "Career Fair", desc: "Meet recruiters from top companies." },
-      { title: "Resume Reviews", desc: "One-on-one sessions to improve your CV." },
-      { title: "Mock Interviews", desc: "Practice with professionals and get feedback." },
-      { title: "Career Talks", desc: "Learn from success stories and career journeys." }
-    ]
-  },
-  {
-    id: "coding-marathon",
-    title: "Coding Marathon",
-    description: "24-hour coding competition to solve real-world problems.",
-    longDescription: "Join teams to solve real-world coding challenges in this 24-hour hackathon. Participants will compete for prizes and job interview opportunities with partner tech companies.",
-    date: "2025-05-06",
-    duration: "24 hours",
-    location: "Computer Lab Block B",
-    image: "/event1.jpg",
-    contact: "hackathon@devhouse.io",
-    features: [
-      { title: "Problem Solving", desc: "Real-world challenges that test your skills." },
-      { title: "Mentorship", desc: "Expert mentors to guide and support your team." },
-      { title: "Tech Prizes", desc: "Win gadgets, internships, and cash prizes." },
-      { title: "Team Challenge", desc: "Form teams and build under pressure." }
+      { title: "Full-Stack Curriculum", desc: "Learn both front-end and back-end development." },
+      { title: "Portfolio Projects", desc: "Build projects to showcase your skills." }
+    ],
+    courseInfo: {
+      name: "Web Development Bootcamp",
+      cost: "800tk",
+      location: "Dhaka Campus",
+      date: "20 Jun, 2024",
+      duration: "7 Days"
+    },
+    faq:[
+      {
+        question: "What is the duration of the bootcamp?",
+        answer: "The bootcamp lasts for 7 days."
+      },
+      {
+        question: "Is there any cost involved?",
+        answer: "Yes, the bootcamp costs 800tk."
+      },
+      {
+        question: "Will I receive a certificate?",
+        answer: "Yes, all participants will receive a certificate upon completion."
+      },
     ]
   }
 ];
-

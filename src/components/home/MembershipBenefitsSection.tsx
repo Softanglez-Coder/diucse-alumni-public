@@ -4,31 +4,37 @@ import { motion } from "framer-motion";
 
 export default function MembershipBenefitsSection() {
   return (
-    <section className="py-16 bg-gradient-to-r from-green-50 to-white px-4">
-      <h2 className="text-3xl font-bold text-center text-green-700 mb-12">
-        Membership Benefits
+    <section className="py-20 px-4 bg-gradient-to-br from-[#f0fdf4] to-[#e4f7ec]">
+      <h2 className="text-4xl font-extrabold text-center text-green-800 mb-5 ">
+      Membership Benefits
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      {/* Horixontal line */}
+      <div className="w-24 h-1 bg-green-700 mb-10 mx-auto rounded-full animate-pulse mb-15"></div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
         {membershipBenefits.map((benefit, idx) => (
           <motion.div
             key={idx}
-            className="flex flex-col items-center p-6 bg-white rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
-            initial={{ opacity: 0, y: 20 }}
+            className="relative p-8 rounded-3xl border border-green-200 bg-white/30 backdrop-blur-lg shadow-[0_8px_30px_rgb(34_197_94_/_0.2)] hover:shadow-[0_12px_45px_rgb(34_197_94_/_0.35)] hover:-translate-y-2 transition-all duration-300"
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1, duration: 0.5 }}
+            transition={{ delay: idx * 0.15, duration: 0.6 }}
           >
-            {/* Icon */}
-            <div className="text-green-600 text-5xl mb-6">
-              {benefit.icons === "ShieldCheck" && <ShieldCheck />}
-              {benefit.icons === "Users" && <Users />}
-              {benefit.icons === "Star" && <Star />}
+            {/* Glowing Ring Icon */}
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-[0_0_15px_5px_rgba(34,197,94,0.3)] flex items-center justify-center">
+              {benefit.icons === "ShieldCheck" && <ShieldCheck className="text-white" size={30} />}
+              {benefit.icons === "Users" && <Users className="text-white" size={30} />}
+              {benefit.icons === "Star" && <Star className="text-white" size={30} />}
             </div>
 
-            {/* Title and Description */}
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">
-              {benefit.title}
-            </h3>
-            <p className="text-center text-gray-600 text-sm">{benefit.description}</p>
+            <div className="mt-14 text-center">
+              <h3 className="text-2xl font-semibold text-green-900 mb-2 font-[Orbitron]">
+                {benefit.title}
+              </h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                {benefit.description}
+              </p>
+            </div>
           </motion.div>
         ))}
       </div>

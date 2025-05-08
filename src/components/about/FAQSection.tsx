@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const toggleFAQ = (index) => {
+  const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
@@ -32,54 +32,49 @@ export default function FAQSection() {
   ];
 
   return (
-    <section className="bg-[#fffef8] py-16 px-6">
-  <div className="max-w-6xl mx-auto grid md:grid-cols-12 gap-10 items-start">
-    {/* Images Section - Smaller (col-span-3) */}
-    <div className="space-y-6 col-span-12 md:col-span-3">
-      <img
-        src="/image/logo/diucselogo.png"
-        alt="Alumni Kid"
-        className="rounded-xl shadow-xl hover:scale-105 transition-transform duration-300 w-full max-w-xs mx-auto"
-      />
-      <div className="bg-green-700 p-4 rounded-lg flex items-center gap-3 shadow-md">
-        <div className="text-white font-semibold">
-          <p>Got Questions?</p>
-          <p>We're Here to Help!</p>
+    <section className="py-20 px-6 bg-gradient-to-b from-black via-gray-900 to-black text-white">
+      <div className="max-w-6xl mx-auto space-y-16">
+        {/* Logo Row */}
+        <div className="flex flex-wrap justify-center gap-12 items-center">
+          <img
+            src="/image/logo/diulogo.png"
+            alt="University Logo"
+            className="h-30 md:h-30 object-contain hover:scale-150 transition-transform duration-300"
+          />
+          <img
+            src="/image/logo/diucselogo.png"
+            alt="Department Logo"
+            className="h-30 md:h-30 object-contain hover:scale-150 transition-transform duration-300"
+          />
+          <img
+            src="/image/logo/logo.png"
+            alt="Alumni Logo"
+            className="h-30 md:h-30 object-contain hover:scale-150 transition-transform duration-300"
+          />
         </div>
-      </div>
-    </div>
 
-    {/* Second Image - Smaller (col-span-3) */}
-    <div className="col-span-12 md:col-span-3">
-      <img
-        src="/image/logo/roundLogo.png"
-        alt="Alumni Main"
-        className="rounded-xl shadow-xl hover:scale-105 transition-transform duration-300 w-full max-w-xs mx-auto"
-      />
-    </div>
+        {/* FAQ Section */}
+        <div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-10  text-cyan-400 text-center">
+            Frequently Asked Questions
+          </h2>
 
-    {/* FAQ Section - Larger (col-span-6) */}
-    <div className="col-span-12 md:col-span-6">
-      <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#002D72]">
-        Frequently Asked Questions
-        <br />
-        About Our Alumni Network
-      </h2>
-
-          <div className="space-y-4">
+          <div className="space-y-6 max-w-3xl mx-auto">
             {faqs.map((faq, index) => (
               <div
                 key={index}
                 onClick={() => toggleFAQ(index)}
-                className={`rounded-xl px-5 py-4 shadow-md border-2 cursor-pointer transition-all duration-300 ${
+                className={`cursor-pointer p-6 rounded-xl transition-all duration-300 border-2 shadow-xl backdrop-blur-md ${
                   openIndex === index
-                    ? "bg-[#002D72] text-white border-green-700"
-                    : "bg-white text-[#002D72] border-[#e0e0e0] hover:border-green-700"
+                    ? "bg-white/10 border-cyan-400"
+                    : "bg-white/5 border-white/10 hover:border-cyan-300"
                 }`}
               >
-                <h3 className="font-semibold text-lg flex justify-between items-center">
+                <h3 className="flex justify-between items-center text-lg font-medium text-cyan-200">
                   {faq.question}
-                  <span>{openIndex === index ? "−" : "+"}</span>
+                  <span className="text-cyan-400 text-xl">
+                    {openIndex === index ? "−" : "+"}
+                  </span>
                 </h3>
                 <AnimatePresence>
                   {openIndex === index && (
@@ -87,7 +82,7 @@ export default function FAQSection() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="mt-2 text-sm text-white"
+                      className="mt-3 text-sm text-gray-300 leading-relaxed"
                     >
                       {faq.answer}
                     </motion.p>

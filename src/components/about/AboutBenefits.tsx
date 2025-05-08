@@ -3,25 +3,25 @@ import { motion } from "framer-motion";
 
 const benefits = [
   {
-    icon: <FaUserGraduate size={30} />,
+    icon: <FaUserGraduate size={30} color="black" />,
     title: "Empowering Smart Learners",
     desc: "We guide students to become smarter learners using curated resources, mentorship, and community support.",
     points: ["Focused learning path", "Smart exam strategies"]
   },
   {
-    icon: <FaChalkboardTeacher size={30} />,
+    icon: <FaChalkboardTeacher size={30} color="black"/>,
     title: "Personalized Academic Support",
     desc: "Get tailored help from mentors, teachers, and successful alumni who care about your academic journey.",
     points: ["One-on-one mentoring", "Group guidance and live classes"]
   },
   {
-    icon: <FaLaptopCode size={30} />,
+    icon: <FaLaptopCode size={30} color="black"/>,
     title: "Industry-Ready Skills",
     desc: "We offer workshops and projects to equip you with skills that matter in today’s job market.",
     points: ["Hands-on tech learning", "Portfolio-building activities"]
   },
   {
-    icon: <FaUsers size={30} />,
+    icon: <FaUsers size={30} color="black" />,
     title: "Vibrant Digital Community",
     desc: "SOSB connects students across campuses with a shared vision of growth, knowledge, and success.",
     points: ["Discussion forums & peer help", "Events, challenges & rewards"]
@@ -35,10 +35,10 @@ export default function AboutBenefits() {
       style={{ fontFamily: "Arial, sans-serif" }}
     >
       <h2 className="text-3xl sm:text-4xl font-bold text-[${colors.primary}] mb-4">
-        Discover What Makes SOSB Unique
+        DIU CSE Alumni Benefits
       </h2>
       <p className="text-gray-600 max-w-2xl mb-10">
-        SOSB isn’t just a platform — it’s a movement toward smarter education, stronger collaboration, and real student growth.
+        Join a community that empowers you to excel academically and professionally. Our platform offers personalized support, industry-ready skills, and a vibrant network of peers and mentors.
       </p>
 
       <div className="grid md:grid-cols-2 gap-6">

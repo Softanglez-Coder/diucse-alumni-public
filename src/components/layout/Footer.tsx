@@ -14,19 +14,26 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Left: Logo & Description */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <img
-            src={footerContent.footerLogo}
-            alt="DIU Alumni Logo"
-            className="h-14 mb-4"
-          />
-          <p className="text-sm text-blue-100 leading-relaxed">
-            {footerContent.description}
-          </p>
-        </motion.div>
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+>
+  <div className="flex items-center mb-4">
+    <img
+      src={footerContent.footerLogo}
+      alt="DIU Alumni Logo"
+      className="h-14 mr-3" // Space between logo and name
+    />
+    <p className="text-lg text-green-100 font-bold"> {/* Name with highlight */}
+      {footerContent.footerName}
+    </p>
+  </div>
+  <p className="text-sm text-blue-100 leading-relaxed">
+    {footerContent.description} {/* Keeping the description as it was */}
+  </p>
+</motion.div>
+
+
 
         {/* Middle: Important Links */}
         <motion.div
