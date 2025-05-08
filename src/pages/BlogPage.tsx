@@ -8,7 +8,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 
 // Define types for blog and props
 interface Blog {
-  id: string;
+  id: number; // Changed 'id' type to number
   title: string;
   image: string;
   excerpt: string;
