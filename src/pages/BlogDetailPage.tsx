@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { blogs } from "../constants/blogs";
-import { CalendarDays, Clock, User, ArrowLeft, Share2, Copy } from "lucide-react";
-import { FaFacebook, FaLinkedin, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { CalendarDays, Clock, User, ArrowLeft, Copy } from "lucide-react";
+import { FaFacebook, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import MainNav from "../components/layout/MainNav";
 import Footer from "../components/layout/Footer";
 

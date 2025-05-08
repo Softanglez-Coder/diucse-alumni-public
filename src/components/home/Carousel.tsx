@@ -17,12 +17,13 @@ export default function Carousel() {
 
   useEffect(() => {
     if (!isHovered) startAutoSlide();
-    return () => intervalRef.current && clearInterval(intervalRef.current);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [isHovered]);
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
+  
 
   return (
     <div

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { UserCircle2, Tag, CalendarDays, Share2 } from "lucide-react";
+import { UserCircle2, Tag, CalendarDays } from "lucide-react";
 import { blogs } from "../constants/blogs";
 import MainNav from "../components/layout/MainNav";
 import Footer from "../components/layout/Footer";
