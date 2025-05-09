@@ -66,7 +66,7 @@ export default function EventDetailsPage() {
                 {event.faq.map((faq, index) => (
                   <div
                     key={index}
-                    ref={(el) => (faqRefs.current[index] = el)}
+                    ref={(el) => { faqRefs.current[index] = el; }} // Update this line
                     onClick={() => toggleFAQ(index)}
                     role="button"
                     aria-expanded={openIndex === index ? "true" : "false"}
