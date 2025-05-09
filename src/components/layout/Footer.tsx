@@ -2,7 +2,11 @@ import { Mail, Phone, Facebook, Twitter, Instagram } from "lucide-react";
 import { footerContent } from "../../constants/home";
 import { motion } from "framer-motion";
 
-const iconsMap = {
+// Step 1: Define the allowed icon names
+type IconName = "Facebook" | "Twitter" | "Instagram";
+
+// Step 2: Strictly typed icon map
+const iconsMap: Record<IconName, React.ElementType> = {
   Facebook,
   Twitter,
   Instagram,
@@ -14,26 +18,24 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Left: Logo & Description */}
         <motion.div
-  initial={{ opacity: 0, y: 40 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6 }}
->
-  <div className="flex items-center mb-4">
-    <img
-      src={footerContent.footerLogo}
-      alt="DIU Alumni Logo"
-      className="h-14 mr-3" // Space between logo and name
-    />
-    <p className="text-lg text-green-100 font-bold"> {/* Name with highlight */}
-      {footerContent.footerName}
-    </p>
-  </div>
-  <p className="text-sm text-blue-100 leading-relaxed">
-    {footerContent.description} {/* Keeping the description as it was */}
-  </p>
-</motion.div>
-
-
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex items-center mb-4">
+            <img
+              src={footerContent.footerLogo}
+              alt="DIU Alumni Logo"
+              className="h-14 mr-3"
+            />
+            <p className="text-lg text-green-100 font-bold">
+              {footerContent.footerName}
+            </p>
+          </div>
+          <p className="text-sm text-blue-100 leading-relaxed">
+            {footerContent.description}
+          </p>
+        </motion.div>
 
         {/* Middle: Important Links */}
         <motion.div
@@ -74,7 +76,8 @@ export default function Footer() {
 
           <div className="flex gap-4 mt-5">
             {footerContent.socialLinks.map((link, index) => {
-              const Icon = iconsMap[link.icon] || Facebook;
+              // Type-safe icon selection
+              const Icon = iconsMap[link.icon as IconName] || Facebook;
               return (
                 <motion.a
                   key={index}
