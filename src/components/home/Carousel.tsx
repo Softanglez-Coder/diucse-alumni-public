@@ -15,6 +15,11 @@ export default function Carousel() {
     }, 5000);
   };
 
+  // ✅ Fix: Declare the missing function
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   useEffect(() => {
     if (!isHovered) startAutoSlide();
     return () => {
@@ -29,7 +34,9 @@ export default function Carousel() {
       className="relative w-full h-80 md:h-[500px] overflow-hidden rounded-lg shadow-lg"
       onMouseEnter={() => {
         setIsHovered(true);
-        intervalRef.current && clearInterval(intervalRef.current);
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
       }}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -78,7 +85,7 @@ export default function Carousel() {
         {carouselImages.map((_, index) => (
           <button
             key={index}
-            onClick={() => goToSlide(index)}
+            onClick={() => goToSlide(index)} // ✅ Now works
             className={`w-4 h-4 rounded-full border-2 ${
               index === currentIndex
                 ? "bg-white border-blue-900 scale-50"
