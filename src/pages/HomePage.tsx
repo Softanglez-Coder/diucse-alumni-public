@@ -9,7 +9,7 @@ import RecentBlogSection from "../components/home/RecentBlogSection";
 import EventsSection from "../components/home/EventsSection";
 import RecentNewsSection from "../components/home/RecentNewsSection";
 import PresidentMessageSection from "../components/home/PresidentMessageSection";
-import Footer from "../components/home/Footer";
+import Footer from "../components/layout/Footer";
 
 export default function HomePage() {
   return (

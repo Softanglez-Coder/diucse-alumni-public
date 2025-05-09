@@ -1,28 +1,37 @@
+import { Mail, Phone } from "lucide-react";
 import { contactInfo } from "../../constants/home";
+import { motion } from "framer-motion";
 
 export default function TopNav() {
   return (
-    <div className="bg-[#A7D3F5]  text-[#002D72] py-3 px-4 sm:px-6 flex justify-between items-center shadow-md">
-
-      <div className="flex space-x-4 sm:space-x-6">
-        
-        <span className="flex items-center text-xs sm:text-sm">
-          📞 {contactInfo.phone}
+    <motion.div
+      className="bg-blue-300 text-black py-3 px-4 sm:px-6 flex justify-between items-center shadow-md text-xs sm:text-sm"
+      initial={{ y: -40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
+      {/* Contact Info */}
+      <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+        <span className="flex items-center gap-1">
+          <Phone size={14} className="text-[#002D72]" />
+          {contactInfo.phone}
         </span>
 
-        <span className="flex items-center text-xs sm:text-sm">
-          📧 {contactInfo.email}
+        <span className="flex items-center gap-1">
+          <Mail size={14} className="text-[#002D72]" />
+          {contactInfo.email}
         </span>
       </div>
 
+      {/* Portal Link */}
       <a
         href={contactInfo.portalLink}
-        className="bg-green-600 hover:bg-green-700 text-white font-semibold px-3 py-1 sm:px-4 sm:py-2 rounded transition duration-300 ease-in-out shadow-lg text-xs sm:text-sm"
         target="_blank"
         rel="noopener noreferrer"
+        className="bg-blue-900 hover:bg-blue-500 text-white font-semibold px-3 py-1 sm:px-4 sm:py-2 rounded transition-all duration-300 shadow hover:shadow-md"
       >
         Go to Alumni Portal
       </a>
-    </div>
+    </motion.div>
   );
 }
