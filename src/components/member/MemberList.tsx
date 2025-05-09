@@ -1,4 +1,4 @@
-import Footer from "../home/Footer";
+import Footer from "../layout/Footer";
 import MainNav from "../layout/MainNav";
 import { members } from "../../constants/member";
 import MemberCard from "./UserCard";
