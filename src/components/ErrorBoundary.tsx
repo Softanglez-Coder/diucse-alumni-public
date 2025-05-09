@@ -28,7 +28,6 @@ export default class ErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-
         <div className="text-center py-10">
           <h1 className="text-2xl font-bold text-red-600">Something went wrong.</h1>
           <p>Please try refreshing the page.</p>
