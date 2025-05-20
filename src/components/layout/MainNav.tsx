@@ -3,6 +3,7 @@ import { navLinks } from "../../constants/home";
 import { NavLink } from "../../types";
 import logo from "../../../public/vite.svg";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function MainNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,14 +32,14 @@ export default function MainNav() {
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex space-x-8 text-sm sm:text-base font-medium">
           {navLinks.map((link: NavLink) => (
-            <a
+            <Link
               key={link.name}
-              href={link.href}
+              to={link.href}
               className="text-white hover:text-green-200 transition-colors duration-300 relative group"
             >
               {link.name}
               <span className="block w-0 group-hover:w-full h-0.5 bg-green-400 transition-all duration-300"></span>
-            </a>
+            </Link>
           ))}
         </nav>
       </div>
