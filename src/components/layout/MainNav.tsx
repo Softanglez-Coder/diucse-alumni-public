@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { navLinks } from "../../constants/home";
 import { NavLink } from "../../types";
-import logo from "../../../public/vite.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -15,7 +14,6 @@ export default function MainNav() {
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
         <img
-          src={logo}
           alt="Logo"
           className="h-10 sm:h-12 cursor-pointer transition-transform duration-300 hover:scale-105"
         />
