@@ -13,6 +13,7 @@ import NewsDetailPage from "./pages/NewsDetailPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
+import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
         <Route path="/blog/:id" element={<BlogDetailPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
         <Route path="/terms" element={<TermsOfServicePage />} />
+
+        <Route path="/payment/success" element={<PaymentSuccessPage />} />
       </Routes>
     </Router>
   );
