@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import AllEventsPage from "./pages/AllEventsPage";
 import EventDetailsPage from "./pages/EventDetailsPage";
@@ -13,12 +12,15 @@ import ContactPage from "./pages/ContactPage";
 import NewsDetailPage from "./pages/NewsDetailPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import RegistrationPage from "./pages/RegistrationPage";
+import ComingSoonPage from "./pages/ComingSoonPage";
+import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<ComingSoonPage />} />
+        {/* <Route path="/" element={<HomePage />} /> */}
         <Route path="/about" element={<AboutPage />} />
         <Route path="/events" element={<AllEventsPage />} />
         <Route path="/news" element={<NewsPage />} />
@@ -33,7 +35,8 @@ function App() {
         <Route path="/blog/:id" element={<BlogDetailPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
         <Route path="/terms" element={<TermsOfServicePage />} />
-        {/* Add more routes as needed */}
+
+        <Route path="/payment/success" element={<PaymentSuccessPage />} />
       </Routes>
     </Router>
   );
