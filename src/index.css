@@ -5,3 +5,8 @@
     --color-primary: oklch(38.6% 0.063 188.416);
     --font-primary: 'Rubik', sans-serif;
 }
+
+/* Button */
+.btn-primary {
+    @apply bg-primary text-white rounded px-5 py-3 flex items-center justify-center gap-2;
+}

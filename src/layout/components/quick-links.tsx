@@ -50,7 +50,7 @@ export const QuickLinks = () => {
 
   return (
     <div className="bg-gray-100 text-gray-800">
-      <div className="grid grid-cols-3 gap-8 container mx-auto py-16">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 container mx-auto px-8 py-16">
         {Object.keys(groupedLinks).map((group) => (
           <div key={group} className="flex flex-col">
             <h3 className="mb-4 text-lg font-bold border-b border-b-gray-300">
