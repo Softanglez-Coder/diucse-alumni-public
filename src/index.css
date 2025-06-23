@@ -1,36 +1,7 @@
 @import "tailwindcss";
 
-@keyframes scroll {
-    0% {
-      transform: translateX(0%);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-  
-  .animate-scroll {
-    animation: scroll 120s linear infinite;
-    width: max-content;
-  }
-  
-  .animate-scroll.paused {
-    animation-play-state: paused;
-  }
-  
-
-  @keyframes slideDown {
-    0% {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .animate-slideDown {
-    animation: slideDown 0.3s ease-out;
-  }
-  
+/* Tailwind config */
+@theme {
+    --color-primary: oklch(38.6% 0.063 188.416);
+    --font-primary: 'Rubik', sans-serif;
+}
