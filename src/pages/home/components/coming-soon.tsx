@@ -31,7 +31,7 @@ export const ComingSoonHome = () => {
 
             <div className="flex flex-col items-start">
                 <h2 className="text-xl mb-4">We will be live on...</h2>
-                <ul className="flex gap-4 items-center justify-center">
+                <ul className="flex gap-4 items-center justify-center flex-wrap">
                     <li className="flex items-center flex-col justify-center px-6 py-4 bg-gray-100 rounded">
                         <span className="text-7xl font-bold">{ time.days }</span>
                         <span>days</span>
