@@ -1,42 +1,65 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AboutPage from "./pages/AboutPage";
-import AllEventsPage from "./pages/AllEventsPage";
-import EventDetailsPage from "./pages/EventDetailsPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-import TermsOfServicePage from "./pages/TermsOfServicePage";
-import NewsPage from "./pages/NewsPage";
-import BlogPage from "./pages/BlogPage";
-import GalleryPage from "./pages/GalleryPage";
-import AlumniPage from "./pages/AlumniPage";
-import ContactPage from "./pages/ContactPage";
-import NewsDetailPage from "./pages/NewsDetailPage";
-import BlogDetailPage from "./pages/BlogDetailPage";
-import RegistrationPage from "./pages/RegistrationPage";
-import ComingSoonPage from "./pages/ComingSoonPage";
-import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
+import { HomePage, PortalDashboardPage, PortalMembershipPage, PortalPage } from "./pages";
+import { Layout } from "./layout";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<ComingSoonPage />} />
-        {/* <Route path="/" element={<HomePage />} /> */}
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/events" element={<AllEventsPage />} />
-        <Route path="/news" element={<NewsPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/gallery" element={<GalleryPage />} />
-        <Route path="/alumni" element={<AlumniPage />} />
-        <Route path="/membership" element={<RegistrationPage/>} />
-        <Route path="/Contact" element={<ContactPage/>} />
-        
-        <Route path="/event/:id" element={<EventDetailsPage />} />
-        <Route path="/news/:id" element={<NewsDetailPage />} />
-        <Route path="/blog/:id" element={<BlogDetailPage />} />
-        <Route path="/privacy" element={<PrivacyPolicyPage />} />
-        <Route path="/terms" element={<TermsOfServicePage />} />
+        {/* Misc */}
+        <Route path="/" element={<Layout />} >
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<HomePage />} />
+          <Route path="contact" element={<HomePage />} />
 
-        <Route path="/payment/success" element={<PaymentSuccessPage />} />
+          {/* Memberships */}
+          <Route path="membership-requirements" element={<HomePage />} />
+          <Route path="membership-benefits" element={<HomePage />} />
+          <Route path="membership-process" element={<HomePage />} />
+
+          {/* Members */}
+          <Route path="members" element={<HomePage />} />
+          <Route path="members/:id" element={<HomePage />} />
+
+          {/* Events */}
+          <Route path="events" element={<HomePage />} />
+          <Route path="events/:id" element={<HomePage />} />
+          <Route path="events/:id/register" element={<HomePage />} />
+
+          {/* Blogs */}
+          <Route path="blogs" element={<HomePage />} />
+          <Route path="blogs/:id" element={<HomePage />} />
+
+          {/* Notices */}
+          <Route path="notices" element={<HomePage />} />
+          <Route path="notices/:id" element={<HomePage />} />
+
+          {/* News */}
+          <Route path="news" element={<HomePage />} />
+          <Route path="news/:id" element={<HomePage />} />
+
+          {/* Payments */}
+          <Route path="payments/:invoiceId" element={<HomePage />} />
+          <Route path="payments/success" element={<HomePage />} />
+          <Route path="payments/fail" element={<HomePage />} />
+
+          {/* Auth */}
+          <Route path="login" element={<HomePage />} />
+          <Route path="register" element={<HomePage />} />
+          <Route path="forgot-password" element={<HomePage />} />
+          <Route path="reset-password" element={<HomePage />} />
+          <Route path="verify-email" element={<HomePage />} />
+
+          {/* Portal */}
+          <Route path="portal" element={<PortalPage />}>
+            <Route index element={<PortalDashboardPage />} />
+            <Route path="dashboard" element={<PortalDashboardPage />} />
+            <Route path="membership" element={<PortalMembershipPage />} />
+            <Route path="profile" element={<PortalDashboardPage />} />
+            <Route path="events" element={<PortalDashboardPage />} />
+            <Route path="blogs" element={<PortalDashboardPage />} />
+          </Route>
+        </Route>
       </Routes>
     </Router>
   );
