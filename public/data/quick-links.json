@@ -1,0 +1,72 @@
+[
+  {
+    "to": "/facebook",
+    "label": "Facebook",
+    "group": "Social Media"
+  },
+  {
+    "to": "/youtube",
+    "label": "YouTube",
+    "group": "Social Media"
+  },
+  {
+    "to": "/linkedin",
+    "label": "Linkedin",
+    "group": "Social Media"
+  },
+  {
+    "to": "/contact",
+    "label": "Contact",
+    "group": "Get Help"
+  },
+  {
+    "to": "/register",
+    "label": "Register as guest",
+    "group": "Get Help"
+  },
+  {
+    "to": "/members",
+    "label": "Explore members",
+    "group": "Get Help"
+  },
+  {
+    "to": "/feedback",
+    "label": "Feedback",
+    "group": "Get Help"
+  },
+  {
+    "to": "/community",
+    "label": "Community",
+    "group": "Get Help"
+  },
+  {
+    "to": "/blogs",
+    "label": "Blogs",
+    "group": "Get Help"
+  },
+  {
+    "to": "/events",
+    "label": "Events",
+    "group": "Get Help"
+  },
+  {
+    "to": "/a11y",
+    "label": "Accessibility",
+    "group": "About This Site"
+  },
+  {
+    "to": "/privacy",
+    "label": "Privacy",
+    "group": "About This Site"
+  },
+  {
+    "to": "/term-of-use",
+    "label": "Terms of Use",
+    "group": "About This Site"
+  },
+  {
+    "to": "/admin",
+    "label": "Admin",
+    "group": "About This Site"
+  }
+]
