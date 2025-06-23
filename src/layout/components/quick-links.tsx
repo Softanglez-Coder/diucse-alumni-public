@@ -7,14 +7,14 @@ export enum LinkGroup {
   AboutThisSite = "About This Site",
 }
 
-export interface Link {
+interface NavLink {
   to: string;
   label: string;
   group: LinkGroup;
 }
 
 export const QuickLinks = () => {
-  const [groupedLinks, setGroupLinks] = useState<Record<LinkGroup, Array<Link>>>({
+  const [groupedLinks, setGroupLinks] = useState<Record<LinkGroup, Array<NavLink>>>({
     [LinkGroup.SocialMedia]: [],
     [LinkGroup.GetHelp]: [],
     [LinkGroup.AboutThisSite]: [],
@@ -24,7 +24,7 @@ export const QuickLinks = () => {
     fetch("/data/quick-links.json")
       .then((res) => res.json())
       .then((data) => {
-        const links: Array<Link> = data.map((item: any) => ({
+        const links: Array<NavLink> = data.map((item: any) => ({
           to: item.to,
           label: item.label,
           group: item.group as LinkGroup,
@@ -36,7 +36,7 @@ export const QuickLinks = () => {
           }
           acc[link.group].push(link);
           return acc;
-        }, {} as Record<LinkGroup, Array<Link>>));
+        }, {} as Record<LinkGroup, Array<NavLink>>));
       })
       .catch(() => {
         console.error("Failed to load quick links");

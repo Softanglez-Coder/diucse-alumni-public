@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export interface Link {
+interface NavLink {
   name: string;
   href: string;
 }
 
 export const PrimaryNav = () => {
-  const [links, setLinks] = useState<Array<Link>>([]);
+  const [links, setLinks] = useState<Array<NavLink>>([]);
 
   useEffect(() => {
     const fetchLinks = async () => {
@@ -16,7 +16,7 @@ export const PrimaryNav = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data: Array<Link> = await response.json();
+        const data: Array<NavLink> = await response.json();
 
         setLinks(data);
       } catch (error) {
