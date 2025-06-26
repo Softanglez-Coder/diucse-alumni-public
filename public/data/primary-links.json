@@ -1,5 +1,9 @@
 [
     {
+        "name": "Membership",
+        "href": "/membership"
+    },
+    {
         "name": "Events",
         "href": "/events"
     },
