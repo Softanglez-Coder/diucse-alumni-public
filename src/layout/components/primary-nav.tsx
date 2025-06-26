@@ -8,6 +8,7 @@ interface NavLink {
 
 export const PrimaryNav = () => {
   const [links, setLinks] = useState<Array<NavLink>>([]);
+  const [menuOpened, setMenuOpened] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchLinks = async () => {
@@ -27,19 +28,50 @@ export const PrimaryNav = () => {
     fetchLinks();
   }, []);
 
+  const openMenu = () => {
+    setMenuOpened(!menuOpened);
+  };
+
   return (
     <div className="shadow-md bg-white px-4 md:px-0">
-      <div className="flex items-center justify-between container mx-auto h-28">
-        <div>
+      <div className="flex items-center justify-between container mx-auto h-20">
+        <Link to="/">
           <img
             src="/images/logo.jpg"
             alt="Logo"
-            className="h-28 w-auto mx-auto"
+            className="h-20 w-auto mx-auto"
           />
-        </div>
+        </Link>
 
         <div className="h-full">
-          <ul className="flex h-full">
+          {/* menus for smaller screen */}
+          <button className="md:hidden h-full flex items-center justify-center p-4" type="button" onClick={openMenu}>
+            <i className="text-3xl fa-solid fa-bars"></i>
+          </button>
+
+          {menuOpened && <div className="md:hidden h-screen fixed top-0 left-0 w-full z-50 bg-white shadow-lg">
+            <button className="absolute top-4 right-4 text-3xl" onClick={() => setMenuOpened(false)}>
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+
+            <ul className="flex flex-col items-center justify-center bg-white shadow-md h-full">
+              {links.map((link, index) => (
+                <li key={index} className="w-full">
+                  <Link
+                    to={link.href}
+                    className="text-gray-700 hover:text-primary px-4 py-2 hover:bg-gray-100 w-full text-center block"
+                    onClick={() => setMenuOpened(false)}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            </div>
+          }
+
+          {/* menus for large screen */}
+          <ul className="hidden md:flex h-full">
             {links.map((link, index) => (
               <li key={index} className="h-full">
                 <Link
