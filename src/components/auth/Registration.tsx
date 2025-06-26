@@ -1,102 +1,205 @@
-import { useState } from "react";
+import React, { useEffect, useState } from 'react';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import countries from 'i18n-iso-countries';
+import enLocale from 'i18n-iso-countries/langs/en.json';
 
-export default function Registration() {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    phone: "",
-    email: "",
-    country: "",
-    academicLevel: "",
-    passingYear: "",
-    shift: "",
-    batch: "",
-    rollNo: "",
-    profession: "",
-    institute: "",
-    designation: "",
-    paymentType: "",
-    transactionId: "",
+countries.registerLocale(enLocale);
+
+interface FormDataType {
+  name: string;
+  mobile: string;
+  email: string;
+  country: string;
+  profession: string;
+  customProfession: string;
+  institute: string;
+  customInstitute: string;
+  designation: string;
+  customDesignation: string;
+  academicLevel: string;
+  customAcademicLevel: string;
+  passingYear: string;
+  customPassingYear: string;
+  batch: string;
+  customBatch: string;
+  transactionId: string;
+}
+
+const professions = ['Engineer', 'Doctor', 'Teacher', 'Developer', 'Businessman', 'Student', 'Other'];
+const institutes = ['DIU', 'BUET', 'NSU', 'AIUB', 'Other'];
+const designations = ['Software Engineer', 'Manager', 'Lecturer', 'Intern', 'Other'];
+const academicLevels = ['BSc', 'MSc', 'PhD', 'Other'];
+const passingYears = Array.from({ length: 30 }, (_, i) => `${2025 - i}`).concat('Other');
+const batchOptions = Array.from({ length: 80 }, (_, i) => `D-${i + 1}`).concat('Other');
+
+const MembershipRequestForm: React.FC = () => {
+  const [formData, setFormData] = useState<FormDataType>({
+    name: '',
+    mobile: '',
+    email: '',
+    country: '',
+    profession: '',
+    customProfession: '',
+    institute: '',
+    customInstitute: '',
+    designation: '',
+    customDesignation: '',
+    academicLevel: '',
+    customAcademicLevel: '',
+    passingYear: '',
+    customPassingYear: '',
+    batch: '',
+    customBatch: '',
+    transactionId: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  useEffect(() => {
+    const phoneNumber = parsePhoneNumberFromString(formData.mobile);
+    if (phoneNumber?.country) {
+      const countryName = countries.getName(phoneNumber.country, 'en', { select: 'official' });
+      setFormData((prev) => ({
+        ...prev,
+        country: countryName ?? phoneNumber.country ?? '',
+      }));
+    }
+  }, [formData.mobile]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submitted Data:", formData);
+
+    const finalData = {
+      ...formData,
+      profession: formData.profession === 'Other' ? formData.customProfession : formData.profession,
+      institute: formData.institute === 'Other' ? formData.customInstitute : formData.institute,
+      designation: formData.designation === 'Other' ? formData.customDesignation : formData.designation,
+      academicLevel: formData.academicLevel === 'Other' ? formData.customAcademicLevel : formData.academicLevel,
+      passingYear: formData.passingYear === 'Other' ? formData.customPassingYear : formData.passingYear,
+      batch: formData.batch === 'Other' ? formData.customBatch : formData.batch,
+    };
+
+    console.log('Form submitted:', finalData);
+    // Add your API call here
+
+    // ✅ Reset form
+    setFormData({
+      name: '',
+      mobile: '',
+      email: '',
+      country: '',
+      profession: '',
+      customProfession: '',
+      institute: '',
+      customInstitute: '',
+      designation: '',
+      customDesignation: '',
+      academicLevel: '',
+      customAcademicLevel: '',
+      passingYear: '',
+      customPassingYear: '',
+      batch: '',
+      customBatch: '',
+      transactionId: '',
+    });
   };
 
   return (
-    <div className="min-h-screen bg-[url('../../../public/bg.jpg')] bg-cover bg-opacity-50 flex items-center justify-center px-4">
-      <div className="bg-white shadow-lg rounded-xl overflow-hidden flex flex-col md:flex-row w-full max-w-6xl">
-        {/* Left Image Section */}
-        <div className="md:w-1/2 bg-cover bg-center relative bg-amber-400">
-          <div className="absolute inset-0 bg-black bg-opacity-10 flex flex-col items-center justify-end p-6 text-white">
-            <h2 className="text-xl font-bold mb-2">এখনই আপনার তথ্য দিন!</h2>
-            <p className="text-sm text-center">
-              নিচের ফর্মটি পূরণ করে রেজিস্ট্রেশন সম্পন্ন করুন এবং আমাদের সেবাসমূহ উপভোগ করুন।
-            </p>
-          </div>
-        </div>
+    <div className="flex flex-col items-center justify-center p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center text-blue-800">
+        DIU CSE Alumni Membership Form
+      </h1>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 w-full max-w-2xl bg-white p-6 rounded-lg shadow-md"
+      >
+        <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="p-2 border rounded" />
+        <input type="text" name="mobile" placeholder="Mobile Number" value={formData.mobile} onChange={handleChange} className="p-2 border rounded" />
+        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="p-2 border rounded" />
+        <input type="text" name="country" placeholder="Country" value={formData.country} readOnly className="p-2 border rounded bg-gray-100" />
 
-        {/* Right Form Section */}
-        <form onSubmit={handleSubmit} className="md:w-1/2 p-8 space-y-4">
-          <h2 className="text-2xl font-bold text-center text-green-700 mb-4">Registration Form</h2>
+        {/* Profession */}
+        <select name="profession" value={formData.profession} onChange={handleChange} className="p-2 border rounded">
+          <option value="">Select Profession</option>
+          {professions.map((prof) => (
+            <option key={prof} value={prof}>{prof}</option>
+          ))}
+        </select>
+        {formData.profession === 'Other' && (
+          <input type="text" name="customProfession" placeholder="Enter Your Profession" value={formData.customProfession} onChange={handleChange} className="p-2 border rounded" />
+        )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input name="fullName" onChange={handleChange} value={formData.fullName} placeholder="Full Name" className="input" required />
-            <input name="phone" onChange={handleChange} value={formData.phone} placeholder="Phone Number" className="input" required />
-            <input name="email" onChange={handleChange} value={formData.email} placeholder="Email Address" className="input" required />
-            <input name="country" onChange={handleChange} value={formData.country} placeholder="Current Country" className="input" required />
+        {/* Institute */}
+        <select name="institute" value={formData.institute} onChange={handleChange} className="p-2 border rounded">
+          <option value="">Select Institute</option>
+          {institutes.map((inst) => (
+            <option key={inst} value={inst}>{inst}</option>
+          ))}
+        </select>
+        {formData.institute === 'Other' && (
+          <input type="text" name="customInstitute" placeholder="Enter Your Institute" value={formData.customInstitute} onChange={handleChange} className="p-2 border rounded" />
+        )}
 
-            <select name="academicLevel" onChange={handleChange} value={formData.academicLevel} className="input" required>
-              <option value="">Last Academic Level</option>
-              <option>BSc</option>
-              <option>MSc</option>
-              <option>Diploma</option>
-              <option>PhD</option>
-            </select>
+        {/* Designation */}
+        <select name="designation" value={formData.designation} onChange={handleChange} className="p-2 border rounded">
+          <option value="">Select Designation</option>
+          {designations.map((des) => (
+            <option key={des} value={des}>{des}</option>
+          ))}
+        </select>
+        {formData.designation === 'Other' && (
+          <input type="text" name="customDesignation" placeholder="Enter Your Designation" value={formData.customDesignation} onChange={handleChange} className="p-2 border rounded" />
+        )}
 
-            <input name="passingYear" onChange={handleChange} value={formData.passingYear} placeholder="Passing Year" className="input" required />
+        {/* Academic Level */}
+        <select name="academicLevel" value={formData.academicLevel} onChange={handleChange} className="p-2 border rounded">
+          <option value="">Select Academic Level</option>
+          {academicLevels.map((level) => (
+            <option key={level} value={level}>{level}</option>
+          ))}
+        </select>
+        {formData.academicLevel === 'Other' && (
+          <input type="text" name="customAcademicLevel" placeholder="Enter Academic Level" value={formData.customAcademicLevel} onChange={handleChange} className="p-2 border rounded" />
+        )}
 
-            <select name="shift" onChange={handleChange} value={formData.shift} className="input" required>
-              <option value="">Shift</option>
-              <option>Day</option>
-              <option>Evening</option>
-            </select>
+        {/* Passing Year */}
+        <select name="passingYear" value={formData.passingYear} onChange={handleChange} className="p-2 border rounded">
+          <option value="">Select Passing Year</option>
+          {passingYears.map((year) => (
+            <option key={year} value={year}>{year}</option>
+          ))}
+        </select>
+        {formData.passingYear === 'Other' && (
+          <input type="text" name="customPassingYear" placeholder="Enter Passing Year" value={formData.customPassingYear} onChange={handleChange} className="p-2 border rounded" />
+        )}
 
-            <input name="batch" onChange={handleChange} value={formData.batch} placeholder="Batch" className="input" required />
-            <input name="rollNo" onChange={handleChange} value={formData.rollNo} placeholder="Roll No" className="input" required />
-            <input name="profession" onChange={handleChange} value={formData.profession} placeholder="Profession" className="input" />
-            <input name="institute" onChange={handleChange} value={formData.institute} placeholder="Professional Institute" className="input" />
-            <input name="designation" onChange={handleChange} value={formData.designation} placeholder="Designation" className="input" />
+        {/* Batch */}
+        <select name="batch" value={formData.batch} onChange={handleChange} className="p-2 border rounded">
+          <option value="">Select Batch</option>
+          {batchOptions.map((batch) => (
+            <option key={batch} value={batch}>{batch}</option>
+          ))}
+        </select>
+        {formData.batch === 'Other' && (
+          <input type="text" name="customBatch" placeholder="Enter Your Batch" value={formData.customBatch} onChange={handleChange} className="p-2 border rounded" />
+        )}
 
-            <select name="paymentType" onChange={handleChange} value={formData.paymentType} className="input" required>
-              <option value="">Payment Type</option>
-              <option>bKash</option>
-              <option>Nagad</option>
-              <option>Bank</option>
-              <option>Cash</option>
-            </select>
+        <input type="text" name="transactionId" placeholder="bKash Transaction ID" value={formData.transactionId} onChange={handleChange} className="p-2 border rounded" />
 
-            <input name="transactionId" onChange={handleChange} value={formData.transactionId} placeholder="Payment Transaction ID" className="input" required />
-          </div>
-
-          <button type="submit" className="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded w-full">
-            Submit
-          </button>
-        </form>
-      </div>
+        <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+          Submit
+        </button>
+      </form>
     </div>
   );
-}
+};
 
-// Tailwind input style can be added globally or in the component
-// For example, in your CSS or Tailwind config:
-/*
-.input {
-  @apply p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-green-500;
-}
-*/
+export default MembershipRequestForm;
