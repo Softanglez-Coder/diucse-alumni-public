@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { BottomFooter, PrimaryFooter, PrimaryNav, QuickLinks, TopNav } from "./components";
 
 export const Layout = () => {
-    return <div className="min-h-screen flex flex-col font-primary">
+    return <div className="min-h-screen flex flex-col">
         <nav className="sticky top-0 z-50">
             <TopNav />
             <PrimaryNav />
