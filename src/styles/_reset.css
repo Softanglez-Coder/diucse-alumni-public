@@ -1,0 +1,18 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading, serif);
+}
+
+p,
+span,
+a,
+li,
+button,
+input,
+textarea {
+    font-family: var(--font-non-heading, sans-serif);
+}
