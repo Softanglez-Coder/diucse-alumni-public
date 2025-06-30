@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 @Component({
-    selector: 'layout',
-    templateUrl: './layout.html',
-    styleUrl: './layout.css',
+    selector: 'portal',
+    templateUrl: './portal.html',
+    styleUrl: './portal.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Layout {}
+export class Portal {}
