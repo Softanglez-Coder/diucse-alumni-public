@@ -1,0 +1,36 @@
+<div class="container">
+    <aside class="menus" [ngClass]="{ 'collapsed': collapsed }">
+        <nav>
+            <ul>
+                @for (link of links.value(); track link.path) {
+                    <li (click)="onLinkClicked(link)">
+                        <a [routerLink]="link.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            <div class="icon-container">
+                                <i [ngClass]="link.icon"></i>
+                            </div>
+                            
+                            <div class="link-details">
+                                <span>{{ link.title }}</span>
+                                <span class="small">{{ link.description }}</span>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </aside>
+    <main class="content">
+        <header>
+            <button class="toggle-button" (click)="collapsed = !collapsed">
+                <i class="icon" [ngClass]="collapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'"></i>
+            </button>
+
+            <div>
+                <h1>{{ selected?.title }}</h1>
+                <p>{{ selected?.description }}</p>
+            </div>
+        </header>
+
+        <router-outlet />
+    </main>
+</div>

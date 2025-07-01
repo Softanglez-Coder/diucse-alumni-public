@@ -1,4 +1,10 @@
 :root {
     --font-heading: 'Playfair Display', serif;
     --font-non-heading: 'Roboto Condensed', sans-serif;
+
+    --color-brand: #105696;
+    --color-border: #cccccc87;
+
+    /* shape */
+    --roundness: 0.25rem;
 }

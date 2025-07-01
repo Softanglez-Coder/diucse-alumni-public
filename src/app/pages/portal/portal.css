@@ -1,0 +1,131 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    background-image: url('https://www.onlygfx.com/wp-content/uploads/2021/04/white-triangle-pattern-seamless-background-2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    flex: 1;
+}
+
+.container {
+  display: flex;
+  height: 100%;
+  flex: 1;
+
+  .menus {
+    min-width: 15rem;
+
+    nav {
+      ul {
+        margin-right: 1rem;
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 0;
+
+        li {
+          &:not(:last-child) {
+            border-bottom: 1px solid var(--color-border, #ccc);
+          }
+
+          a {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: var(--color-hover, #f0f0f0);
+            }
+
+            &.active {
+              background-color: var(--color-brand, #105696);
+              color: white;
+
+              .icon-container {
+                background-color: white;
+                color: var(--color-brand, #105696);
+              }
+            }
+
+            .icon-container {
+              display: flex;
+              align-items: center;
+              margin-right: 0.5rem;
+              width: 1.5rem;
+              height: 1.5rem;
+              justify-content: center;
+              background-color: var(--color-brand);
+              border-radius: var(--roundness);
+              color: white;
+              font-size: 0.8rem;
+            }
+
+            .link-details {
+              display: flex;
+              flex-direction: column;
+              flex-grow: 1;
+
+              span {
+                font-size: 0.9rem;
+              }
+
+              .small {
+                font-size: 0.8rem;
+                opacity: 0.7;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &.collapsed {
+      width: 4rem;
+      min-width: 4rem;
+
+      nav {
+        ul {
+          li {
+            a {
+              padding: 0.5rem;
+
+              .icon-container {
+                width: 2rem;
+                height: 2rem;
+                margin-right: 0;
+              }
+
+              span {
+                display: none; /* Hide text in collapsed state */
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    padding: 1rem;
+    background-color: var(--color-background, #fff);
+    border-left: 1px solid var(--color-border, #ccc);
+    overflow-y: auto;
+
+    header {
+      display: flex;
+      align-items: center;
+      
+      .toggle-button {
+        background-color: var(--color-brand, #105696);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--roundness);
+      }
+    }
+  }
+}

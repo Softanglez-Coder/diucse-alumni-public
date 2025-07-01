@@ -1,3 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 h1,
 h2,
 h3,
@@ -15,4 +27,14 @@ button,
 input,
 textarea {
     font-family: var(--font-non-heading, sans-serif);
+}
+
+ul {
+    list-style: none;
+    list-style-position: inside;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
