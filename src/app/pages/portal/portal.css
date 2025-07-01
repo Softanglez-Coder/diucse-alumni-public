@@ -18,6 +18,20 @@
     min-width: 15rem;
 
     nav {
+      .toggle-button {
+        background-color: var(--color-brand, #105696);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--roundness);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .toggle-text {
+        }
+      }
+
       ul {
         margin-right: 1rem;
         display: flex;
@@ -87,6 +101,16 @@
       min-width: 4rem;
 
       nav {
+        .toggle-button {
+          justify-content: center;
+          padding: 0.5rem;
+          width: calc(100% - 1rem);
+
+          .toggle-text {
+            display: none; /* Hide text in collapsed state */
+          }
+        }
+
         ul {
           li {
             a {
@@ -118,14 +142,6 @@
     header {
       display: flex;
       align-items: center;
-      
-      .toggle-button {
-        background-color: var(--color-brand, #105696);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: var(--roundness);
-      }
     }
   }
 }

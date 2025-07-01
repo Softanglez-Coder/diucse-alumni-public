@@ -1,6 +1,11 @@
 <div class="container">
     <aside class="menus" [ngClass]="{ 'collapsed': collapsed }">
         <nav>
+            <button class="toggle-button" (click)="collapsed = !collapsed">
+                <i class="icon" [ngClass]="collapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'"></i>
+                <span class="toggle-text">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
+            </button>
+
             <ul>
                 @for (link of links.value(); track link.path) {
                     <li (click)="onLinkClicked(link)">
@@ -21,10 +26,6 @@
     </aside>
     <main class="content">
         <header>
-            <button class="toggle-button" (click)="collapsed = !collapsed">
-                <i class="icon" [ngClass]="collapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'"></i>
-            </button>
-
             <div>
                 <h1>{{ selected?.title }}</h1>
                 <p>{{ selected?.description }}</p>
