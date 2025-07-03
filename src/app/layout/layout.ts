@@ -5,7 +5,7 @@ import { Navbar } from "./navbar";
 @Component({
     selector: 'layout',
     templateUrl: './layout.html',
-    styleUrl: './layout.css',
+    styleUrl: './layout.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         Footer,

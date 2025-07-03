@@ -13,7 +13,7 @@ interface Link {
 @Component({
     selector: 'portal',
     templateUrl: './portal.html',
-    styleUrl: './portal.css',
+    styleUrl: './portal.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         RouterOutlet,

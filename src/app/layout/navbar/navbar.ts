@@ -1,13 +1,20 @@
+import { httpResource } from "@angular/common/http";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterLinkActive } from "@angular/router";
+import { Link } from "../../shared";
 
 @Component({
     selector: '[navbar]',
     templateUrl: './navbar.html',
-    styleUrls: ['./navbar.css'],
+    styleUrls: ['./navbar.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        RouterLink
+        RouterLink,
+        RouterLinkActive
     ]
 })
-export class Navbar {}
+export class Navbar {
+    protected linksRequest = httpResource<Array<Link>>(() => '/data/nav-links.json', {
+        defaultValue: []
+    });
+}
