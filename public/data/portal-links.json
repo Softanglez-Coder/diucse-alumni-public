@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Dashboard",
+        "path": "/portal/dashboard",
+        "icon": "fa-solid fa-tachometer-alt",
+        "description": "View your dashboard with recent activity and updates."
+    },
+    {
+        "title": "Profile",
+        "path": "/portal/profile",
+        "icon": "fa-solid fa-user",
+        "description": "Manage your profile information and settings."
+    },
+    {
+        "title": "Membership",
+        "path": "/portal/membership",
+        "icon": "fa-solid fa-users",
+        "description": "View and manage your membership details."
+    },
+    {
+        "title": "Events",
+        "path": "/portal/events",
+        "icon": "fa-solid fa-calendar-alt",
+        "description": "Manage your event registrations and discover new opportunities."
+    },
+    {
+        "title": "Blogs",
+        "path": "/portal/blogs",
+        "icon": "fa-solid fa-blog",
+        "description": "Create and manage your blog posts for the community."
+    },
+    {
+        "title": "Settings",
+        "path": "/portal/settings",
+        "icon": "fa-solid fa-cog",
+        "description": "Adjust your account settings and preferences."
+    }
+]

@@ -1,0 +1,494 @@
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Alumni Membership</h1>
+            <p class="text-gray-600">Join our vibrant alumni community and unlock exclusive benefits</p>
+        </div>
+
+        <div class="flex flex-col">
+            <div class="flex flex-wrap border-b border-gray-200 mb-6">
+                <button 
+                    class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
+                    [class.border-primary]="activeTab() === 'status'"
+                    [class.text-primary-600]="activeTab() === 'status'"
+                    [class.border-transparent]="activeTab() !== 'status'"
+                    (click)="setActiveTab('status')">
+                    <i class="fa-solid fa-chart-bar"></i>
+                    Status
+                </button>
+                <button 
+                    class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
+                    [class.border-primary]="activeTab() === 'apply'"
+                    [class.text-primary-600]="activeTab() === 'apply'"
+                    [class.border-transparent]="activeTab() !== 'apply'"
+                    [class.opacity-50]="!canApply()"
+                    [class.cursor-not-allowed]="!canApply()"
+                    (click)="setActiveTab('apply')"
+                    [disabled]="!canApply()">
+                    <i class="fa-solid fa-file-signature"></i>
+                    Apply
+                </button>
+                <button 
+                    class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
+                    [class.border-primary]="activeTab() === 'requirements'"
+                    [class.text-primary-600]="activeTab() === 'requirements'"
+                    [class.border-transparent]="activeTab() !== 'requirements'"
+                    (click)="setActiveTab('requirements')">
+                    <i class="fa-solid fa-list-check"></i>
+                    Requirements
+                </button>
+            </div>
+
+        <div class="mt-6">
+            @if (activeTab() === 'status') {
+                <div class="bg-white rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Membership Status</h2>
+                    
+                    <div class="border border-gray-200 rounded-lg shadow-sm p-6 bg-gray-50">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-6 border-b border-gray-200">
+                            <div class="flex flex-col">
+                                <h3 class="text-lg font-medium text-gray-700 mb-2">Current Status</h3>
+                                <span class="inline-flex px-3 py-1 rounded-full text-sm font-medium" 
+                                      [class.bg-green-100]="membershipStatus().status === 'approved'"
+                                      [class.text-green-800]="membershipStatus().status === 'approved'"
+                                      [class.bg-yellow-100]="membershipStatus().status === 'pending'"
+                                      [class.text-yellow-800]="membershipStatus().status === 'pending'"
+                                      [class.bg-red-100]="membershipStatus().status === 'rejected' || membershipStatus().status === 'expired'"
+                                      [class.text-red-800]="membershipStatus().status === 'rejected' || membershipStatus().status === 'expired'"
+                                      [class.bg-gray-100]="membershipStatus().status === 'none'"
+                                      [class.text-gray-800]="membershipStatus().status === 'none'">
+                                    {{ getStatusText(membershipStatus().status) }}
+                                </span>
+                            </div>
+                            @if (membershipStatus().membershipId) {
+                                <div class="px-4 py-2 bg-primary-50 text-primary-700 rounded-md border border-primary-100">
+                                    <strong class="font-medium">ID: {{ membershipStatus().membershipId }}</strong>
+                                </div>
+                            }
+                        </div>
+
+                        @if (membershipStatus().status === 'none') {
+                            <div class="text-center py-8">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fa-solid fa-user-plus text-2xl"></i>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-800 mb-2">No Active Membership</h4>
+                                    <p class="text-gray-600 mb-6 max-w-md">You haven't applied for membership yet. Click on the "Apply" tab to start your application.</p>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors flex items-center gap-2" (click)="setActiveTab('apply')">
+                                        <i class="fa-solid fa-rocket"></i>
+                                        Start Application
+                                    </button>
+                                </div>
+                            </div>
+                        }
+
+                        @if (membershipStatus().status === 'pending') {
+                            <div class="text-center py-8">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fa-solid fa-clock text-2xl"></i>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Application Under Review</h4>
+                                    <p class="text-gray-600 mb-6 max-w-md">Your membership application is currently being reviewed by our team.</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-lg">
+                                        <div class="bg-white p-4 rounded-lg border border-gray-200 flex flex-col">
+                                            <span class="text-sm text-gray-500 mb-1">Application Date</span>
+                                            <strong class="text-gray-800">{{ membershipStatus().applicationDate }}</strong>
+                                        </div>
+                                        <div class="bg-white p-4 rounded-lg border border-gray-200 flex flex-col">
+                                            <span class="text-sm text-gray-500 mb-1">Membership Type</span>
+                                            <strong class="text-gray-800 capitalize">{{ membershipStatus().membershipType }}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6 p-4 bg-primary-50 text-primary-700 rounded-lg border border-primary-100 text-center flex items-center gap-2 justify-center max-w-lg mx-auto">
+                                        <i class="fa-solid fa-info-circle"></i>
+                                        <span>You will receive an email notification once your application is processed (typically within 5-7 business days).</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (membershipStatus().status === 'approved') {
+                            <div class="text-center py-8">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fa-solid fa-check-circle text-2xl"></i>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Membership Active</h4>
+                                    <p class="text-gray-600 mb-6 max-w-md">Congratulations! Your alumni membership is active and in good standing.</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-2xl">
+                                        <div class="bg-white p-4 rounded-lg border border-gray-200 flex flex-col">
+                                            <span class="text-sm text-gray-500 mb-1">Approved Date</span>
+                                            <strong class="text-gray-800">{{ membershipStatus().approvalDate }}</strong>
+                                        </div>
+                                        <div class="bg-white p-4 rounded-lg border border-gray-200 flex flex-col">
+                                            <span class="text-sm text-gray-500 mb-1">Membership Type</span>
+                                            <strong class="text-gray-800 capitalize">{{ membershipStatus().membershipType }}</strong>
+                                        </div>
+                                        @if (membershipStatus().expiryDate) {
+                                            <div class="bg-white p-4 rounded-lg border border-gray-200 flex flex-col">
+                                                <span class="text-sm text-gray-500 mb-1">Expires On</span>
+                                                <strong class="text-gray-800">{{ membershipStatus().expiryDate }}</strong>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="mt-8 bg-primary-50 rounded-lg p-6 border border-primary-100 max-w-2xl mx-auto">
+                                        <h5 class="text-lg font-medium text-gray-800 mb-3">Your Benefits Include:</h5>
+                                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Access to alumni directory</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Exclusive event invitations</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Career networking opportunities</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Professional development resources</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (membershipStatus().status === 'rejected') {
+                            <div class="text-center py-8">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fa-solid fa-times-circle text-2xl"></i>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Application Not Approved</h4>
+                                    <p class="text-gray-600 mb-6 max-w-md">Unfortunately, your membership application was not approved at this time.</p>
+                                    <div class="p-4 bg-amber-50 text-amber-700 rounded-lg border border-amber-100 text-center mb-6 max-w-lg">
+                                        <div class="flex items-center gap-2 justify-center">
+                                            <i class="fa-solid fa-info-circle"></i>
+                                            <span>You can reapply after addressing the feedback provided via email. Please ensure all requirements are met before resubmitting.</span>
+                                        </div>
+                                    </div>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors flex items-center gap-2" (click)="setActiveTab('apply')">
+                                        <i class="fa-solid fa-redo"></i>
+                                        Reapply
+                                    </button>
+                                </div>
+                            </div>
+                        }
+
+                        @if (membershipStatus().status === 'expired') {
+                            <div class="text-center py-8">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fa-solid fa-calendar-times text-2xl"></i>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Membership Expired</h4>
+                                    <p class="text-gray-600 mb-6 max-w-md">Your membership has expired. Renew to continue enjoying alumni benefits.</p>
+                                    <button class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors flex items-center gap-2" (click)="setActiveTab('apply')">
+                                        <i class="fa-solid fa-refresh"></i>
+                                        Renew Membership
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            @if (activeTab() === 'apply') {
+                <div class="bg-white rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Membership Application</h2>
+                    <p class="text-gray-600 mb-6">Fill out the form below to apply for alumni membership.</p>
+
+                    <form (ngSubmit)="submitApplication()" #applicationForm="ngForm" class="space-y-8">
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50 space-y-4">
+                            <h3 class="text-lg font-medium text-gray-800 mb-4 border-b border-gray-200 pb-2">Personal Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="flex flex-col">
+                                    <label for="fullName" class="text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                                    <input 
+                                        type="text" 
+                                        id="fullName"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().fullName"
+                                        name="fullName"
+                                        required>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="email" class="text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                    <input 
+                                        type="email" 
+                                        id="email"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().email"
+                                        name="email"
+                                        required>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="phone" class="text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                    <input 
+                                        type="tel" 
+                                        id="phone"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().phone"
+                                        name="phone"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50 space-y-4">
+                            <h3 class="text-lg font-medium text-gray-800 mb-4 border-b border-gray-200 pb-2">Academic Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div class="flex flex-col">
+                                    <label for="graduationYear" class="text-sm font-medium text-gray-700 mb-1">Graduation Year *</label>
+                                    <input 
+                                        type="number" 
+                                        id="graduationYear"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().graduationYear"
+                                        name="graduationYear"
+                                        min="1995"
+                                        max="2025"
+                                        required>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="studentId" class="text-sm font-medium text-gray-700 mb-1">Student ID *</label>
+                                    <input 
+                                        type="text" 
+                                        id="studentId"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().studentId"
+                                        name="studentId"
+                                        placeholder="e.g., 123-45-6789"
+                                        required>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="degree" class="text-sm font-medium text-gray-700 mb-1">Degree *</label>
+                                    <input 
+                                        type="text" 
+                                        id="degree"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().degree"
+                                        name="degree"
+                                        placeholder="e.g., Bachelor of Science"
+                                        required>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="department" class="text-sm font-medium text-gray-700 mb-1">Department *</label>
+                                    <select 
+                                        id="department"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().department"
+                                        name="department"
+                                        required>
+                                        <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                                        <option value="Software Engineering">Software Engineering</option>
+                                        <option value="Information Technology">Information Technology</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50 space-y-4">
+                            <h3 class="text-lg font-medium text-gray-800 mb-4 border-b border-gray-200 pb-2">Professional Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="flex flex-col">
+                                    <label for="currentPosition" class="text-sm font-medium text-gray-700 mb-1">Current Position</label>
+                                    <input 
+                                        type="text" 
+                                        id="currentPosition"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().currentPosition"
+                                        name="currentPosition"
+                                        placeholder="e.g., Software Engineer">
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="company" class="text-sm font-medium text-gray-700 mb-1">Company</label>
+                                    <input 
+                                        type="text" 
+                                        id="company"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().company"
+                                        name="company"
+                                        placeholder="e.g., Tech Solutions Ltd.">
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="workExperience" class="text-sm font-medium text-gray-700 mb-1">Work Experience (Years)</label>
+                                    <input 
+                                        type="number" 
+                                        id="workExperience"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().workExperience"
+                                        name="workExperience"
+                                        min="0"
+                                        max="50">
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="linkedinProfile" class="text-sm font-medium text-gray-700 mb-1">LinkedIn Profile</label>
+                                    <input 
+                                        type="url" 
+                                        id="linkedinProfile"
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        [(ngModel)]="application().linkedinProfile"
+                                        name="linkedinProfile"
+                                        placeholder="https://linkedin.com/in/yourprofile">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50 space-y-4">
+                            <h3 class="text-lg font-medium text-gray-800 mb-4 border-b border-gray-200 pb-2">Statement of Purpose</h3>
+                            <div class="w-full">
+                                <label for="statement" class="text-sm font-medium text-gray-700 mb-1">Why do you want to join the alumni network? *</label>
+                                <textarea 
+                                    id="statement"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                    rows="6"
+                                    [(ngModel)]="application().statement"
+                                    name="statement"
+                                    placeholder="Please describe your goals and how you plan to contribute to the alumni community (minimum 50 characters)..."
+                                    required
+                                    minlength="50"></textarea>
+                                <p class="text-sm text-gray-500 mt-1">{{ application().statement.length }}/50 minimum characters</p>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50 space-y-4">
+                            <h3 class="text-lg font-medium text-gray-800 mb-4 border-b border-gray-200 pb-2">Membership Type</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <label class="cursor-pointer">
+                                    <input 
+                                        type="radio" 
+                                        value="regular"
+                                        [(ngModel)]="application().membershipType"
+                                        name="membershipType"
+                                        class="hidden peer">
+                                    <div class="border-2 rounded-lg p-6 transition-all duration-200
+                                                peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:bg-gray-100">
+                                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Regular Membership</h4>
+                                        <div class="text-2xl font-bold text-primary-600 mb-4">{{ getMembershipTypePrice('regular') }}</div>
+                                        <ul class="space-y-2">
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Annual membership</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> All standard benefits</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Event access</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Alumni directory</li>
+                                        </ul>
+                                    </div>
+                                </label>
+
+                                <label class="cursor-pointer">
+                                    <input 
+                                        type="radio" 
+                                        value="lifetime"
+                                        [(ngModel)]="application().membershipType"
+                                        name="membershipType"
+                                        class="hidden peer">
+                                    <div class="border-2 rounded-lg p-6 transition-all duration-200
+                                                peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:bg-gray-100">
+                                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Lifetime Membership</h4>
+                                        <div class="text-2xl font-bold text-primary-600 mb-4">{{ getMembershipTypePrice('lifetime') }}</div>
+                                        <ul class="space-y-2">
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> One-time payment</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> All premium benefits</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Priority event access</li>
+                                            <li class="flex items-center gap-2 text-gray-700"><i class="fa-solid fa-check text-green-600"></i> Exclusive networking</li>
+                                        </ul>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="relative flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input 
+                                            id="agreeToTerms"
+                                            type="checkbox"
+                                            [(ngModel)]="application().agreeToTerms"
+                                            name="agreeToTerms"
+                                            required
+                                            class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="agreeToTerms" class="font-medium text-gray-700">
+                                            I agree to the <a href="#" class="text-primary-600 hover:underline" target="_blank">Terms and Conditions</a> and <a href="#" class="text-primary-600 hover:underline" target="_blank">Privacy Policy</a> *
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center pt-6">
+                            <button 
+                                type="submit" 
+                                class="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                [disabled]="!validateApplication() || isSubmitting()">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                {{ isSubmitting() ? 'Submitting...' : 'Submit Application' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+            @if (activeTab() === 'requirements') {
+                <div class="bg-white rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Membership Requirements</h2>
+                    <p class="text-gray-600 mb-6">Review the requirements and benefits of alumni membership.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                        @for (req of requirements; track req.title) {
+                            <div class="border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 bg-white">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid {{ req.icon }} text-xl"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ req.title }}</h3>
+                                        @if (req.required) {
+                                            <span class="inline-block px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded">Required</span>
+                                        } @else {
+                                            <span class="inline-block px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">Optional</span>
+                                        }
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">{{ req.description }}</p>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-12">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 pb-2 border-b border-gray-200">Membership Benefits</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @for (benefit of membershipBenefits; track benefit.title) {
+                                <div class="flex gap-4 p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid {{ benefit.icon }}"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-medium text-gray-800 mb-1">{{ benefit.title }}</h4>
+                                        <p class="text-gray-600 text-sm">{{ benefit.description }}</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-primary-50 to-primary-50 rounded-lg p-8 text-center border border-primary-100">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Ready to Join?</h3>
+                        <p class="text-gray-600 mb-6 max-w-md mx-auto">Become part of our growing alumni community and unlock exclusive benefits.</p>
+                        <button 
+                            class="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary transition-colors flex items-center gap-2 mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                            (click)="setActiveTab('apply')" 
+                            [disabled]="!canApply()">
+                            <i class="fa-solid fa-rocket"></i>
+                            {{ canApply() ? 'Start Your Application' : 'Application Not Available' }}
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

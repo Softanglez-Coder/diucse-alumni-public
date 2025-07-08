@@ -1,0 +1,149 @@
+<div class="min-h-screen bg-primary-50">
+  <!-- Header Section -->
+  <section class="bg-white py-28 pb-16">
+    <div class="max-w-6xl mx-auto px-8">
+      <div class="mb-8">
+        <a routerLink="/events" class="text-gray-500 font-medium hover:text-primary-600 transition-colors">← Back to Events</a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        <div class="relative rounded-xl overflow-hidden aspect-[16/10]">
+          <img [src]="event.image" [alt]="event.title" class="w-full h-full object-cover" />
+          <div class="absolute top-4 right-4 px-4 py-2 rounded-full font-semibold text-xs uppercase"
+               [ngClass]="{
+                 'bg-green-500 text-white': event.status === 'upcoming',
+                 'bg-yellow-500 text-white': event.status === 'ongoing',
+                 'bg-gray-500 text-white': event.status === 'completed'
+               }">
+            {{ event.status | titlecase }}
+          </div>
+        </div>
+        <div>
+          <div class="flex gap-4 mb-4 text-sm">
+            <span class="bg-gradient-to-r from-primary-500 to-purple-500 text-white px-3 py-1 rounded-full font-medium">{{ event.category }}</span>
+            <span class="text-gray-500 font-medium">by {{ event.organizer }}</span>
+          </div>
+          <h1 class="text-4xl font-bold mb-4 text-primary-800 leading-tight md:text-3xl">{{ event.title }}</h1>
+          <p class="text-base text-gray-600 leading-relaxed mb-8">{{ event.description }}</p>
+          <div class="grid grid-cols-2 gap-6 mb-8 md:grid-cols-1 md:gap-4">
+            <div class="flex items-center gap-4">
+              <i class="icon-calendar text-primary-600 w-6 h-6"></i>
+              <div>
+                <strong class="block font-semibold text-primary-800 mb-1">Date</strong>
+                <span class="text-gray-500 text-sm">{{ event.date }}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <i class="icon-clock text-primary-600 w-6 h-6"></i>
+              <div>
+                <strong class="block font-semibold text-primary-800 mb-1">Time</strong>
+                <span class="text-gray-500 text-sm">{{ event.time }}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <i class="icon-location text-primary-600 w-6 h-6"></i>
+              <div>
+                <strong class="block font-semibold text-primary-800 mb-1">Location</strong>
+                <span class="text-gray-500 text-sm">{{ event.location }}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <i class="icon-price text-primary-600 w-6 h-6"></i>
+              <div>
+                <strong class="block font-semibold text-primary-800 mb-1">Price</strong>
+                <span class="text-gray-500 text-sm">{{ event.price }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <div class="w-full h-2 bg-primary-200 rounded mb-2 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-green-400 to-emerald-600 transition-all" [style.width]="getRegistrationPercentage() + '%'" ></div>
+            </div>
+            <div class="flex justify-between text-sm text-gray-500">
+              <span>{{ event.registered }} / {{ event.capacity }} registered</span>
+              <span class="text-green-600 font-medium">{{ getAvailableSpots() }} spots available</span>
+            </div>
+          </div>
+          <div class="flex gap-4 md:flex-col">
+            <button class="flex-1 py-3 px-8 font-semibold rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors" [routerLink]="['/events', event.id, 'register']">
+              Register Now
+            </button>
+            <button class="flex-1 py-3 px-8 font-semibold rounded-lg border border-primary-600 text-primary-600 hover:bg-primary-50 transition-colors">Share Event</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Event Content -->
+  <section class="py-16">
+    <div class="max-w-6xl mx-auto px-8">
+      <div class="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-12">
+        <div>
+          <!-- About Event -->
+          <div class="bg-white p-8 rounded-xl mb-8 shadow-md">
+            <h2 class="text-2xl font-bold mb-6 text-primary-600">About This Event</h2>
+            <div class="prose max-w-none text-base" [innerHTML]="event.fullDescription"></div>
+          </div>
+          <!-- Speakers -->
+          <div class="bg-white p-8 rounded-xl mb-8 shadow-md">
+            <h2 class="text-2xl font-bold mb-6 text-primary-600">Featured Speakers</h2>
+            <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+              <div class="text-center p-6 border border-primary-200 rounded-xl transition-all hover:-tranprimary-y-1 hover:shadow-lg" *ngFor="let speaker of event.speakers">
+                <img [src]="speaker.image" [alt]="speaker.name" class="w-20 h-20 rounded-full object-cover mx-auto mb-4" />
+                <div>
+                  <h3 class="text-lg font-semibold mb-1 text-primary-800">{{ speaker.name }}</h3>
+                  <p class="text-primary-600 font-medium mb-1">{{ speaker.title }}</p>
+                  <p class="text-sm text-gray-500 leading-snug">{{ speaker.bio }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Agenda -->
+          <div class="bg-white p-8 rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold mb-6 text-primary-600">Event Agenda</h2>
+            <div>
+              <div class="flex items-center gap-8 py-4 border-b border-primary-200 last:border-b-0" *ngFor="let item of event.agenda">
+                <div class="font-semibold text-primary-600 min-w-[100px]">{{ item.time }}</div>
+                <div class="text-primary-800">{{ item.activity }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="order-first xl:order-none">
+          <div class="bg-white p-6 rounded-xl mb-6 shadow-md">
+            <h3 class="text-lg font-bold mb-4 text-primary-600">Event Details</h3>
+            <div>
+              <div class="flex justify-between items-start mb-4 pb-4 border-b border-primary-200 last:border-b-0 last:mb-6">
+                <span class="font-semibold text-primary-800">Date:</span>
+                <span class="text-gray-500 text-right max-w-[150px]">{{ event.date }}</span>
+              </div>
+              <div class="flex justify-between items-start mb-4 pb-4 border-b border-primary-200 last:border-b-0 last:mb-6">
+                <span class="font-semibold text-primary-800">Time:</span>
+                <span class="text-gray-500 text-right max-w-[150px]">{{ event.time }}</span>
+              </div>
+              <div class="flex justify-between items-start mb-4 pb-4 border-b border-primary-200 last:border-b-0 last:mb-6">
+                <span class="font-semibold text-primary-800">Location:</span>
+                <span class="text-gray-500 text-right max-w-[150px]">{{ event.location }}</span>
+              </div>
+              <div class="flex justify-between items-start mb-4 pb-4 border-b border-primary-200 last:border-b-0 last:mb-6">
+                <span class="font-semibold text-primary-800">Address:</span>
+                <span class="text-gray-500 text-right max-w-[150px]">{{ event.address }}</span>
+              </div>
+              <div class="flex justify-between items-start mb-6">
+                <span class="font-semibold text-primary-800">Price:</span>
+                <span class="text-gray-500 text-right max-w-[150px]">{{ event.price }}</span>
+              </div>
+            </div>
+            <button class="w-full py-3 px-8 font-semibold rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors mt-2" [routerLink]="['/events', event.id, 'register']">
+              Register for Event
+            </button>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-md">
+            <h3 class="text-lg font-bold mb-2 text-primary-600">Have Questions?</h3>
+            <p class="text-gray-500 mb-4 leading-relaxed">Contact our event coordinator for more information.</p>
+            <button class="w-full py-3 px-8 font-semibold rounded-lg border border-primary-600 text-primary-600 hover:bg-primary-50 transition-colors">Contact Us</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</div>

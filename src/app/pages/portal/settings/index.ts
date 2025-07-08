@@ -1,0 +1,1 @@
+export { PortalSettings } from './settings';

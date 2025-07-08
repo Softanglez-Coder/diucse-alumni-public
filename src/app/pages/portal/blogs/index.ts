@@ -1,0 +1,1 @@
+export { PortalBlogs } from './blogs';
