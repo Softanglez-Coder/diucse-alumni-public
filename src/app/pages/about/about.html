@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-white">
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white py-24 overflow-hidden">
+  <section class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 text-white py-24 overflow-hidden">
     <div class="absolute inset-0 bg-black/20"></div>
     
     <div class="container mx-auto px-4 relative z-10">
@@ -35,7 +35,7 @@
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
         @for (stat of stats; track stat.label) {
           <div class="text-center group">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary-600 to-indigo-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary-600 to-primary-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
               @switch (stat.icon) {
                 @case ('users') {
                   <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@
 
         <div class="grid md:grid-cols-2 gap-12 mb-20">
           <!-- Mission -->
-          <div class="bg-gradient-to-br from-primary-50 to-indigo-100 rounded-3xl p-8">
+          <div class="bg-gradient-to-br from-primary-50 to-primary-100 rounded-3xl p-8">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-6">
               <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -93,8 +93,8 @@
           </div>
 
           <!-- Vision -->
-          <div class="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl p-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-2xl mb-6">
+          <div class="bg-gradient-to-br from-primary-50 to-pink-100 rounded-3xl p-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-2xl mb-6">
               <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -122,7 +122,7 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           @for (value of values; track value.title) {
             <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
-              <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r from-primary-600 to-purple-600 rounded-xl mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r from-primary-600 to-primary-600 rounded-xl mb-6 group-hover:scale-110 transition-transform duration-300">
                 @switch (value.icon) {
                   @case ('star') {
                     <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,13 +166,13 @@
 
         <div class="relative">
           <!-- Timeline line -->
-          <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary-600 to-purple-600 rounded-full"></div>
+          <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary-600 to-primary-600 rounded-full"></div>
 
           @for (achievement of achievements; track achievement.year; let i = $index) {
             <div class="relative flex items-center mb-12" [class.justify-end]="i % 2 === 1">
               <div [class]="i % 2 === 0 ? 'mr-8 text-right' : 'ml-8 text-left'" class="w-5/12">
                 <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div class="inline-block bg-gradient-to-r from-primary-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold mb-3">
+                  <div class="inline-block bg-gradient-to-r from-primary-600 to-primary-600 text-white px-4 py-1 rounded-full text-sm font-semibold mb-3">
                     {{ achievement.year }}
                   </div>
                   <h3 class="text-xl font-bold text-gray-900 mb-2">{{ achievement.title }}</h3>
@@ -225,7 +225,7 @@
           <div class="text-center mt-12">
             <a 
               routerLink="/portal" 
-              class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-purple-600 text-white rounded-2xl font-semibold hover:from-primary-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-600 text-white rounded-2xl font-semibold hover:from-primary-700 hover:to-primary-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               View All Alumni
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,7 +239,7 @@
   }
 
   <!-- CTA Section -->
-  <section class="py-20 bg-gradient-to-r from-primary-900 via-purple-900 to-indigo-900 text-white">
+  <section class="py-20 bg-gradient-to-r from-primary-900 via-primary-900 to-primary-900 text-white">
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Join Our Community?</h2>

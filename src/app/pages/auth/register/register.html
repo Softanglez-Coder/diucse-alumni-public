@@ -1,8 +1,8 @@
-<div class="min-h-screen bg-gradient-to-br from-purple-50 to-primary-100 flex items-center justify-center p-4">
+<div class="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4">
   <div class="w-full max-w-2xl">
     <!-- Header -->
     <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-primary-600 rounded-xl mb-4 shadow-lg">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary-600 to-primary-600 rounded-xl mb-4 shadow-lg">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
         </svg>
@@ -19,7 +19,7 @@
       </div>
       <div class="w-full bg-gray-200 rounded-full h-2">
         <div 
-          class="bg-gradient-to-r from-primary-600 to-purple-600 h-2 rounded-full transition-all duration-300" 
+          class="bg-gradient-to-r from-primary-600 to-primary-600 h-2 rounded-full transition-all duration-300" 
           [style.width.%]="(currentStep / totalSteps) * 100"
         ></div>
       </div>
@@ -389,7 +389,7 @@
               <button
                 type="button"
                 (click)="nextStep()"
-                class="px-6 py-3 bg-gradient-to-r from-primary-600 to-purple-600 text-white rounded-xl hover:from-primary-700 hover:to-purple-700 transition-all duration-200 font-semibold shadow-lg"
+                class="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-600 text-white rounded-xl hover:from-primary-700 hover:to-primary-700 transition-all duration-200 font-semibold shadow-lg"
               >
                 Next Step
               </button>

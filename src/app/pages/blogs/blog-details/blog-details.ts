@@ -7,7 +7,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './blog-details.html',
-  styleUrls: ['./blog-details.scss']
 })
 export class BlogDetails implements OnInit {
   blogId: string | null = null;

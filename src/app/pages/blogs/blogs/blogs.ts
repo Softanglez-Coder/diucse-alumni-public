@@ -6,8 +6,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-blogs',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './blogs.html',
-  styleUrls: ['./blogs.scss']
+  templateUrl: './blogs.html'
 })
 export class Blogs {
   blogs = [

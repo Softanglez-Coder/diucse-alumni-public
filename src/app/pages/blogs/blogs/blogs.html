@@ -1,43 +1,39 @@
-<div class="blogs-page">
+<div class="min-h-screen bg-gradient-to-br from-primary-500 to-primary-600">
   <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="container">
-      <div class="hero-content">
-        <h1 class="hero-title">
-          DIUCSE Alumni <span class="gradient-text">Blog</span>
+  <section class="py-32 pb-20 bg-gradient-to-br from-primary-500/90 to-primary-600/90 text-white text-center">
+    <div class="container mx-auto max-w-3xl px-8">
+      <div>
+        <h1 class="text-5xl md:text-3xl font-bold mb-6 leading-tight">
+          DIUCSE Alumni <span class="bg-gradient-to-r from-pink-300 to-pink-500 bg-clip-text text-transparent">Blog</span>
         </h1>
-        <p class="hero-description">
-          Insights, stories, and knowledge from our vibrant community of Computer Science & Engineering alumni
+        <p class="text-lg max-w-xl mx-auto opacity-90 leading-relaxed">
+          Insights, stories, and knowledge from our vibrant community of Computer Science &amp; Engineering alumni
         </p>
       </div>
     </div>
   </section>
 
   <!-- Featured Blog -->
-  <section class="featured-section">
-    <div class="container">
-      <h2 class="section-title">Featured Article</h2>
-      
-      <article class="featured-blog" [routerLink]="['/blogs', featuredBlog.id]">
-        <div class="blog-image">
-          <img [src]="featuredBlog.image" [alt]="featuredBlog.title" />
-          <div class="overlay">
-            <span class="read-more">Read Article</span>
+  <section class="py-20 bg-white">
+    <div class="container mx-auto max-w-5xl px-8">
+      <h2 class="text-3xl font-bold text-center mb-12 text-primary-600">Featured Article</h2>
+      <article class="grid md:grid-cols-2 gap-12 cursor-pointer transition-transform hover:-translate-y-1" [routerLink]="['/blogs', featuredBlog.id]">
+        <div class="relative rounded-xl overflow-hidden aspect-[16/10] group">
+          <img [src]="featuredBlog.image" [alt]="featuredBlog.title" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <span class="text-white font-semibold text-lg">Read Article</span>
           </div>
         </div>
-        
-        <div class="blog-content">
-          <div class="blog-meta">
-            <span class="author">{{ featuredBlog.author }}</span>
-            <span class="date">{{ featuredBlog.date }}</span>
-            <span class="read-time">{{ featuredBlog.readTime }}</span>
+        <div class="flex flex-col justify-center">
+          <div class="flex gap-4 mb-3 text-sm text-gray-600">
+            <span class="font-semibold text-primary-600">{{ featuredBlog.author }}</span>
+            <span>{{ featuredBlog.date }}</span>
+            <span>{{ featuredBlog.readTime }}</span>
           </div>
-          
-          <h3 class="blog-title">{{ featuredBlog.title }}</h3>
-          <p class="blog-excerpt">{{ featuredBlog.excerpt }}</p>
-          
-          <div class="blog-tags">
-            <span class="tag" *ngFor="let tag of featuredBlog.tags">{{ tag }}</span>
+          <h3 class="text-2xl font-bold mb-3 text-gray-900 leading-snug">{{ featuredBlog.title }}</h3>
+          <p class="text-lg text-gray-600 mb-6">{{ featuredBlog.excerpt }}</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-3 py-1 rounded-full text-xs font-medium" *ngFor="let tag of featuredBlog.tags">{{ tag }}</span>
           </div>
         </div>
       </article>
@@ -45,61 +41,55 @@
   </section>
 
   <!-- Recent Blogs -->
-  <section class="recent-blogs-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Recent Articles</h2>
-        <div class="filters">
-          <button class="filter-btn active">All</button>
-          <button class="filter-btn">Technology</button>
-          <button class="filter-btn">Career</button>
-          <button class="filter-btn">Education</button>
-          <button class="filter-btn">Alumni Stories</button>
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto max-w-6xl px-8">
+      <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-12 gap-6">
+        <h2 class="text-3xl font-bold text-primary-600 m-0">Recent Articles</h2>
+        <div class="flex flex-wrap gap-2 justify-center md:justify-end">
+          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent active:bg-gradient-to-r active:from-primary-500 active:to-primary-600 active:text-white" [ngClass]="{ 'bg-gradient-to-r from-primary-500 to-primary-600 text-white border-transparent': true }">All</button>
+          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent">Technology</button>
+          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent">Career</button>
+          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent">Education</button>
+          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent">Alumni Stories</button>
         </div>
       </div>
-      
-      <div class="blogs-grid">
-        <article class="blog-card" *ngFor="let blog of recentBlogs" [routerLink]="['/blogs', blog.id]">
-          <div class="blog-image">
-            <img [src]="blog.image" [alt]="blog.title" />
-            <div class="overlay">
-              <span class="read-more">Read More</span>
+      <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-12">
+        <article class="bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-2xl" *ngFor="let blog of recentBlogs" [routerLink]="['/blogs', blog.id]">
+          <div class="relative aspect-[16/10] overflow-hidden group">
+            <img [src]="blog.image" [alt]="blog.title" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-white font-semibold">Read More</span>
             </div>
           </div>
-          
-          <div class="blog-content">
-            <div class="blog-meta">
-              <span class="author">{{ blog.author }}</span>
-              <span class="date">{{ blog.date }}</span>
-              <span class="read-time">{{ blog.readTime }}</span>
+          <div class="p-6">
+            <div class="flex gap-4 mb-2 text-xs text-gray-600">
+              <span class="font-semibold text-primary-600">{{ blog.author }}</span>
+              <span>{{ blog.date }}</span>
+              <span>{{ blog.readTime }}</span>
             </div>
-            
-            <h3 class="blog-title">{{ blog.title }}</h3>
-            <p class="blog-excerpt">{{ blog.excerpt }}</p>
-            
-            <div class="blog-tags">
-              <span class="tag" *ngFor="let tag of blog.tags">{{ tag }}</span>
+            <h3 class="text-lg font-bold mb-2 text-gray-900 leading-snug">{{ blog.title }}</h3>
+            <p class="text-gray-600 text-sm mb-4">{{ blog.excerpt }}</p>
+            <div class="flex flex-wrap gap-1">
+              <span class="bg-primary-100 text-primary-600 px-2 py-1 rounded-full text-xs font-medium" *ngFor="let tag of blog.tags">{{ tag }}</span>
             </div>
           </div>
         </article>
       </div>
-      
-      <div class="load-more">
-        <button class="btn btn-outline">Load More Articles</button>
+      <div class="text-center">
+        <button class="px-8 py-3 font-bold rounded-lg border-2 border-primary-500 text-primary-600 bg-white hover:bg-primary-50 transition">Load More Articles</button>
       </div>
     </div>
   </section>
 
   <!-- Newsletter Section -->
-  <section class="newsletter-section">
-    <div class="container">
-      <div class="newsletter-content">
-        <h2>Stay Updated</h2>
-        <p>Subscribe to our newsletter for the latest articles and alumni updates</p>
-        
-        <form class="newsletter-form">
-          <input type="email" placeholder="Enter your email address" />
-          <button type="submit" class="btn btn-primary">Subscribe</button>
+  <section class="py-20 bg-gradient-to-br from-primary-500 to-primary-600 text-white text-center">
+    <div class="container mx-auto max-w-xl">
+      <div class="mx-auto">
+        <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+        <p class="text-lg mb-8 opacity-90">Subscribe to our newsletter for the latest articles and alumni updates</p>
+        <form class="flex gap-4 max-w-md mx-auto flex-col sm:flex-row">
+          <input type="email" placeholder="Enter your email address" class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white/30" />
+          <button type="submit" class="px-6 py-3 rounded-lg bg-white text-primary-600 font-bold whitespace-nowrap">Subscribe</button>
         </form>
       </div>
     </div>

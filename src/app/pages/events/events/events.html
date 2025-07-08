@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gray-50">
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-primary-600 via-purple-600 to-indigo-700 text-white py-20">
+  <section class="bg-gradient-to-r from-primary-600 via-primary-600 to-primary-700 text-white py-20">
     <div class="container mx-auto px-4">
       <div class="text-center max-w-4xl mx-auto">
         <h1 class="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-primary-100 bg-clip-text text-transparent">
@@ -92,7 +92,7 @@
                   
                   <a 
                     [routerLink]="['/events', event.id]"
-                    class="bg-gradient-to-r from-primary-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-primary-700 hover:to-purple-700 transition-all duration-200 font-medium transform hover:scale-105"
+                    class="bg-gradient-to-r from-primary-600 to-primary-600 text-white px-6 py-2 rounded-xl hover:from-primary-700 hover:to-primary-700 transition-all duration-200 font-medium transform hover:scale-105"
                   >
                     Learn More
                   </a>
@@ -202,7 +202,7 @@
                   </div>
                   <div class="w-full bg-gray-200 rounded-full h-2">
                     <div 
-                      class="bg-gradient-to-r from-primary-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                      class="bg-gradient-to-r from-primary-500 to-primary-500 h-2 rounded-full transition-all duration-300"
                       [style.width.%]="(event.registered / event.capacity) * 100"
                     ></div>
                   </div>
@@ -238,7 +238,7 @@
     </section>
 
     <!-- Newsletter Signup -->
-    <section class="mt-20 bg-gradient-to-r from-primary-600 to-purple-600 rounded-3xl p-12 text-white text-center">
+    <section class="mt-20 bg-gradient-to-r from-primary-600 to-primary-600 rounded-3xl p-12 text-white text-center">
       <h2 class="text-3xl font-bold mb-4">Never Miss an Event</h2>
       <p class="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
         Subscribe to our newsletter and be the first to know about upcoming events, workshops, and networking opportunities.

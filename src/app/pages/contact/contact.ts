@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="min-h-screen bg-gray-50">
       <!-- Header -->
-      <section class="bg-gradient-to-r from-primary-600 to-purple-600 text-white py-20">
+      <section class="bg-gradient-to-r from-primary-600 to-primary-600 text-white py-20">
         <div class="container mx-auto px-4 text-center">
           <h1 class="text-5xl font-bold mb-4">Get In Touch</h1>
           <p class="text-xl text-primary-100">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
@@ -83,7 +83,7 @@ import { CommonModule } from '@angular/common';
                 <button
                   type="submit"
                   [disabled]="isSubmitting"
-                  class="w-full bg-gradient-to-r from-primary-600 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-primary-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50"
+                  class="w-full bg-gradient-to-r from-primary-600 to-primary-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-primary-700 hover:to-primary-700 transition-all duration-200 disabled:opacity-50"
                 >
                   @if (isSubmitting) {
                     <div class="flex items-center justify-center">
@@ -136,8 +136,8 @@ import { CommonModule } from '@angular/common';
                 </div>
 
                 <div class="flex items-start">
-                  <div class="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                     </svg>
                   </div>
