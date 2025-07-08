@@ -1,0 +1,230 @@
+<div class="events-container">
+    <div class="events-header">
+        <h1>My Events</h1>
+        <p>Manage your event registrations and discover new opportunities</p>
+    </div>
+
+    <div class="events-content">
+        <div class="events-tabs">
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'registered'"
+                (click)="setActiveTab('registered')">
+                <i class="fa-solid fa-calendar-check"></i>
+                Registered Events
+                <span class="badge">{{ registeredEvents().length }}</span>
+            </button>
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'organized'"
+                (click)="setActiveTab('organized')">
+                <i class="fa-solid fa-users-cog"></i>
+                Organized Events
+                <span class="badge">{{ organizedEvents().length }}</span>
+            </button>
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'available'"
+                (click)="setActiveTab('available')">
+                <i class="fa-solid fa-calendar-plus"></i>
+                Available Events
+                <span class="badge">{{ availableEvents().length }}</span>
+            </button>
+        </div>
+
+        <div class="events-controls">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input 
+                    type="text" 
+                    placeholder="Search events..."
+                    class="search-input"
+                    [(ngModel)]="searchQuery">
+            </div>
+            
+            <div class="filter-buttons">
+                <button 
+                    class="filter-btn"
+                    [class.active]="selectedFilter() === 'all'"
+                    (click)="setFilter('all')">
+                    All
+                </button>
+                <button 
+                    class="filter-btn"
+                    [class.active]="selectedFilter() === 'upcoming'"
+                    (click)="setFilter('upcoming')">
+                    Upcoming
+                </button>
+                <button 
+                    class="filter-btn"
+                    [class.active]="selectedFilter() === 'completed'"
+                    (click)="setFilter('completed')">
+                    Completed
+                </button>
+                <button 
+                    class="filter-btn"
+                    [class.active]="selectedFilter() === 'cancelled'"
+                    (click)="setFilter('cancelled')">
+                    Cancelled
+                </button>
+            </div>
+        </div>
+
+        <div class="events-grid">
+            @if (getFilteredEvents().length === 0) {
+                <div class="no-events">
+                    <i class="fa-solid fa-calendar-times"></i>
+                    <h3>No Events Found</h3>
+                    <p>
+                        @if (activeTab() === 'registered') {
+                            You haven't registered for any events yet. Check out available events to get started!
+                        } @else if (activeTab() === 'organized') {
+                            You haven't organized any events yet. Contact the alumni office to learn about organizing events.
+                        } @else {
+                            No available events match your current filters. Try adjusting your search or filters.
+                        }
+                    </p>
+                    @if (activeTab() === 'registered') {
+                        <button class="btn btn-primary" (click)="setActiveTab('available')">
+                            <i class="fa-solid fa-search"></i>
+                            Browse Available Events
+                        </button>
+                    }
+                </div>
+            } @else {
+                @for (event of getFilteredEvents(); track event.id) {
+                    <div class="event-card">
+                        @if (event.coverImage) {
+                            <div class="event-image">
+                                <img [src]="event.coverImage" [alt]="event.title">
+                            </div>
+                        }
+                        
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-badges">
+                                    <span class="event-type" [class]="getEventTypeClass(event.type)">
+                                        {{ event.type | titlecase }}
+                                    </span>
+                                    <span class="event-status" [class]="getStatusClass(event.status)">
+                                        {{ event.status | titlecase }}
+                                    </span>
+                                    @if (activeTab() === 'registered') {
+                                        <span class="registration-status" [class]="getRegistrationStatusClass(event.registrationStatus)">
+                                            {{ event.registrationStatus | titlecase }}
+                                        </span>
+                                    }
+                                    @if (event.isOrganizer) {
+                                        <span class="organizer-badge">
+                                            <i class="fa-solid fa-crown"></i>
+                                            Organizer
+                                        </span>
+                                    }
+                                </div>
+                                
+                                <h3 class="event-title">{{ event.title }}</h3>
+                                <p class="event-description">{{ event.description }}</p>
+                            </div>
+
+                            <div class="event-details">
+                                <div class="detail-item">
+                                    <i class="fa-solid fa-calendar"></i>
+                                    <span>{{ formatDate(event.date) }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span>{{ event.time }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fa-solid fa-map-marker-alt"></i>
+                                    <span>{{ event.location }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fa-solid fa-user"></i>
+                                    <span>{{ event.organizer }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fa-solid fa-users"></i>
+                                    <span>{{ event.currentAttendees }}/{{ event.maxAttendees }} attendees</span>
+                                </div>
+                                @if (event.registrationDate) {
+                                    <div class="detail-item">
+                                        <i class="fa-solid fa-calendar-check"></i>
+                                        <span>Registered: {{ formatDate(event.registrationDate) }}</span>
+                                    </div>
+                                }
+                            </div>
+
+                            @if (event.tags.length > 0) {
+                                <div class="event-tags">
+                                    @for (tag of event.tags; track tag) {
+                                        <span class="tag">{{ tag }}</span>
+                                    }
+                                </div>
+                            }
+
+                            <div class="event-progress">
+                                <div class="progress-bar">
+                                    <div 
+                                        class="progress-fill" 
+                                        [style.width.%]="(event.currentAttendees / event.maxAttendees) * 100">
+                                    </div>
+                                </div>
+                                <span class="progress-text">
+                                    {{ ((event.currentAttendees / event.maxAttendees) * 100).toFixed(0) }}% full
+                                </span>
+                            </div>
+
+                            <div class="event-actions">
+                                <button 
+                                    class="btn btn-outline" 
+                                    (click)="viewEventDetails(event)">
+                                    <i class="fa-solid fa-info-circle"></i>
+                                    Details
+                                </button>
+                                
+                                @if (activeTab() === 'available' && canRegister(event)) {
+                                    <button 
+                                        class="btn btn-primary" 
+                                        (click)="registerForEvent(event)">
+                                        <i class="fa-solid fa-calendar-plus"></i>
+                                        Register
+                                    </button>
+                                } @else if (activeTab() === 'available' && !canRegister(event)) {
+                                    <button class="btn btn-secondary" disabled>
+                                        @if (event.currentAttendees >= event.maxAttendees) {
+                                            <i class="fa-solid fa-users"></i>
+                                            Full
+                                        } @else if (isEventPast(event.date)) {
+                                            <i class="fa-solid fa-clock"></i>
+                                            Past Event
+                                        } @else {
+                                            <i class="fa-solid fa-ban"></i>
+                                            Unavailable
+                                        }
+                                    </button>
+                                }
+                                
+                                @if (activeTab() === 'registered' && event.status === 'upcoming' && !isEventPast(event.date)) {
+                                    <button 
+                                        class="btn btn-danger" 
+                                        (click)="cancelRegistration(event)">
+                                        <i class="fa-solid fa-times"></i>
+                                        Cancel Registration
+                                    </button>
+                                }
+
+                                @if (event.isOrganizer) {
+                                    <button class="btn btn-warning">
+                                        <i class="fa-solid fa-edit"></i>
+                                        Manage Event
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

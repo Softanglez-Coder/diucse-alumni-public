@@ -79,18 +79,21 @@ export const routes: Routes = [
                 title: 'Settings - DIUCSE Alumni',
                 loadComponent: () => import('./pages').then(c => c.Settings)
             },
-            // {
-            //     path: 'membership',
-            //     title: 'Membership - DIUCSE Alumni',
-            // },
-            // {
-            //     path: 'events',
-            //     title: 'Events - DIUCSE Alumni',
-            // },
-            // {
-            //     path: 'blogs',
-            //     title: 'Blogs - DIUCSE Alumni',
-            // },
+            {
+                path: 'membership',
+                title: 'Membership - DIUCSE Alumni',
+                loadComponent: () => import('./pages').then(c => c.Membership)
+            },
+            {
+                path: 'events',
+                title: 'Events - DIUCSE Alumni',
+                loadComponent: () => import('./pages').then(c => c.Events)
+            },
+            {
+                path: 'blogs',
+                title: 'Blogs - DIUCSE Alumni',
+                loadComponent: () => import('./pages').then(c => c.Blogs)
+            },
             {
                 path: '',
                 redirectTo: 'dashboard',

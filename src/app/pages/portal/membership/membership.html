@@ -1,0 +1,449 @@
+<div class="membership-container">
+    <div class="membership-header">
+        <h1>Alumni Membership</h1>
+        <p>Join our vibrant alumni community and unlock exclusive benefits</p>
+    </div>
+
+    <div class="membership-content">
+        <div class="membership-tabs">
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'status'"
+                (click)="setActiveTab('status')">
+                <i class="fa-solid fa-chart-bar"></i>
+                Status
+            </button>
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'apply'"
+                (click)="setActiveTab('apply')"
+                [disabled]="!canApply()">
+                <i class="fa-solid fa-file-signature"></i>
+                Apply
+            </button>
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'requirements'"
+                (click)="setActiveTab('requirements')">
+                <i class="fa-solid fa-list-check"></i>
+                Requirements
+            </button>
+        </div>
+
+        <div class="membership-panel">
+            @if (activeTab() === 'status') {
+                <div class="status-section">
+                    <h2>Membership Status</h2>
+                    
+                    <div class="status-card">
+                        <div class="status-header">
+                            <div class="status-info">
+                                <h3>Current Status</h3>
+                                <span class="status-badge" [class]="getStatusBadgeClass(membershipStatus().status)">
+                                    {{ getStatusText(membershipStatus().status) }}
+                                </span>
+                            </div>
+                            @if (membershipStatus().membershipId) {
+                                <div class="membership-id">
+                                    <strong>ID: {{ membershipStatus().membershipId }}</strong>
+                                </div>
+                            }
+                        </div>
+
+                        @if (membershipStatus().status === 'none') {
+                            <div class="status-content">
+                                <div class="no-membership">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                    <h4>No Active Membership</h4>
+                                    <p>You haven't applied for membership yet. Click on the "Apply" tab to start your application.</p>
+                                    <button class="btn btn-primary" (click)="setActiveTab('apply')">
+                                        <i class="fa-solid fa-rocket"></i>
+                                        Start Application
+                                    </button>
+                                </div>
+                            </div>
+                        }
+
+                        @if (membershipStatus().status === 'pending') {
+                            <div class="status-content">
+                                <div class="pending-status">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <h4>Application Under Review</h4>
+                                    <p>Your membership application is currently being reviewed by our team.</p>
+                                    <div class="status-details">
+                                        <div class="detail-item">
+                                            <strong>Application Date:</strong>
+                                            <span>{{ membershipStatus().applicationDate }}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Membership Type:</strong>
+                                            <span class="capitalize">{{ membershipStatus().membershipType }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="status-note">
+                                        <i class="fa-solid fa-info-circle"></i>
+                                        You will receive an email notification once your application is processed (typically within 5-7 business days).
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (membershipStatus().status === 'approved') {
+                            <div class="status-content">
+                                <div class="approved-status">
+                                    <i class="fa-solid fa-check-circle"></i>
+                                    <h4>Membership Active</h4>
+                                    <p>Congratulations! Your alumni membership is active and in good standing.</p>
+                                    <div class="status-details">
+                                        <div class="detail-item">
+                                            <strong>Approved Date:</strong>
+                                            <span>{{ membershipStatus().approvalDate }}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Membership Type:</strong>
+                                            <span class="capitalize">{{ membershipStatus().membershipType }}</span>
+                                        </div>
+                                        @if (membershipStatus().expiryDate) {
+                                            <div class="detail-item">
+                                                <strong>Expires On:</strong>
+                                                <span>{{ membershipStatus().expiryDate }}</span>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="membership-benefits-quick">
+                                        <h5>Your Benefits Include:</h5>
+                                        <ul>
+                                            <li>Access to alumni directory</li>
+                                            <li>Exclusive event invitations</li>
+                                            <li>Career networking opportunities</li>
+                                            <li>Professional development resources</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (membershipStatus().status === 'rejected') {
+                            <div class="status-content">
+                                <div class="rejected-status">
+                                    <i class="fa-solid fa-times-circle"></i>
+                                    <h4>Application Not Approved</h4>
+                                    <p>Unfortunately, your membership application was not approved at this time.</p>
+                                    <div class="status-note">
+                                        <i class="fa-solid fa-info-circle"></i>
+                                        You can reapply after addressing the feedback provided via email. Please ensure all requirements are met before resubmitting.
+                                    </div>
+                                    <button class="btn btn-primary" (click)="setActiveTab('apply')">
+                                        <i class="fa-solid fa-redo"></i>
+                                        Reapply
+                                    </button>
+                                </div>
+                            </div>
+                        }
+
+                        @if (membershipStatus().status === 'expired') {
+                            <div class="status-content">
+                                <div class="expired-status">
+                                    <i class="fa-solid fa-calendar-times"></i>
+                                    <h4>Membership Expired</h4>
+                                    <p>Your membership has expired. Renew to continue enjoying alumni benefits.</p>
+                                    <button class="btn btn-warning" (click)="setActiveTab('apply')">
+                                        <i class="fa-solid fa-refresh"></i>
+                                        Renew Membership
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            @if (activeTab() === 'apply') {
+                <div class="apply-section">
+                    <h2>Membership Application</h2>
+                    <p>Fill out the form below to apply for alumni membership.</p>
+
+                    <form (ngSubmit)="submitApplication()" #applicationForm="ngForm">
+                        <div class="form-section">
+                            <h3>Personal Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fullName">Full Name *</label>
+                                    <input 
+                                        type="text" 
+                                        id="fullName"
+                                        class="form-control"
+                                        [(ngModel)]="application().fullName"
+                                        name="fullName"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input 
+                                        type="email" 
+                                        id="email"
+                                        class="form-control"
+                                        [(ngModel)]="application().email"
+                                        name="email"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <input 
+                                        type="tel" 
+                                        id="phone"
+                                        class="form-control"
+                                        [(ngModel)]="application().phone"
+                                        name="phone"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Academic Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="graduationYear">Graduation Year *</label>
+                                    <input 
+                                        type="number" 
+                                        id="graduationYear"
+                                        class="form-control"
+                                        [(ngModel)]="application().graduationYear"
+                                        name="graduationYear"
+                                        min="1995"
+                                        max="2025"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="studentId">Student ID *</label>
+                                    <input 
+                                        type="text" 
+                                        id="studentId"
+                                        class="form-control"
+                                        [(ngModel)]="application().studentId"
+                                        name="studentId"
+                                        placeholder="e.g., 123-45-6789"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="degree">Degree *</label>
+                                    <input 
+                                        type="text" 
+                                        id="degree"
+                                        class="form-control"
+                                        [(ngModel)]="application().degree"
+                                        name="degree"
+                                        placeholder="e.g., Bachelor of Science"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="department">Department *</label>
+                                    <select 
+                                        id="department"
+                                        class="form-control"
+                                        [(ngModel)]="application().department"
+                                        name="department"
+                                        required>
+                                        <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                                        <option value="Software Engineering">Software Engineering</option>
+                                        <option value="Information Technology">Information Technology</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Professional Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="currentPosition">Current Position</label>
+                                    <input 
+                                        type="text" 
+                                        id="currentPosition"
+                                        class="form-control"
+                                        [(ngModel)]="application().currentPosition"
+                                        name="currentPosition"
+                                        placeholder="e.g., Software Engineer">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="company">Company</label>
+                                    <input 
+                                        type="text" 
+                                        id="company"
+                                        class="form-control"
+                                        [(ngModel)]="application().company"
+                                        name="company"
+                                        placeholder="e.g., Tech Solutions Ltd.">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="workExperience">Work Experience (Years)</label>
+                                    <input 
+                                        type="number" 
+                                        id="workExperience"
+                                        class="form-control"
+                                        [(ngModel)]="application().workExperience"
+                                        name="workExperience"
+                                        min="0"
+                                        max="50">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="linkedinProfile">LinkedIn Profile</label>
+                                    <input 
+                                        type="url" 
+                                        id="linkedinProfile"
+                                        class="form-control"
+                                        [(ngModel)]="application().linkedinProfile"
+                                        name="linkedinProfile"
+                                        placeholder="https://linkedin.com/in/yourprofile">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Statement of Purpose</h3>
+                            <div class="form-group full-width">
+                                <label for="statement">Why do you want to join the alumni network? *</label>
+                                <textarea 
+                                    id="statement"
+                                    class="form-control"
+                                    rows="6"
+                                    [(ngModel)]="application().statement"
+                                    name="statement"
+                                    placeholder="Please describe your goals and how you plan to contribute to the alumni community (minimum 50 characters)..."
+                                    required
+                                    minlength="50"></textarea>
+                                <small class="text-muted">{{ application().statement.length }}/50 minimum characters</small>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Membership Type</h3>
+                            <div class="membership-types">
+                                <label class="membership-type-option">
+                                    <input 
+                                        type="radio" 
+                                        value="regular"
+                                        [(ngModel)]="application().membershipType"
+                                        name="membershipType">
+                                    <div class="membership-type-card">
+                                        <h4>Regular Membership</h4>
+                                        <div class="price">{{ getMembershipTypePrice('regular') }}</div>
+                                        <ul>
+                                            <li>Annual membership</li>
+                                            <li>All standard benefits</li>
+                                            <li>Event access</li>
+                                            <li>Alumni directory</li>
+                                        </ul>
+                                    </div>
+                                </label>
+
+                                <label class="membership-type-option">
+                                    <input 
+                                        type="radio" 
+                                        value="lifetime"
+                                        [(ngModel)]="application().membershipType"
+                                        name="membershipType">
+                                    <div class="membership-type-card">
+                                        <h4>Lifetime Membership</h4>
+                                        <div class="price">{{ getMembershipTypePrice('lifetime') }}</div>
+                                        <ul>
+                                            <li>One-time payment</li>
+                                            <li>All premium benefits</li>
+                                            <li>Priority event access</li>
+                                            <li>Exclusive networking</li>
+                                        </ul>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input 
+                                        type="checkbox"
+                                        [(ngModel)]="application().agreeToTerms"
+                                        name="agreeToTerms"
+                                        required>
+                                    <span class="checkmark"></span>
+                                    I agree to the <a href="#" target="_blank">Terms and Conditions</a> and <a href="#" target="_blank">Privacy Policy</a> *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary btn-lg"
+                                [disabled]="!validateApplication() || isSubmitting()">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                {{ isSubmitting() ? 'Submitting...' : 'Submit Application' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+            @if (activeTab() === 'requirements') {
+                <div class="requirements-section">
+                    <h2>Membership Requirements</h2>
+                    <p>Review the requirements and benefits of alumni membership.</p>
+
+                    <div class="requirements-grid">
+                        @for (req of requirements; track req.title) {
+                            <div class="requirement-card">
+                                <div class="requirement-header">
+                                    <div class="requirement-icon">
+                                        <i class="fa-solid {{ req.icon }}"></i>
+                                    </div>
+                                    <h3>{{ req.title }}</h3>
+                                    @if (req.required) {
+                                        <span class="required-badge">Required</span>
+                                    } @else {
+                                        <span class="optional-badge">Optional</span>
+                                    }
+                                </div>
+                                <p>{{ req.description }}</p>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="benefits-section">
+                        <h3>Membership Benefits</h3>
+                        <div class="benefits-grid">
+                            @for (benefit of membershipBenefits; track benefit.title) {
+                                <div class="benefit-card">
+                                    <div class="benefit-icon">
+                                        <i class="fa-solid {{ benefit.icon }}"></i>
+                                    </div>
+                                    <div class="benefit-content">
+                                        <h4>{{ benefit.title }}</h4>
+                                        <p>{{ benefit.description }}</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="apply-cta">
+                        <h3>Ready to Join?</h3>
+                        <p>Become part of our growing alumni community and unlock exclusive benefits.</p>
+                        <button class="btn btn-primary btn-lg" (click)="setActiveTab('apply')" [disabled]="!canApply()">
+                            <i class="fa-solid fa-rocket"></i>
+                            {{ canApply() ? 'Start Your Application' : 'Application Not Available' }}
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

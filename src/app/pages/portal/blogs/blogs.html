@@ -1,0 +1,408 @@
+<div class="blogs-container">
+    <div class="blogs-header">
+        <h1>My Blog Posts</h1>
+        <p>Share your thoughts, experiences, and insights with the alumni community</p>
+    </div>
+
+    <div class="blogs-content">
+        <div class="blogs-tabs">
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'my-blogs'"
+                (click)="setActiveTab('my-blogs')">
+                <i class="fa-solid fa-file-text"></i>
+                My Blogs
+                <span class="badge">{{ myBlogs().length }}</span>
+            </button>
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'create'"
+                (click)="setActiveTab('create')">
+                <i class="fa-solid fa-plus"></i>
+                Create New Blog
+            </button>
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'published'"
+                (click)="setActiveTab('published')">
+                <i class="fa-solid fa-globe"></i>
+                Published Blogs
+                <span class="badge">{{ publishedBlogsCount }}</span>
+            </button>
+        </div>
+
+        @if (activeTab() === 'my-blogs') {
+            <div class="blogs-controls">
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input 
+                        type="text" 
+                        placeholder="Search your blogs..."
+                        class="search-input"
+                        [(ngModel)]="searchQuery">
+                </div>
+                
+                <div class="filter-buttons">
+                    <button 
+                        class="filter-btn"
+                        [class.active]="selectedFilter() === 'all'"
+                        (click)="setFilter('all')">
+                        All
+                    </button>
+                    <button 
+                        class="filter-btn"
+                        [class.active]="selectedFilter() === 'published'"
+                        (click)="setFilter('published')">
+                        Published
+                    </button>
+                    <button 
+                        class="filter-btn"
+                        [class.active]="selectedFilter() === 'draft'"
+                        (click)="setFilter('draft')">
+                        Drafts
+                    </button>
+                    <button 
+                        class="filter-btn"
+                        [class.active]="selectedFilter() === 'under_review'"
+                        (click)="setFilter('under_review')">
+                        Under Review
+                    </button>
+                </div>
+
+                <div class="category-filter">
+                    <select class="category-select" [(ngModel)]="selectedCategory">
+                        <option value="all">All Categories</option>
+                        @for (category of categories(); track category.id) {
+                            <option [value]="category.id">{{ category.name }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="blogs-grid">
+                @if (getFilteredBlogs().length === 0) {
+                    <div class="no-blogs">
+                        <i class="fa-solid fa-file-text"></i>
+                        <h3>No Blog Posts Found</h3>
+                        <p>
+                            @if (myBlogs().length === 0) {
+                                You haven't created any blog posts yet. Start sharing your thoughts and experiences with the community!
+                            } @else {
+                                No blogs match your current filters. Try adjusting your search or filters.
+                            }
+                        </p>
+                        @if (myBlogs().length === 0) {
+                            <button class="btn btn-primary" (click)="setActiveTab('create')">
+                                <i class="fa-solid fa-plus"></i>
+                                Create Your First Blog
+                            </button>
+                        }
+                    </div>
+                } @else {
+                    @for (blog of getFilteredBlogs(); track blog.id) {
+                        <div class="blog-card">
+                            @if (blog.featuredImage) {
+                                <div class="blog-image">
+                                    <img [src]="blog.featuredImage" [alt]="blog.title">
+                                </div>
+                            }
+                            
+                            <div class="blog-content">
+                                <div class="blog-header">
+                                    <div class="blog-badges">
+                                        <span class="blog-status" [class]="getStatusClass(blog.status)">
+                                            {{ getStatusText(blog.status) }}
+                                        </span>
+                                        <span class="blog-category">{{ blog.category }}</span>
+                                    </div>
+                                    
+                                    <h3 class="blog-title">{{ blog.title }}</h3>
+                                    <p class="blog-excerpt">{{ blog.excerpt }}</p>
+                                </div>
+
+                                <div class="blog-meta">
+                                    <div class="meta-item">
+                                        <i class="fa-solid fa-calendar"></i>
+                                        <span>Created: {{ formatDate(blog.createdDate) }}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fa-solid fa-edit"></i>
+                                        <span>Modified: {{ formatDate(blog.lastModified) }}</span>
+                                    </div>
+                                    @if (blog.publishedDate) {
+                                        <div class="meta-item">
+                                            <i class="fa-solid fa-globe"></i>
+                                            <span>Published: {{ formatDate(blog.publishedDate) }}</span>
+                                        </div>
+                                    }
+                                    <div class="meta-item">
+                                        <i class="fa-solid fa-clock"></i>
+                                        <span>{{ blog.readingTime }} min read</span>
+                                    </div>
+                                </div>
+
+                                @if (blog.status === 'published') {
+                                    <div class="blog-stats">
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <span>{{ blog.views }}</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-heart"></i>
+                                            <span>{{ blog.likes }}</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-comment"></i>
+                                            <span>{{ blog.comments }}</span>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (blog.tags.length > 0) {
+                                    <div class="blog-tags">
+                                        @for (tag of blog.tags; track tag) {
+                                            <span class="tag">{{ tag }}</span>
+                                        }
+                                    </div>
+                                }
+
+                                <div class="blog-actions">
+                                    <button class="btn btn-outline" (click)="viewBlog(blog)">
+                                        <i class="fa-solid fa-eye"></i>
+                                        View
+                                    </button>
+                                    
+                                    @if (blog.status === 'draft' || blog.status === 'rejected') {
+                                        <button class="btn btn-primary" (click)="editBlog(blog)">
+                                            <i class="fa-solid fa-edit"></i>
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-success" (click)="publishBlog(blog)">
+                                            <i class="fa-solid fa-paper-plane"></i>
+                                            Submit
+                                        </button>
+                                    } @else if (blog.status === 'published') {
+                                        <button class="btn btn-warning" (click)="editBlog(blog)">
+                                            <i class="fa-solid fa-edit"></i>
+                                            Edit
+                                        </button>
+                                    }
+                                    
+                                    <button class="btn btn-danger" (click)="deleteBlog(blog)">
+                                        <i class="fa-solid fa-trash"></i>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (activeTab() === 'create') {
+            <div class="create-blog-section">
+                <h2>Create New Blog Post</h2>
+                <p>Share your thoughts, experiences, and insights with the alumni community.</p>
+
+                <form class="blog-form">
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input 
+                            type="text" 
+                            id="title"
+                            class="form-control"
+                            [(ngModel)]="newBlog().title"
+                            name="title"
+                            placeholder="Enter an engaging title for your blog post..."
+                            required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select 
+                                id="category"
+                                class="form-control"
+                                [(ngModel)]="newBlog().category"
+                                name="category"
+                                required>
+                                <option value="">Select a category</option>
+                                @for (category of categories(); track category.id) {
+                                    <option [value]="category.name">{{ category.name }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tags">Tags *</label>
+                            <input 
+                                type="text" 
+                                id="tags"
+                                class="form-control"
+                                [(ngModel)]="newBlog().tags"
+                                name="tags"
+                                placeholder="career, technology, tips (comma-separated)"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="featuredImage">Featured Image URL (Optional)</label>
+                        <input 
+                            type="url" 
+                            id="featuredImage"
+                            class="form-control"
+                            [(ngModel)]="newBlog().featuredImage"
+                            name="featuredImage"
+                            placeholder="https://example.com/image.jpg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="excerpt">Excerpt *</label>
+                        <textarea 
+                            id="excerpt"
+                            class="form-control"
+                            rows="3"
+                            [(ngModel)]="newBlog().excerpt"
+                            name="excerpt"
+                            placeholder="Write a brief summary of your blog post (this will appear in previews)..."
+                            required></textarea>
+                        <small class="text-muted">{{ newBlog().excerpt.length }}/200 characters recommended</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Content *</label>
+                        <textarea 
+                            id="content"
+                            class="form-control content-editor"
+                            rows="15"
+                            [(ngModel)]="newBlog().content"
+                            name="content"
+                            placeholder="Write your blog content here. Share your experiences, insights, and knowledge with the community..."
+                            required></textarea>
+                        <small class="text-muted">
+                            {{ newBlog().content.length }} characters | 
+                            ~{{ calculateReadingTime(newBlog().content) }} min read |
+                            Minimum 100 characters required
+                        </small>
+                    </div>
+
+                    <div class="blog-preview">
+                        <h4>Category Preview</h4>
+                        @if (newBlog().category) {
+                            @for (cat of categories(); track cat.id) {
+                                @if (cat.name === newBlog().category) {
+                                    <div class="category-info">
+                                        <strong>{{ cat.name }}</strong>
+                                        <p>{{ cat.description }}</p>
+                                        <small>{{ cat.count }} posts in this category</small>
+                                    </div>
+                                }
+                            }
+                        } @else {
+                            <p class="text-muted">Select a category to see details</p>
+                        }
+                    </div>
+
+                    <div class="form-actions">
+                        <button 
+                            type="button" 
+                            class="btn btn-secondary"
+                            (click)="saveDraft()"
+                            [disabled]="isSubmitting() || !newBlog().title.trim()">
+                            <i class="fa-solid fa-save"></i>
+                            {{ isSubmitting() ? 'Saving...' : 'Save as Draft' }}
+                        </button>
+                        
+                        <button 
+                            type="button" 
+                            class="btn btn-primary"
+                            (click)="submitForReview()"
+                            [disabled]="isSubmitting() || !validateBlog()">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            {{ isSubmitting() ? 'Submitting...' : 'Submit for Review' }}
+                        </button>
+                        
+                        <button 
+                            type="button" 
+                            class="btn btn-outline"
+                            (click)="resetForm()"
+                            [disabled]="isSubmitting()">
+                            <i class="fa-solid fa-refresh"></i>
+                            Reset Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        }
+
+        @if (activeTab() === 'published') {
+            <div class="published-blogs-section">
+                <h2>Published Blog Posts</h2>
+                <p>Your published blogs that are live for the community to read.</p>
+
+                @if (publishedBlogsCount === 0) {
+                    <div class="no-published">
+                        <i class="fa-solid fa-globe"></i>
+                        <h3>No Published Blogs</h3>
+                        <p>You don't have any published blog posts yet. Create and submit blogs for review to get them published.</p>
+                        <button class="btn btn-primary" (click)="setActiveTab('create')">
+                            <i class="fa-solid fa-plus"></i>
+                            Create New Blog
+                        </button>
+                    </div>
+                } @else {
+                    <div class="published-grid">
+                        @for (blog of publishedBlogs; track blog.id) {
+                            <div class="published-card">
+                                @if (blog.featuredImage) {
+                                    <div class="published-image">
+                                        <img [src]="blog.featuredImage" [alt]="blog.title">
+                                    </div>
+                                }
+                                
+                                <div class="published-content">
+                                    <h3 class="published-title">{{ blog.title }}</h3>
+                                    <p class="published-excerpt">{{ blog.excerpt }}</p>
+                                    
+                                    <div class="published-meta">
+                                        <span class="published-date">{{ formatDate(blog.publishedDate!) }}</span>
+                                        <span class="published-category">{{ blog.category }}</span>
+                                        <span class="reading-time">{{ blog.readingTime }} min read</span>
+                                    </div>
+
+                                    <div class="published-stats">
+                                        <div class="stat">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <span>{{ blog.views }} views</span>
+                                        </div>
+                                        <div class="stat">
+                                            <i class="fa-solid fa-heart"></i>
+                                            <span>{{ blog.likes }} likes</span>
+                                        </div>
+                                        <div class="stat">
+                                            <i class="fa-solid fa-comment"></i>
+                                            <span>{{ blog.comments }} comments</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="published-actions">
+                                        <button class="btn btn-outline" (click)="viewBlog(blog)">
+                                            <i class="fa-solid fa-external-link-alt"></i>
+                                            View Public Page
+                                        </button>
+                                        <button class="btn btn-primary" (click)="editBlog(blog)">
+                                            <i class="fa-solid fa-edit"></i>
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
