@@ -8,12 +8,15 @@ import { API_BASE_URL } from './core';
 import { authInterceptor, AuthService } from './shared/services';
 import { firstValueFrom } from 'rxjs';
 
+let api_base_url: string | undefined;
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
+    // First: Load API configuration
     provideAppInitializer(() => {
       return new Promise<void>((resolve) => {
         // Determine which config file to load based on environment
@@ -27,7 +30,7 @@ export const appConfig: ApplicationConfig = {
         } else if (isProduction) {
           configFile = '/data/config.prod.json';
         } else {
-          configFile = '/data/config.local.json';
+          configFile = '/data/config.local.json'; // Use config.json for localhost
         }
         
         fetch(configFile)
@@ -47,7 +50,7 @@ export const appConfig: ApplicationConfig = {
             }
 
             // Set the API base URL globally
-            (window as any).API_BASE_URL = baseUrl;
+            api_base_url = baseUrl;
 
             console.log(`API Base URL set to: ${baseUrl}`);
             
@@ -59,14 +62,27 @@ export const appConfig: ApplicationConfig = {
             const fallbackUrl = window.location.hostname.includes('csediualumni.com') 
               ? 'https://api.csediualumni.com' 
               : 'http://localhost:3000';
-            (window as any).API_BASE_URL = fallbackUrl;
+
+            api_base_url = fallbackUrl;
+            console.log(`Using fallback API Base URL: ${fallbackUrl}`);
             resolve();
           });
       });
     }),
-    // Check authentication status after API configuration is loaded
+    // Provide API_BASE_URL token
+    {
+      provide: API_BASE_URL,
+      useFactory: () => {
+        const url = api_base_url || 'http://localhost:3000';
+        console.log(`API_BASE_URL factory returning: ${url}`);
+        return url;
+      }
+    },
+    // Second: Check authentication status after API configuration is loaded
     provideAppInitializer(() => {
       const authService = inject(AuthService);
+      
+      console.log('Starting auth check with API URL:', api_base_url);
       
       // Return a promise that checks auth status
       return firstValueFrom(authService.checkAuthStatus()).catch(() => {
@@ -74,10 +90,6 @@ export const appConfig: ApplicationConfig = {
         console.log('Auth check failed during bootstrap - user not authenticated');
         return Promise.resolve();
       });
-    }),
-    {
-      provide: API_BASE_URL,
-      useFactory: () => (window as any).API_BASE_URL || 'http://localhost:3000'
-    }
+    })
   ]
 };
