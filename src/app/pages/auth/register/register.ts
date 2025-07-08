@@ -56,12 +56,12 @@ export class Register {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
     
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      confirmPassword.setErrors({ passwordMismatch: true });
+    if (password && confirmPassword && password.value !== confirmPassword?.value) {
+      confirmPassword?.setErrors({ passwordMismatch: true });
     } else if (confirmPassword?.errors?.['passwordMismatch']) {
-      delete confirmPassword.errors['passwordMismatch'];
-      if (Object.keys(confirmPassword.errors).length === 0) {
-        confirmPassword.setErrors(null);
+      delete confirmPassword?.errors['passwordMismatch'];
+      if (Object.keys(confirmPassword?.errors).length === 0) {
+        confirmPassword?.setErrors(null);
       }
     }
     return null;
@@ -158,15 +158,15 @@ export class Register {
 
   getFieldError(fieldName: string): string {
     const control = this.registerForm.get(fieldName);
-    if (control?.errors && control.touched) {
-      if (control.errors['required']) return `${this.getFieldLabel(fieldName)} is required`;
-      if (control.errors['email']) return 'Please enter a valid email';
-      if (control.errors['minlength']) return `${this.getFieldLabel(fieldName)} must be at least ${control.errors['minlength'].requiredLength} characters`;
-      if (control.errors['pattern']) return 'Please enter a valid phone number (11 digits)';
-      if (control.errors['min']) return `Graduation year must be at least ${control.errors['min'].min}`;
-      if (control.errors['max']) return `Graduation year cannot exceed ${control.errors['max'].max}`;
-      if (control.errors['passwordMismatch']) return 'Passwords do not match';
-      if (control.errors['requiredTrue']) return 'You must accept the terms and conditions';
+    if (control?.errors && control?.touched) {
+      if (control?.errors['required']) return `${this.getFieldLabel(fieldName)} is required`;
+      if (control?.errors['email']) return 'Please enter a valid email';
+      if (control?.errors['minlength']) return `${this.getFieldLabel(fieldName)} must be at least ${control?.errors['minlength'].requiredLength} characters`;
+      if (control?.errors['pattern']) return 'Please enter a valid phone number (11 digits)';
+      if (control?.errors['min']) return `Graduation year must be at least ${control?.errors['min'].min}`;
+      if (control?.errors['max']) return `Graduation year cannot exceed ${control?.errors['max'].max}`;
+      if (control?.errors['passwordMismatch']) return 'Passwords do not match';
+      if (control?.errors['requiredTrue']) return 'You must accept the terms and conditions';
     }
     return '';
   }

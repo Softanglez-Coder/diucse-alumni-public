@@ -140,7 +140,7 @@
           i {
             width: 24px;
             height: 24px;
-            color: $primary-color;
+            color: var(--color-primary);
           }
 
           div {
@@ -239,7 +239,7 @@
           font-size: 2rem;
           font-weight: 700;
           margin-bottom: 1.5rem;
-          color: $primary-color;
+          color: var(--color-primary);
         }
 
         .rich-content {
@@ -252,7 +252,7 @@
               font-size: 1.3rem;
               font-weight: 600;
               margin: 1.5rem 0 1rem;
-              color: $primary-color;
+              color: var(--color-primary);
             }
 
             ul {
@@ -301,7 +301,7 @@
             }
 
             .speaker-title {
-              color: $primary-color;
+              color: var(--color-primary);
               font-weight: 500;
               margin-bottom: 0.5rem;
             }
@@ -329,7 +329,7 @@
 
           .agenda-time {
             font-weight: 600;
-            color: $primary-color;
+            color: var(--color-primary);
             min-width: 100px;
           }
 
@@ -357,7 +357,7 @@
           font-size: 1.3rem;
           font-weight: 700;
           margin-bottom: 1rem;
-          color: $primary-color;
+          color: var(--color-primary);
         }
       }
 

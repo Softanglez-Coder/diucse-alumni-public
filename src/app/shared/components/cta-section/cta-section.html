@@ -1,41 +1,46 @@
-<section class="cta-section">
-    <div class="container mx-auto px-4 py-16">
-        <div class="cta-grid">
-            <div class="cta-content">
-                <h2 class="cta-title">Join Our Growing Alumni Network</h2>
-                <p class="cta-description">
+<section class="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 text-white">
+    <!-- Background pattern overlay -->
+    <div class="absolute inset-0 opacity-30">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grain&quot; width=&quot;100&quot; height=&quot;100&quot; patternUnits=&quot;userSpaceOnUse&quot;><circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;80&quot; cy=&quot;40&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;40&quot; cy=&quot;80&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(#grain)&quot;/></svg>');"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 py-16 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div class="text-center lg:text-left">
+                <h2 class="text-3xl lg:text-5xl font-extrabold mb-6 leading-tight">Join Our Growing Alumni Network</h2>
+                <p class="text-xl mb-8 opacity-90 leading-relaxed">
                     Connect with fellow graduates from Dhaka International University, access exclusive opportunities, and stay updated with the latest news from DIU CSE department.
                 </p>
-                <div class="cta-stats">
+                <div class="flex justify-center lg:justify-start gap-8 mb-8">
                     @for (stat of stats; track stat.label) {
-                        <div class="stat-item">
-                            <span class="stat-number">{{stat.number}}</span>
-                            <span class="stat-label">{{stat.label}}</span>
+                        <div class="text-center">
+                            <span class="block text-2xl font-bold text-amber-300">{{stat.number}}</span>
+                            <span class="block text-sm opacity-80 mt-1">{{stat.label}}</span>
                         </div>
                     }
                 </div>
-                <div class="cta-buttons">
-                    <a href="/register" class="btn btn-primary">
+                <div class="flex flex-wrap justify-center lg:justify-start gap-4">
+                    <a href="/register" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/30 border-2 border-transparent">
                         <i class="fa-solid fa-user-plus"></i>
                         Join Now
                     </a>
-                    <a href="/portal" class="btn btn-secondary">
+                    <a href="/portal" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-semibold rounded-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-emerald-500/30 border-2 border-transparent">
                         <i class="fa-solid fa-arrow-right"></i>
                         Explore Portal
                     </a>
                 </div>
             </div>
-            <div class="cta-visual">
-                <div class="cta-card">
-                    <div class="card-header">
-                        <i class="fa-solid fa-graduation-cap"></i>
+            <div class="flex justify-center">
+                <div class="bg-white/15 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-2xl max-w-md w-full">
+                    <div class="flex items-center gap-3 mb-6 text-xl font-semibold">
+                        <i class="fa-solid fa-graduation-cap text-2xl text-amber-300"></i>
                         <span>DIU Alumni Portal</span>
                     </div>
-                    <div class="card-features">
+                    <div class="flex flex-col gap-4">
                         @for (feature of features; track feature) {
-                            <div class="feature-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>{{feature}}</span>
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-check text-emerald-400 text-lg flex-shrink-0"></i>
+                                <span class="text-sm">{{feature}}</span>
                             </div>
                         }
                     </div>

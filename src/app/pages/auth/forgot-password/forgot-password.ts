@@ -47,9 +47,9 @@ export class ForgotPassword {
 
   getFieldError(fieldName: string): string {
     const control = this.forgotPasswordForm.get(fieldName);
-    if (control?.errors && control.touched) {
-      if (control.errors['required']) return 'Email is required';
-      if (control.errors['email']) return 'Please enter a valid email';
+    if (control?.errors && control?.touched) {
+      if (control?.errors['required']) return 'Email is required';
+      if (control?.errors['email']) return 'Please enter a valid email';
     }
     return '';
   }

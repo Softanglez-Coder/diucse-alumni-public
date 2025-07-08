@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 @Component({
     selector: 'contact-section',
     templateUrl: './contact-section.html',
-    styleUrl: './contact-section.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactSection {

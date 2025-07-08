@@ -4,7 +4,6 @@ import { EventService } from "../../../services";
 @Component({
     selector: 'upcoming-events',
     templateUrl: './upcoming-events.html',
-    styleUrl: './upcoming-events.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [EventService]
 })

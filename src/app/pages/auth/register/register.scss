@@ -34,7 +34,7 @@ button:hover {
 }
 
 input:focus, select:focus {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px var(--color-primary-rgba);
 }
 
 /* Custom checkbox styles */
@@ -43,8 +43,8 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 /* Animation for form steps */

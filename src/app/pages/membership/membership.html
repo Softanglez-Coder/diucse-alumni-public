@@ -201,7 +201,7 @@
             <div class="members-grid">
                 <div class="member-card" *ngFor="let member of keyMembers">
                     <div class="member-image">
-                        <img [src]="member.image" [alt]="member.name" onerror="this.src='/images/placeholder-avatar.jpg'">
+                        <img [src]="member.image" [alt]="member.name">
                         <div class="member-overlay">
                             <a [href]="member.linkedinUrl" target="_blank" class="social-link" *ngIf="member.linkedinUrl">
                                 <i class="fab fa-linkedin"></i>

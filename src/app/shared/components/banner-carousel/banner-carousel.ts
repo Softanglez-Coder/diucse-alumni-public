@@ -4,7 +4,6 @@ import { Banner } from "../../../services/banner/banner";
 @Component({
     selector: 'banner-carousel',
     templateUrl: './banner-carousel.html',
-    styleUrl: './banner-carousel.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BannerCarousel implements OnInit, OnDestroy {

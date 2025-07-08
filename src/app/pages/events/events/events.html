@@ -37,7 +37,7 @@
 
   <div class="container mx-auto px-4 py-12">
     <!-- Featured Events -->
-    @if (featuredEvents.value()?.length) {
+    @if (featuredEvents.value().length) {
       <section class="mb-16">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-900 mb-4">Featured Events</h2>
@@ -132,11 +132,11 @@
           }
         </h2>
         <div class="text-gray-600">
-          {{ events.value()?.length || 0 }} events found
+          {{ events.value().length || 0 }} events found
         </div>
       </div>
 
-      @if (events.value()?.length) {
+      @if (events.value().length) {
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           @for (event of events.value(); track event.id) {
             <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">

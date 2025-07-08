@@ -1,47 +1,67 @@
-<section class="events-section">
+<section class="bg-white">
     <div class="container mx-auto px-4 py-16">
-        <div class="section-header">
-            <h2 class="section-title">Upcoming Events</h2>
-            <p class="section-subtitle">Don't miss out on networking and learning opportunities</p>
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4 leading-tight">Upcoming Events</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">Don't miss out on networking and learning opportunities</p>
         </div>
         @if (events.value() && events.value().length > 0) {
-            <div class="events-grid">
+            <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8">
                 @for (event of events.value(); track event.id; let i = $index) {
-                    <div class="event-card" [class.featured-event]="event.featured">
-                        <div class="event-date">
-                            <span class="date-day">{{formatDate(event.date).day}}</span>
-                            <span class="date-month">{{formatDate(event.date).month}}</span>
+                    <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex gap-6 max-md:flex-col max-md:text-center" 
+                         [class]="event.featured ? 'bg-gradient-to-br from-blue-500 to-blue-700 text-white border-none' : ''">
+                        <div class="flex flex-col items-center bg-gray-100 rounded-xl p-4 min-w-[80px] text-center flex-shrink-0 max-md:self-center"
+                             [class]="event.featured ? 'bg-white/20' : ''">
+                            <span class="text-2xl font-bold text-gray-900" 
+                                  [class]="event.featured ? 'text-white' : ''">{{formatDate(event.date).day}}</span>
+                            <span class="text-sm font-semibold text-gray-600 uppercase" 
+                                  [class]="event.featured ? 'text-white/90' : ''">{{formatDate(event.date).month}}</span>
                         </div>
-                        <div class="event-content">
-                            <span class="event-category">{{event.category}}</span>
-                            <h3 class="event-title">{{event.title}}</h3>
-                            <p class="event-description">{{event.description}}</p>
-                            <div class="event-meta">
-                                <span class="event-location">
-                                    <i class="fa-solid fa-location-dot"></i>
+                        <div class="flex-1">
+                            <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold uppercase mb-4"
+                                  [class]="event.featured ? 'bg-white/20 text-white' : ''">{{event.category}}</span>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 leading-tight"
+                                [class]="event.featured ? 'text-white' : ''">{{event.title}}</h3>
+                            <p class="text-gray-600 mb-4 leading-relaxed"
+                               [class]="event.featured ? 'text-white/90' : ''">{{event.description}}</p>
+                            <div class="flex flex-col gap-2 mb-6">
+                                <span class="flex items-center gap-2 text-sm text-gray-600"
+                                      [class]="event.featured ? 'text-white/90' : ''">
+                                    <i class="fa-solid fa-location-dot w-4" 
+                                       [class]="event.featured ? 'text-white/70' : 'text-gray-400'"></i>
                                     {{event.location}}
                                 </span>
-                                <span class="event-time">
-                                    <i class="fa-solid fa-clock"></i>
+                                <span class="flex items-center gap-2 text-sm text-gray-600"
+                                      [class]="event.featured ? 'text-white/90' : ''">
+                                    <i class="fa-solid fa-clock w-4" 
+                                       [class]="event.featured ? 'text-white/70' : 'text-gray-400'"></i>
                                     {{event.time}}
                                 </span>
-                                <span class="event-price">
-                                    <i class="fa-solid fa-tag"></i>
+                                <span class="flex items-center gap-2 text-sm text-gray-600"
+                                      [class]="event.featured ? 'text-white/90' : ''">
+                                    <i class="fa-solid fa-tag w-4" 
+                                       [class]="event.featured ? 'text-white/70' : 'text-gray-400'"></i>
                                     {{event.price}}
                                 </span>
                             </div>
                             @if (event.capacity > 0) {
-                                <div class="event-registration">
-                                    <div class="registration-info">
-                                        <span class="registration-count">{{event.registered}}/{{event.capacity}} registered</span>
-                                        <span class="registration-percentage">{{getProgressPercentage(event.registered, event.capacity)}}%</span>
+                                <div class="mb-6">
+                                    <div class="flex justify-between items-center mb-2 text-sm text-gray-600"
+                                         [class]="event.featured ? 'text-white/90' : ''">
+                                        <span class="font-medium">{{event.registered}}/{{event.capacity}} registered</span>
+                                        <span class="font-semibold text-blue-500"
+                                              [class]="event.featured ? 'text-white' : ''">{{getProgressPercentage(event.registered, event.capacity)}}%</span>
                                     </div>
-                                    <div class="registration-progress">
-                                        <div class="progress-bar" [style.width.%]="getProgressPercentage(event.registered, event.capacity)"></div>
+                                    <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden"
+                                         [class]="event.featured ? 'bg-white/20' : ''">
+                                        <div class="h-full bg-gradient-to-r from-blue-500 to-green-500 rounded-full transition-all duration-300"
+                                             [class]="event.featured ? 'bg-white' : ''"
+                                             [style.width.%]="getProgressPercentage(event.registered, event.capacity)"></div>
                                     </div>
                                 </div>
                             }
-                            <a [href]="event.registrationLink" class="event-btn">
+                            <a [href]="event.registrationLink" 
+                               class="inline-flex items-center gap-2 bg-blue-500 text-white px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30"
+                               [class]="event.featured ? 'bg-white text-blue-500 hover:bg-gray-100 hover:shadow-white/30' : ''">
                                 Register Now
                                 <i class="fa-solid fa-arrow-right"></i>
                             </a>
@@ -50,15 +70,15 @@
                 }
             </div>
         } @else {
-            <div class="events-placeholder">
-                <div class="placeholder-content">
-                    <i class="fa-solid fa-calendar placeholder-icon"></i>
-                    <p class="placeholder-text">No upcoming events</p>
+            <div class="flex justify-center items-center min-h-[300px] bg-gray-50 rounded-2xl border-2 border-dashed border-gray-300">
+                <div class="text-center text-gray-600">
+                    <i class="fa-solid fa-calendar text-5xl mb-4 opacity-50"></i>
+                    <p class="text-lg font-medium">No upcoming events</p>
                 </div>
             </div>
         }
-        <div class="section-footer">
-            <a href="/events" class="btn btn-outline">
+        <div class="text-center mt-12">
+            <a href="/events" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-blue-500 border-2 border-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300">
                 View All Events
                 <i class="fa-solid fa-arrow-right"></i>
             </a>

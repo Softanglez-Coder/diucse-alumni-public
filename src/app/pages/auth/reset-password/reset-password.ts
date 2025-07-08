@@ -116,12 +116,12 @@ export class ResetPassword {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
     
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      confirmPassword.setErrors({ passwordMismatch: true });
+    if (password && confirmPassword && password.value !== confirmPassword?.value) {
+      confirmPassword?.setErrors({ passwordMismatch: true });
     } else if (confirmPassword?.errors?.['passwordMismatch']) {
-      delete confirmPassword.errors['passwordMismatch'];
-      if (Object.keys(confirmPassword.errors).length === 0) {
-        confirmPassword.setErrors(null);
+      delete confirmPassword?.errors['passwordMismatch'];
+      if (Object.keys(confirmPassword?.errors).length === 0) {
+        confirmPassword?.setErrors(null);
       }
     }
     return null;
@@ -152,10 +152,10 @@ export class ResetPassword {
 
   getFieldError(fieldName: string): string {
     const control = this.resetForm.get(fieldName);
-    if (control?.errors && control.touched) {
-      if (control.errors['required']) return `${fieldName} is required`;
-      if (control.errors['minlength']) return 'Password must be at least 8 characters';
-      if (control.errors['passwordMismatch']) return 'Passwords do not match';
+    if (control?.errors && control?.touched) {
+      if (control?.errors['required']) return `${fieldName} is required`;
+      if (control?.errors['minlength']) return 'Password must be at least 8 characters';
+      if (control?.errors['passwordMismatch']) return 'Passwords do not match';
     }
     return '';
   }

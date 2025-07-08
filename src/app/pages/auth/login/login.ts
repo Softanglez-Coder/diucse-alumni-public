@@ -53,10 +53,10 @@ export class Login {
 
   getFieldError(fieldName: string): string {
     const control = this.loginForm.get(fieldName);
-    if (control?.errors && control.touched) {
-      if (control.errors['required']) return `${fieldName} is required`;
-      if (control.errors['email']) return 'Please enter a valid email';
-      if (control.errors['minlength']) return `${fieldName} must be at least ${control.errors['minlength'].requiredLength} characters`;
+    if (control?.errors && control?.touched) {
+      if (control?.errors['required']) return `${fieldName} is required`;
+      if (control?.errors['email']) return 'Please enter a valid email';
+      if (control?.errors['minlength']) return `${fieldName} must be at least ${control?.errors['minlength'].requiredLength} characters`;
     }
     return '';
   }

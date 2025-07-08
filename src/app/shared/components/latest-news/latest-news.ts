@@ -4,7 +4,6 @@ import { NewsService } from "../../../services";
 @Component({
     selector: 'latest-news',
     templateUrl: './latest-news.html',
-    styleUrl: './latest-news.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [NewsService]
 })

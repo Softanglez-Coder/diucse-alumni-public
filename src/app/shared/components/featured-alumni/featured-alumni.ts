@@ -4,7 +4,6 @@ import { AlumniService } from "../../../services";
 @Component({
     selector: 'featured-alumni',
     templateUrl: './featured-alumni.html',
-    styleUrl: './featured-alumni.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [AlumniService]
 })

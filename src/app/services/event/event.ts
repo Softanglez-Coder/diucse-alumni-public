@@ -22,6 +22,6 @@ export interface Event {
 @Injectable()
 export class EventService extends BaseService<Event> {
     constructor() {
-        super('events');
+        super('events.json', '/data');
     }
 }

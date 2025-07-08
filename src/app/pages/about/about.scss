@@ -39,7 +39,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, #2563eb, #7c3aed);
+  background: linear-gradient(to bottom, var(--color-primary), var(--color-primary-hover));
   transform: translateX(-50%);
 }
 
