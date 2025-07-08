@@ -1,21 +1,25 @@
 import { Routes } from '@angular/router';
+import { authGuard, guestGuard } from './shared/services';
 
 export const routes: Routes = [
     // Authentication
     {
         path: 'login',
         title: 'Login - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.Login)
+        loadComponent: () => import('./pages').then(c => c.Login),
+        canActivate: [guestGuard]
     },
     {
         path: 'register',
         title: 'Register - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.Register)
+        loadComponent: () => import('./pages').then(c => c.Register),
+        canActivate: [guestGuard]
     },
     {
         path: 'forgot-password',
         title: 'Forgot Password - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.ForgotPassword)
+        loadComponent: () => import('./pages').then(c => c.ForgotPassword),
+        canActivate: [guestGuard]
     },
     {
         path: 'reset-password',
@@ -82,6 +86,7 @@ export const routes: Routes = [
         path: 'portal',
         loadComponent: () => import('./pages').then(c => c.Portal),
         title: 'Portal - DIUCSE Alumni',
+        canActivate: [authGuard],
         children: [
             {
                 path: 'dashboard',

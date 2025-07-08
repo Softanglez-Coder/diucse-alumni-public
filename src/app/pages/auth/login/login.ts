@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../shared/services';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +16,15 @@ export class Login {
   loginForm: FormGroup;
   isSubmitting = false;
   showPassword = false;
+  loginError: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private auth: AuthService,
+    private http: HttpClient,
+    private readonly cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -29,11 +36,24 @@ export class Login {
   onSubmit() {
     if (this.loginForm.valid) {
       this.isSubmitting = true;
-      // Simulate API call
-      setTimeout(() => {
-        this.isSubmitting = false;
-        this.router.navigate(['/portal']);
-      }, 2000);
+      this.loginError = null;
+      this.auth.login(
+        this.loginForm.value.email,
+        this.loginForm.value.password,
+        this.loginForm.value.rememberMe
+      ).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/portal';
+          this.router.navigateByUrl(returnUrl);
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.loginError = err?.error?.message || 'Login failed. Please try again.';
+          this.cdr.markForCheck();
+        }
+      });
     } else {
       this.markFormGroupTouched();
     }

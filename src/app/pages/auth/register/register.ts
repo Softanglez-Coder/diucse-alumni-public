@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../shared/services';
 
 @Component({
   selector: 'app-register',
@@ -17,12 +18,15 @@ export class Register {
   showConfirmPassword = false;
   currentStep = 1;
   totalSteps = 3;
+  registrationError: string | null = null;
 
   Math = Math;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) {
     this.registerForm = this.fb.group({
       // Personal Information
@@ -130,11 +134,39 @@ export class Register {
   onSubmit() {
     if (this.registerForm.valid) {
       this.isSubmitting = true;
-      // Simulate API call
-      setTimeout(() => {
-        this.isSubmitting = false;
-        this.router.navigate(['/verify-email']);
-      }, 2000);
+      this.registrationError = null;
+      
+      const formData = {
+        firstName: this.registerForm.value.firstName,
+        lastName: this.registerForm.value.lastName,
+        email: this.registerForm.value.email,
+        phone: this.registerForm.value.phone,
+        studentId: this.registerForm.value.studentId,
+        batch: this.registerForm.value.batch,
+        graduationYear: this.registerForm.value.graduationYear,
+        degree: this.registerForm.value.degree,
+        currentPosition: this.registerForm.value.currentPosition,
+        company: this.registerForm.value.company,
+        experience: this.registerForm.value.experience,
+        location: this.registerForm.value.location,
+        password: this.registerForm.value.password,
+        newsletter: this.registerForm.value.newsletter
+      };
+
+      this.authService.register(formData).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          this.router.navigate(['/verify-email'], {
+            queryParams: { email: this.registerForm.value.email }
+          });
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.registrationError = err?.error?.message || 'Registration failed. Please try again.';
+          this.cdr.markForCheck();
+        }
+      });
     } else {
       this.markFormGroupTouched();
     }

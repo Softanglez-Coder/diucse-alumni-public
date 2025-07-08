@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../shared/services';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,10 +15,13 @@ export class ForgotPassword {
   forgotPasswordForm: FormGroup;
   isSubmitting = false;
   isSubmitted = false;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -27,11 +31,20 @@ export class ForgotPassword {
   onSubmit() {
     if (this.forgotPasswordForm.valid) {
       this.isSubmitting = true;
-      // Simulate API call
-      setTimeout(() => {
-        this.isSubmitting = false;
-        this.isSubmitted = true;
-      }, 2000);
+      this.errorMessage = null;
+      
+      this.authService.forgotPassword(this.forgotPasswordForm.value.email).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          this.isSubmitted = true;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.errorMessage = err?.error?.message || 'Failed to send reset email. Please try again.';
+          this.cdr.markForCheck();
+        }
+      });
     } else {
       this.markFormGroupTouched();
     }

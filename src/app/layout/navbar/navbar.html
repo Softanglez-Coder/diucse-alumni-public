@@ -10,15 +10,38 @@
             </span>
         </div>
 
-        <div class="flex items-center">
-            <a
-                routerLink="/portal"
-                target="_blank"
-                class="flex items-center text-white text-xs hover:underline gap-2"
-            >
-                <i class="fas fa-user"></i>
-                <span>Member Portal</span>
-            </a>
+        <div class="flex items-center space-x-4">
+            @if (isAuthenticated | async) {
+                <a
+                    routerLink="/portal"
+                    class="flex items-center text-white text-xs hover:underline gap-2"
+                >
+                    <i class="fas fa-user"></i>
+                    <span>Member Portal</span>
+                </a>
+                <button
+                    (click)="logout()"
+                    class="flex items-center text-white text-xs hover:underline gap-2"
+                >
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            } @else {
+                <a
+                    routerLink="/login"
+                    class="flex items-center text-white text-xs hover:underline gap-2"
+                >
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <a
+                    routerLink="/register"
+                    class="flex items-center text-white text-xs hover:underline gap-2"
+                >
+                    <i class="fas fa-user-plus"></i>
+                    <span>Register</span>
+                </a>
+            }
         </div>
     </div>
 </div>
