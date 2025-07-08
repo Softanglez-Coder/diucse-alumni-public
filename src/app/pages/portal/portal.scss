@@ -312,10 +312,18 @@
             border-right: none;
             border-bottom: 1px solid #e9ecef;
 
+            // Override desktop collapsed behavior for mobile
             &.collapsed {
                 width: 100%;
 
-                .toggle-text,
+                // Keep toggle text visible on mobile
+                .toggle-text {
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    width: auto !important;
+                    overflow: visible !important;
+                }
+
                 .link-details {
                     opacity: 1;
                     visibility: visible;
@@ -332,11 +340,27 @@
                         margin-right: 16px;
                     }
                 }
+
+                nav .toggle-button {
+                    justify-content: flex-start;
+                    
+                    .icon {
+                        margin-right: 12px;
+                    }
+                }
             }
 
             nav {
                 .toggle-button {
                     padding: 16px 24px;
+                    justify-content: flex-start;
+
+                    .toggle-text {
+                        opacity: 1;
+                        visibility: visible;
+                        width: auto;
+                        overflow: visible;
+                    }
                 }
 
                 ul {
@@ -432,14 +456,30 @@
 @media (max-width: 480px) {
     .container {
         .menus {
+            // Ensure toggle text is visible even in collapsed state on small mobile
+            &.collapsed .toggle-text {
+                opacity: 1 !important;
+                visibility: visible !important;
+                width: auto !important;
+                overflow: visible !important;
+            }
+
             nav {
                 .toggle-button {
                     padding: 12px 16px;
                     font-size: 13px;
+                    justify-content: flex-start;
 
                     .icon {
                         font-size: 14px;
                         margin-right: 8px;
+                    }
+
+                    .toggle-text {
+                        opacity: 1;
+                        visibility: visible;
+                        width: auto;
+                        overflow: visible;
                     }
                 }
 
