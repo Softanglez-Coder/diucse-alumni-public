@@ -7,7 +7,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './event-details.html',
-  styleUrls: ['./event-details.scss']
 })
 export class EventDetails implements OnInit {
   eventId: string | null = null;

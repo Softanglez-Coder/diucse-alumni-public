@@ -8,7 +8,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './event-registration.html',
-  styleUrls: ['./event-registration.scss']
 })
 export class EventRegistration implements OnInit {
   eventId: string | null = null;

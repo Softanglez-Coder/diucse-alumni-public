@@ -9,7 +9,6 @@ import { EventService } from '../../../services';
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './events.html',
-  styleUrl: './events.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [EventService]
 })
