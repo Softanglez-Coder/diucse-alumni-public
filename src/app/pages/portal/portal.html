@@ -1,16 +1,26 @@
 <div class="container">
-    <aside class="menus" [ngClass]="{ 'collapsed': collapsed }">
+    <aside class="menus" [ngClass]="{ 'collapsed': collapsed }" role="navigation" aria-label="Portal navigation">
         <nav>
-            <button class="toggle-button" (click)="collapsed = !collapsed">
+            <button 
+                class="toggle-button" 
+                (click)="collapsed = !collapsed"
+                [attr.aria-label]="collapsed ? 'Expand navigation menu' : 'Collapse navigation menu'"
+                [attr.aria-expanded]="!collapsed">
                 <i class="icon" [ngClass]="collapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'"></i>
                 <span class="toggle-text">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
             </button>
 
-            <ul>
+            <ul role="menubar">
                 @for (link of links.value(); track link.path) {
-                    <li (click)="onLinkClicked(link)">
-                        <a [routerLink]="link.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                            <div class="icon-container">
+                    <li role="none" (click)="onLinkClicked(link)">
+                        <a 
+                            [routerLink]="link.path" 
+                            routerLinkActive="active" 
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            role="menuitem"
+                            [attr.aria-label]="link.title + ': ' + link.description"
+                            [attr.data-tooltip]="link.title">
+                            <div class="icon-container" aria-hidden="true">
                                 <i [ngClass]="link.icon"></i>
                             </div>
                             
@@ -24,14 +34,16 @@
             </ul>
         </nav>
     </aside>
-    <main class="content">
+    <main class="content" role="main">
         <header>
             <div>
-                <h1>{{ selected?.title }}</h1>
-                <p>{{ selected?.description }}</p>
+                <h1>{{ selected()?.title || 'Alumni Portal' }}</h1>
+                <p>{{ selected()?.description || 'Welcome to the Alumni Portal' }}</p>
             </div>
         </header>
 
-        <router-outlet />
+        <div class="content-area">
+            <router-outlet />
+        </div>
     </main>
 </div>
