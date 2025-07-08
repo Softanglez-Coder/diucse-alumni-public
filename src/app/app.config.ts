@@ -16,10 +16,12 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
-    // First: Load API configuration
+    // Combined initializer: Load config first, then check auth
     provideAppInitializer(() => {
+      const authService = inject(AuthService);
+      
       return new Promise<void>((resolve) => {
-        // Determine which config file to load based on environment
+        // Phase 1: Load API configuration
         const isProduction = window.location.hostname.includes('csediualumni.com');
         const isDevInProd = window.location.hostname.includes('dev.csediualumni.com');
 
@@ -30,8 +32,10 @@ export const appConfig: ApplicationConfig = {
         } else if (isProduction) {
           configFile = '/data/config.prod.json';
         } else {
-          configFile = '/data/config.local.json'; // Use config.json for localhost
+          configFile = '/data/config.json'; // Use config.json for localhost
         }
+        
+        console.log(`Loading config from: ${configFile} for hostname: ${window.location.hostname}`);
         
         fetch(configFile)
           .then(response => response.json())
@@ -51,10 +55,18 @@ export const appConfig: ApplicationConfig = {
 
             // Set the API base URL globally
             api_base_url = baseUrl;
-
             console.log(`API Base URL set to: ${baseUrl}`);
             
-            resolve();
+            // Phase 2: Now check authentication with correct API URL
+            console.log('Starting auth check with API URL:', api_base_url);
+            
+            firstValueFrom(authService.checkAuthStatus()).then(() => {
+              console.log('Auth check completed successfully');
+              resolve();
+            }).catch(() => {
+              console.log('Auth check failed during bootstrap - user not authenticated');
+              resolve();
+            });
           })
           .catch(() => {
             console.error('Failed to load configuration');
@@ -65,7 +77,16 @@ export const appConfig: ApplicationConfig = {
 
             api_base_url = fallbackUrl;
             console.log(`Using fallback API Base URL: ${fallbackUrl}`);
-            resolve();
+            
+            // Still try auth check with fallback URL
+            const authService = inject(AuthService);
+            firstValueFrom(authService.checkAuthStatus()).then(() => {
+              console.log('Auth check completed successfully with fallback URL');
+              resolve();
+            }).catch(() => {
+              console.log('Auth check failed during bootstrap - user not authenticated');
+              resolve();
+            });
           });
       });
     }),
@@ -77,19 +98,6 @@ export const appConfig: ApplicationConfig = {
         console.log(`API_BASE_URL factory returning: ${url}`);
         return url;
       }
-    },
-    // Second: Check authentication status after API configuration is loaded
-    provideAppInitializer(() => {
-      const authService = inject(AuthService);
-      
-      console.log('Starting auth check with API URL:', api_base_url);
-      
-      // Return a promise that checks auth status
-      return firstValueFrom(authService.checkAuthStatus()).catch(() => {
-        // Ignore errors during bootstrap auth check
-        console.log('Auth check failed during bootstrap - user not authenticated');
-        return Promise.resolve();
-      });
-    })
+    }
   ]
 };
