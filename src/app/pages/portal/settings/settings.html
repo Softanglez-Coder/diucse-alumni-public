@@ -9,7 +9,7 @@
             <div class="flex flex-wrap border-b border-gray-200 mb-6">
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'notifications'"
+                    [class.border-primary]="activeTab() === 'notifications'"
                     [class.text-blue-600]="activeTab() === 'notifications'"
                     [class.border-transparent]="activeTab() !== 'notifications'"
                     (click)="setActiveTab('notifications')">
@@ -18,7 +18,7 @@
                 </button>
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'privacy'"
+                    [class.border-primary]="activeTab() === 'privacy'"
                     [class.text-blue-600]="activeTab() === 'privacy'"
                     [class.border-transparent]="activeTab() !== 'privacy'"
                     (click)="setActiveTab('privacy')">
@@ -27,7 +27,7 @@
                 </button>
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'account'"
+                    [class.border-primary]="activeTab() === 'account'"
                     [class.text-blue-600]="activeTab() === 'account'"
                     [class.border-transparent]="activeTab() !== 'account'"
                     (click)="setActiveTab('account')">
@@ -116,7 +116,7 @@
 
                     <div class="mt-8 flex justify-end">
                         <button 
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors flex items-center gap-2"
                             (click)="saveNotifications()">
                             <i class="fa-solid fa-save"></i>
                             Save Notification Settings
@@ -202,7 +202,7 @@
 
                     <div class="mt-8 flex justify-end">
                         <button 
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors flex items-center gap-2"
                             (click)="savePrivacy()">
                             <i class="fa-solid fa-save"></i>
                             Save Privacy Settings
@@ -256,7 +256,7 @@
 
                     <div class="mt-8 flex justify-end">
                         <button 
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors flex items-center gap-2"
                             (click)="saveAccount()">
                             <i class="fa-solid fa-save"></i>
                             Save Account Settings

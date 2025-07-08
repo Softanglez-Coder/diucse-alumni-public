@@ -9,7 +9,7 @@
             <div class="flex flex-wrap border-b border-gray-200 mb-6">
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'my-blogs'"
+                    [class.border-primary]="activeTab() === 'my-blogs'"
                     [class.text-blue-600]="activeTab() === 'my-blogs'"
                     [class.border-transparent]="activeTab() !== 'my-blogs'"
                     (click)="setActiveTab('my-blogs')">
@@ -19,7 +19,7 @@
                 </button>
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'create'"
+                    [class.border-primary]="activeTab() === 'create'"
                     [class.text-blue-600]="activeTab() === 'create'"
                     [class.border-transparent]="activeTab() !== 'create'"
                     (click)="setActiveTab('create')">
@@ -28,7 +28,7 @@
                 </button>
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'published'"
+                    [class.border-primary]="activeTab() === 'published'"
                     [class.text-blue-600]="activeTab() === 'published'"
                     [class.border-transparent]="activeTab() !== 'published'"
                     (click)="setActiveTab('published')">
@@ -52,7 +52,7 @@
                 <div class="flex flex-wrap gap-2">
                     <button 
                         class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
-                        [class.bg-blue-600]="selectedFilter() === 'all'"
+                        [class.bg-primary]="selectedFilter() === 'all'"
                         [class.text-white]="selectedFilter() === 'all'"
                         [class.bg-gray-100]="selectedFilter() !== 'all'"
                         [class.text-gray-700]="selectedFilter() !== 'all'"
@@ -61,7 +61,7 @@
                     </button>
                     <button 
                         class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
-                        [class.bg-blue-600]="selectedFilter() === 'published'"
+                        [class.bg-primary]="selectedFilter() === 'published'"
                         [class.text-white]="selectedFilter() === 'published'"
                         [class.bg-gray-100]="selectedFilter() !== 'published'"
                         [class.text-gray-700]="selectedFilter() !== 'published'"
@@ -70,7 +70,7 @@
                     </button>
                     <button 
                         class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
-                        [class.bg-blue-600]="selectedFilter() === 'draft'"
+                        [class.bg-primary]="selectedFilter() === 'draft'"
                         [class.text-white]="selectedFilter() === 'draft'"
                         [class.bg-gray-100]="selectedFilter() !== 'draft'"
                         [class.text-gray-700]="selectedFilter() !== 'draft'"
@@ -79,7 +79,7 @@
                     </button>
                     <button 
                         class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
-                        [class.bg-blue-600]="selectedFilter() === 'under_review'"
+                        [class.bg-primary]="selectedFilter() === 'under_review'"
                         [class.text-white]="selectedFilter() === 'under_review'"
                         [class.bg-gray-100]="selectedFilter() !== 'under_review'"
                         [class.text-gray-700]="selectedFilter() !== 'under_review'"
@@ -111,7 +111,7 @@
                             }
                         </p>
                         @if (myBlogs().length === 0) {
-                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2" (click)="setActiveTab('create')">
+                            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors flex items-center gap-2" (click)="setActiveTab('create')">
                                 <i class="fa-solid fa-plus"></i>
                                 Create Your First Blog
                             </button>
@@ -196,7 +196,7 @@
                                     </button>
                                     
                                     @if (blog.status === 'draft' || blog.status === 'rejected') {
-                                        <button class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm flex items-center gap-1.5" (click)="editBlog(blog)">
+                                        <button class="px-3 py-1 bg-primary text-white rounded hover:bg-primary text-sm flex items-center gap-1.5" (click)="editBlog(blog)">
                                             <i class="fa-solid fa-edit"></i>
                                             Edit
                                         </button>
@@ -348,7 +348,7 @@
                         
                         <button 
                             type="button" 
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                            class="px-4 py-2 bg-primary hover:bg-primary text-white rounded-lg transition-colors flex items-center gap-2"
                             (click)="submitForReview()"
                             [disabled]="isSubmitting() || !validateBlog()">
                             <i class="fa-solid fa-paper-plane"></i>
@@ -369,7 +369,7 @@
                         <i class="fa-solid fa-globe text-5xl text-gray-300 mb-4"></i>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">No Published Blogs</h3>
                         <p class="text-gray-600 mb-6 max-w-md">You don't have any published blog posts yet. Create and submit blogs for review to get them published.</p>
-                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2" (click)="setActiveTab('create')">
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors flex items-center gap-2" (click)="setActiveTab('create')">
                             <i class="fa-solid fa-plus"></i>
                             Create New Blog
                         </button>
@@ -414,7 +414,7 @@
                                             <i class="fa-solid fa-external-link-alt"></i>
                                             View Public Page
                                         </button>
-                                        <button class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm flex items-center gap-1.5" (click)="editBlog(blog)">
+                                        <button class="px-3 py-1 bg-primary text-white rounded hover:bg-primary text-sm flex items-center gap-1.5" (click)="editBlog(blog)">
                                             <i class="fa-solid fa-edit"></i>
                                             Edit
                                         </button>

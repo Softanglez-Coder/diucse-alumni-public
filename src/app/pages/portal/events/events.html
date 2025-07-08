@@ -9,7 +9,7 @@
             <div class="flex flex-wrap border-b border-gray-200 mb-6">
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'registered'"
+                    [class.border-primary]="activeTab() === 'registered'"
                     [class.text-blue-600]="activeTab() === 'registered'"
                     [class.border-transparent]="activeTab() !== 'registered'"
                     (click)="setActiveTab('registered')">
@@ -19,7 +19,7 @@
                 </button>
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'organized'"
+                    [class.border-primary]="activeTab() === 'organized'"
                     [class.text-blue-600]="activeTab() === 'organized'"
                     [class.border-transparent]="activeTab() !== 'organized'"
                     (click)="setActiveTab('organized')">
@@ -29,7 +29,7 @@
                 </button>
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
-                    [class.border-blue-600]="activeTab() === 'available'"
+                    [class.border-primary]="activeTab() === 'available'"
                     [class.text-blue-600]="activeTab() === 'available'"
                     [class.border-transparent]="activeTab() !== 'available'"
                     (click)="setActiveTab('available')">
@@ -52,7 +52,7 @@
             <div class="flex flex-wrap gap-2">
                 <button 
                     class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
-                    [class.bg-blue-600]="selectedFilter() === 'all'"
+                    [class.bg-primary]="selectedFilter() === 'all'"
                     [class.text-white]="selectedFilter() === 'all'"
                     [class.bg-gray-100]="selectedFilter() !== 'all'"
                     [class.text-gray-700]="selectedFilter() !== 'all'"
@@ -61,7 +61,7 @@
                 </button>
                 <button 
                     class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
-                    [class.bg-blue-600]="selectedFilter() === 'upcoming'"
+                    [class.bg-primary]="selectedFilter() === 'upcoming'"
                     [class.text-white]="selectedFilter() === 'upcoming'"
                     [class.bg-gray-100]="selectedFilter() !== 'upcoming'"
                     [class.text-gray-700]="selectedFilter() !== 'upcoming'"
@@ -70,7 +70,7 @@
                 </button>
                 <button 
                     class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
-                    [class.bg-blue-600]="selectedFilter() === 'completed'"
+                    [class.bg-primary]="selectedFilter() === 'completed'"
                     [class.text-white]="selectedFilter() === 'completed'"
                     [class.bg-gray-100]="selectedFilter() !== 'completed'"
                     [class.text-gray-700]="selectedFilter() !== 'completed'"
@@ -79,7 +79,7 @@
                 </button>
                 <button 
                     class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
-                    [class.bg-blue-600]="selectedFilter() === 'cancelled'"
+                    [class.bg-primary]="selectedFilter() === 'cancelled'"
                     [class.text-white]="selectedFilter() === 'cancelled'"
                     [class.bg-gray-100]="selectedFilter() !== 'cancelled'"
                     [class.text-gray-700]="selectedFilter() !== 'cancelled'"
@@ -104,7 +104,7 @@
                         }
                     </p>
                     @if (activeTab() === 'registered') {
-                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2" (click)="setActiveTab('available')">
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors flex items-center gap-2" (click)="setActiveTab('available')">
                             <i class="fa-solid fa-search"></i>
                             Browse Available Events
                         </button>
@@ -201,7 +201,7 @@
                             <div class="mb-4">
                                 <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
                                     <div 
-                                        class="bg-blue-600 h-2 rounded-full" 
+                                        class="bg-primary h-2 rounded-full" 
                                         [style.width.%]="(event.currentAttendees / event.maxAttendees) * 100">
                                     </div>
                                 </div>
@@ -220,7 +220,7 @@
                                 
                                 @if (activeTab() === 'available' && canRegister(event)) {
                                     <button 
-                                        class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm flex items-center gap-1.5" 
+                                        class="px-3 py-1 bg-primary text-white rounded hover:bg-primary text-sm flex items-center gap-1.5" 
                                         (click)="registerForEvent(event)">
                                         <i class="fa-solid fa-calendar-plus"></i>
                                         Register

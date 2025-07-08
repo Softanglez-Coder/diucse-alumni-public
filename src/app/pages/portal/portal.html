@@ -1,7 +1,8 @@
 <div class="block overflow-x-hidden w-full h-screen">
     <div class="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 relative overflow-x-hidden max-w-full lg:flex-row flex-col">
-        <aside class="lg:w-80 w-full bg-white shadow-lg transition-all duration-300 ease-in-out relative z-10 border-r border-gray-200 lg:shadow-xl lg:border-gray-200" 
-               [ngClass]="{ 'lg:w-20': collapsed }" 
+        <aside class="w-full bg-white shadow-lg transition-all duration-300 ease-in-out relative z-10 border-r border-gray-200 lg:shadow-xl lg:border-gray-200"
+               [class.lg:w-80]="!collapsed"
+               [class.lg:w-20]="collapsed"
                role="navigation" 
                aria-label="Portal navigation">
             <nav class="h-full flex flex-col">
@@ -14,7 +15,7 @@
                     <i class="text-base mr-3 transition-all duration-300 flex-shrink-0" 
                        [ngClass]="[collapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left', collapsed ? 'lg:mr-0' : '']"></i>
                     <span class="transition-all duration-300 whitespace-nowrap overflow-hidden flex-shrink-0 lg:block"
-                          [ngClass]="{ 'lg:opacity-0 lg:invisible lg:w-0 lg:overflow-hidden': collapsed }">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
+                          [ngClass]="{ 'lg:hidden': collapsed }">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
                 </button>
 
                 <ul class="list-none m-0 py-6 flex-1 lg:block flex flex-wrap gap-2 lg:gap-0 px-4 lg:px-0" role="menubar">
@@ -36,14 +37,15 @@
                                     <i class="text-lg text-gray-500 transition-all duration-300 group-hover:text-blue-600" [ngClass]="link.icon"></i>
                                     <!-- Tooltip for collapsed state on desktop -->
                                     <span class="hidden lg:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white rounded-md text-sm whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none"
-                                          [ngClass]="{ 'lg:opacity-0 lg:invisible': !collapsed }">
+                                          [class.lg:opacity-0]="!collapsed"
+                                          [class.lg:invisible]="!collapsed">
                                         {{ link.title }}
                                         <span class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900"></span>
                                     </span>
                                 </div>
                                 
                                 <div class="flex flex-col transition-all duration-300 flex-1 min-w-0 overflow-hidden"
-                                     [ngClass]="{ 'lg:opacity-0 lg:invisible lg:w-0 lg:overflow-hidden': collapsed }">
+                                     [ngClass]="{ 'lg:hidden': collapsed }">
                                     <span class="text-sm font-medium mb-0.5 leading-tight whitespace-nowrap overflow-hidden text-ellipsis">{{ link.title }}</span>
                                     <span class="text-xs text-gray-500 leading-tight opacity-80 whitespace-nowrap overflow-hidden text-ellipsis lg:block hidden">{{ link.description }}</span>
                                 </div>
