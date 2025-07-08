@@ -1,0 +1,158 @@
+<div class="event-details-page">
+  <!-- Header Section -->
+  <section class="event-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a routerLink="/events">← Back to Events</a>
+      </div>
+      
+      <div class="header-content">
+        <div class="event-image">
+          <img [src]="event.image" [alt]="event.title" />
+          <div class="event-status" [class]="event.status">{{ event.status | titlecase }}</div>
+        </div>
+        
+        <div class="event-info">
+          <div class="event-meta">
+            <span class="category">{{ event.category }}</span>
+            <span class="organizer">by {{ event.organizer }}</span>
+          </div>
+          
+          <h1 class="event-title">{{ event.title }}</h1>
+          <p class="event-description">{{ event.description }}</p>
+          
+          <div class="event-details-grid">
+            <div class="detail-item">
+              <i class="icon-calendar"></i>
+              <div>
+                <strong>Date</strong>
+                <span>{{ event.date }}</span>
+              </div>
+            </div>
+            
+            <div class="detail-item">
+              <i class="icon-clock"></i>
+              <div>
+                <strong>Time</strong>
+                <span>{{ event.time }}</span>
+              </div>
+            </div>
+            
+            <div class="detail-item">
+              <i class="icon-location"></i>
+              <div>
+                <strong>Location</strong>
+                <span>{{ event.location }}</span>
+              </div>
+            </div>
+            
+            <div class="detail-item">
+              <i class="icon-price"></i>
+              <div>
+                <strong>Price</strong>
+                <span>{{ event.price }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="registration-info">
+            <div class="capacity-bar">
+              <div class="capacity-fill" [style.width]="getRegistrationPercentage() + '%'"></div>
+            </div>
+            <div class="capacity-text">
+              <span>{{ event.registered }} / {{ event.capacity }} registered</span>
+              <span class="available">{{ getAvailableSpots() }} spots available</span>
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="btn btn-primary" [routerLink]="['/events', event.id, 'register']">
+              Register Now
+            </button>
+            <button class="btn btn-outline">Share Event</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event Content -->
+  <section class="event-content">
+    <div class="container">
+      <div class="content-wrapper">
+        <div class="main-content">
+          <!-- About Event -->
+          <div class="content-section">
+            <h2>About This Event</h2>
+            <div class="rich-content" [innerHTML]="event.fullDescription"></div>
+          </div>
+          
+          <!-- Speakers -->
+          <div class="content-section">
+            <h2>Featured Speakers</h2>
+            <div class="speakers-grid">
+              <div class="speaker-card" *ngFor="let speaker of event.speakers">
+                <img [src]="speaker.image" [alt]="speaker.name" />
+                <div class="speaker-info">
+                  <h3>{{ speaker.name }}</h3>
+                  <p class="speaker-title">{{ speaker.title }}</p>
+                  <p class="speaker-bio">{{ speaker.bio }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Agenda -->
+          <div class="content-section">
+            <h2>Event Agenda</h2>
+            <div class="agenda-list">
+              <div class="agenda-item" *ngFor="let item of event.agenda">
+                <div class="agenda-time">{{ item.time }}</div>
+                <div class="agenda-activity">{{ item.activity }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <aside class="sidebar">
+          <div class="event-card">
+            <h3>Event Details</h3>
+            
+            <div class="detail-list">
+              <div class="detail-row">
+                <span class="label">Date:</span>
+                <span class="value">{{ event.date }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Time:</span>
+                <span class="value">{{ event.time }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Location:</span>
+                <span class="value">{{ event.location }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Address:</span>
+                <span class="value">{{ event.address }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Price:</span>
+                <span class="value">{{ event.price }}</span>
+              </div>
+            </div>
+            
+            <button class="btn btn-primary full-width" [routerLink]="['/events', event.id, 'register']">
+              Register for Event
+            </button>
+          </div>
+          
+          <div class="contact-card">
+            <h3>Have Questions?</h3>
+            <p>Contact our event coordinator for more information.</p>
+            <button class="btn btn-outline full-width">Contact Us</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</div>

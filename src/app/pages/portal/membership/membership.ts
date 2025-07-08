@@ -42,7 +42,7 @@ interface MembershipRequirement {
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule, CommonModule]
 })
-export class Membership {
+export class PortalMembership {
     protected activeTab = signal<'status' | 'apply' | 'requirements'>('status');
     
     // Mock membership status - in real app this would come from backend

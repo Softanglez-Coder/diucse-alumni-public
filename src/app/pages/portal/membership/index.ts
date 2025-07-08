@@ -1,1 +1,1 @@
-export * from './membership';
+export { PortalMembership } from './membership';

@@ -21,7 +21,7 @@ interface ProfileData {
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule]
 })
-export class Profile {
+export class PortalProfile {
     protected isEditing = signal(false);
     
     protected profile = signal<ProfileData>({

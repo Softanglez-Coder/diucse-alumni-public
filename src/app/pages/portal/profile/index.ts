@@ -1,1 +1,1 @@
-export * from './profile';
+export { PortalProfile } from './profile';

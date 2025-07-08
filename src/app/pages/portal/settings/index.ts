@@ -1,1 +1,1 @@
-export * from './settings';
+export { PortalSettings } from './settings';

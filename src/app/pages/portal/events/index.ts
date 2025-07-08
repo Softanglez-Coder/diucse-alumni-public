@@ -1,1 +1,1 @@
-export * from './events';
+export { PortalEvents } from './events';

@@ -30,7 +30,7 @@ interface AccountSettings {
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule]
 })
-export class Settings {
+export class PortalSettings {
     protected activeTab = signal<'notifications' | 'privacy' | 'account'>('notifications');
     
     protected notifications = signal<NotificationSettings>({

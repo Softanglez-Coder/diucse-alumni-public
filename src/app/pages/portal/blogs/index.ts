@@ -1,1 +1,1 @@
-export * from './blogs';
+export { PortalBlogs } from './blogs';

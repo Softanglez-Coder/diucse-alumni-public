@@ -28,7 +28,7 @@ interface Event {
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, FormsModule]
 })
-export class Events {
+export class PortalEvents {
     protected activeTab = signal<'registered' | 'organized' | 'available'>('registered');
     protected selectedFilter = signal<'all' | 'upcoming' | 'completed' | 'cancelled'>('all');
     protected searchQuery = signal('');

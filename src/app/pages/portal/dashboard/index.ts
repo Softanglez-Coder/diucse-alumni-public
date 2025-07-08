@@ -1,1 +1,1 @@
-export * from './dashboard';
+export { PortalDashboard } from './dashboard';

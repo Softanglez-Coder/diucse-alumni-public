@@ -1,0 +1,103 @@
+<div class="blog-details-page">
+  <!-- Header Section -->
+  <section class="blog-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="breadcrumb">
+          <a routerLink="/blogs">← Back to Blogs</a>
+        </div>
+        
+        <div class="blog-meta">
+          <span class="category">{{ blog.category }}</span>
+          <span class="date">{{ blog.date }}</span>
+          <span class="read-time">{{ blog.readTime }}</span>
+        </div>
+        
+        <h1 class="blog-title">{{ blog.title }}</h1>
+        
+        <div class="author-info">
+          <img [src]="blog.authorImage" [alt]="blog.author" class="author-avatar" />
+          <div class="author-details">
+            <h3 class="author-name">{{ blog.author }}</h3>
+            <p class="author-bio">{{ blog.authorBio }}</p>
+          </div>
+        </div>
+        
+        <div class="blog-tags">
+          <span class="tag" *ngFor="let tag of blog.tags">{{ tag }}</span>
+        </div>
+      </div>
+      
+      <div class="blog-hero-image">
+        <img [src]="blog.image" [alt]="blog.title" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="blog-content-section">
+    <div class="container">
+      <div class="content-wrapper">
+        <article class="blog-content" [innerHTML]="blog.content"></article>
+        
+        <aside class="sidebar">
+          <div class="share-section">
+            <h4>Share this article</h4>
+            <div class="share-buttons">
+              <button class="share-btn twitter">Twitter</button>
+              <button class="share-btn linkedin">LinkedIn</button>
+              <button class="share-btn facebook">Facebook</button>
+              <button class="share-btn copy">Copy Link</button>
+            </div>
+          </div>
+          
+          <div class="table-of-contents">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#emerging-tech">Emerging Technologies</a></li>
+              <li><a href="#industry-collaboration">Industry Collaboration</a></li>
+              <li><a href="#future-skills">Skills for the Future</a></li>
+              <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Articles -->
+  <section class="related-articles">
+    <div class="container">
+      <h2 class="section-title">Related Articles</h2>
+      
+      <div class="articles-grid">
+        <article class="article-card" *ngFor="let relatedBlog of relatedBlogs" [routerLink]="['/blogs', relatedBlog.id]">
+          <div class="article-image">
+            <img [src]="relatedBlog.image" [alt]="relatedBlog.title" />
+          </div>
+          
+          <div class="article-content">
+            <span class="article-date">{{ relatedBlog.date }}</span>
+            <h3 class="article-title">{{ relatedBlog.title }}</h3>
+            <p class="article-excerpt">{{ relatedBlog.excerpt }}</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-content">
+        <h2>Stay Updated</h2>
+        <p>Get the latest articles and alumni updates delivered to your inbox</p>
+        
+        <form class="newsletter-form">
+          <input type="email" placeholder="Enter your email address" />
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

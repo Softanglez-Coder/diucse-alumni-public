@@ -36,7 +36,7 @@ interface BlogCategory {
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, FormsModule]
 })
-export class Blogs {
+export class PortalBlogs {
     protected activeTab = signal<'my-blogs' | 'create' | 'published'>('my-blogs');
     protected selectedFilter = signal<'all' | 'draft' | 'published' | 'under_review' | 'rejected'>('all');
     protected selectedCategory = signal<string>('all');

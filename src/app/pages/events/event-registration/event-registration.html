@@ -1,0 +1,242 @@
+<div class="event-registration-page">
+  <!-- Header -->
+  <section class="registration-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a [routerLink]="['/events', eventId]">← Back to Event Details</a>
+      </div>
+      
+      <div class="header-content">
+        <h1>Event Registration</h1>
+        <h2>{{ event.title }}</h2>
+        
+        <div class="event-summary">
+          <div class="summary-item">
+            <strong>Date:</strong> {{ event.date }}
+          </div>
+          <div class="summary-item">
+            <strong>Time:</strong> {{ event.time }}
+          </div>
+          <div class="summary-item">
+            <strong>Location:</strong> {{ event.location }}
+          </div>
+          <div class="summary-item">
+            <strong>Price:</strong> {{ event.price }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Registration Form -->
+  <section class="registration-form-section">
+    <div class="container">
+      <div class="form-wrapper">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+          <div class="progress-step" 
+               *ngFor="let step of [1,2,3]; let i = index"
+               [class.active]="step <= currentStep"
+               [class.current]="step === currentStep">
+            <div class="step-number">{{ step }}</div>
+            <div class="step-title">
+              {{ step === 1 ? 'Personal Info' : step === 2 ? 'Alumni Info' : 'Preferences' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Content -->
+        <form class="registration-form" (ngSubmit)="submitRegistration()">
+          <div class="form-header">
+            <h3>{{ getStepTitle() }}</h3>
+            <p>Step {{ currentStep }} of {{ totalSteps }}</p>
+          </div>
+
+          <!-- Step 1: Personal Information -->
+          <div class="form-step" *ngIf="currentStep === 1">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="firstName">First Name *</label>
+                <input type="text" 
+                       id="firstName" 
+                       [(ngModel)]="registrationData.firstName" 
+                       name="firstName"
+                       required>
+              </div>
+              
+              <div class="form-group">
+                <label for="lastName">Last Name *</label>
+                <input type="text" 
+                       id="lastName" 
+                       [(ngModel)]="registrationData.lastName" 
+                       name="lastName"
+                       required>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" 
+                       id="email" 
+                       [(ngModel)]="registrationData.email" 
+                       name="email"
+                       required>
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" 
+                       id="phone" 
+                       [(ngModel)]="registrationData.phone" 
+                       name="phone"
+                       required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Alumni Information -->
+          <div class="form-step" *ngIf="currentStep === 2">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="graduationYear">Graduation Year *</label>
+                <select id="graduationYear" 
+                        [(ngModel)]="registrationData.graduationYear" 
+                        name="graduationYear"
+                        required>
+                  <option value="">Select Year</option>
+                  <option *ngFor="let year of graduationYears" [value]="year">{{ year }}</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="degree">Degree *</label>
+                <select id="degree" 
+                        [(ngModel)]="registrationData.degree" 
+                        name="degree"
+                        required>
+                  <option value="">Select Degree</option>
+                  <option *ngFor="let degree of degreeOptions" [value]="degree">{{ degree }}</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="currentJobTitle">Current Job Title</label>
+                <input type="text" 
+                       id="currentJobTitle" 
+                       [(ngModel)]="registrationData.currentJobTitle" 
+                       name="currentJobTitle">
+              </div>
+              
+              <div class="form-group">
+                <label for="currentCompany">Current Company</label>
+                <input type="text" 
+                       id="currentCompany" 
+                       [(ngModel)]="registrationData.currentCompany" 
+                       name="currentCompany">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Event Preferences -->
+          <div class="form-step" *ngIf="currentStep === 3">
+            <div class="form-section">
+              <h4>Session Preferences</h4>
+              <p>Select the sessions you're most interested in attending:</p>
+              
+              <div class="checkbox-grid">
+                <div class="checkbox-group" *ngFor="let session of availableSessions">
+                  <input type="checkbox" 
+                         [id]="'session-' + session" 
+                         [checked]="isSessionSelected(session)"
+                         (change)="onSessionChange(session, $event)">
+                  <label [for]="'session-' + session">{{ session }}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h4>Additional Information</h4>
+              
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="dietaryRestrictions">Dietary Restrictions</label>
+                  <input type="text" 
+                         id="dietaryRestrictions" 
+                         [(ngModel)]="registrationData.dietaryRestrictions" 
+                         name="dietaryRestrictions"
+                         placeholder="e.g., Vegetarian, Halal, None">
+                </div>
+                
+                <div class="form-group">
+                  <label for="accessibility">Accessibility Requirements</label>
+                  <input type="text" 
+                         id="accessibility" 
+                         [(ngModel)]="registrationData.accessibility" 
+                         name="accessibility"
+                         placeholder="Any special accommodations needed">
+                </div>
+                
+                <div class="form-group">
+                  <label for="emergencyContact">Emergency Contact Name</label>
+                  <input type="text" 
+                         id="emergencyContact" 
+                         [(ngModel)]="registrationData.emergencyContact" 
+                         name="emergencyContact">
+                </div>
+                
+                <div class="form-group">
+                  <label for="emergencyPhone">Emergency Contact Phone</label>
+                  <input type="tel" 
+                         id="emergencyPhone" 
+                         [(ngModel)]="registrationData.emergencyPhone" 
+                         name="emergencyPhone">
+                </div>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="comments">Additional Comments</label>
+                <textarea id="comments" 
+                          [(ngModel)]="registrationData.comments" 
+                          name="comments"
+                          rows="4"
+                          placeholder="Any additional information or questions..."></textarea>
+              </div>
+              
+              <div class="checkbox-group">
+                <input type="checkbox" 
+                       id="networking" 
+                       [(ngModel)]="registrationData.networking" 
+                       name="networking">
+                <label for="networking">I'm interested in networking opportunities</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Navigation -->
+          <div class="form-navigation">
+            <button type="button" 
+                    class="btn btn-outline" 
+                    (click)="previousStep()" 
+                    [disabled]="currentStep === 1">
+              Previous
+            </button>
+            
+            <button type="button" 
+                    class="btn btn-primary" 
+                    (click)="nextStep()" 
+                    [disabled]="!isStepValid()"
+                    *ngIf="currentStep < totalSteps">
+              Next
+            </button>
+            
+            <button type="submit" 
+                    class="btn btn-primary" 
+                    [disabled]="!isStepValid()"
+                    *ngIf="currentStep === totalSteps">
+              Complete Registration
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

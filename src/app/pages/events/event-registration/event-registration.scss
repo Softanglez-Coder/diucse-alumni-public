@@ -1,0 +1,301 @@
+@import '../../../../theme/variables';
+@import '../../../../theme/base';
+
+.event-registration-page {
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.registration-header {
+  background: white;
+  padding: 120px 0 60px;
+  border-bottom: 1px solid #e2e8f0;
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .breadcrumb {
+    margin-bottom: 2rem;
+
+    a {
+      color: #666;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+
+  .header-content {
+    text-align: center;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: $primary-color;
+
+      @media (max-width: 768px) {
+        font-size: 2rem;
+      }
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: #666;
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+
+    .event-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+
+      .summary-item {
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        text-align: left;
+
+        strong {
+          color: $primary-color;
+          display: block;
+          margin-bottom: 0.2rem;
+        }
+      }
+    }
+  }
+}
+
+.registration-form-section {
+  padding: 60px 0;
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .form-wrapper {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .progress-bar {
+    display: flex;
+    background: #f8fafc;
+    padding: 2rem;
+
+    .progress-step {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: -50%;
+        top: 20px;
+        width: 100%;
+        height: 2px;
+        background: #e2e8f0;
+        z-index: 1;
+      }
+
+      &.active:not(:last-child)::after {
+        background: $primary-color;
+      }
+
+      .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 2;
+        transition: all 0.3s ease;
+      }
+
+      .step-title {
+        font-size: 0.9rem;
+        color: #666;
+        font-weight: 500;
+        text-align: center;
+      }
+
+      &.active .step-number {
+        background: $primary-color;
+        color: white;
+      }
+
+      &.current .step-number {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        transform: scale(1.1);
+      }
+
+      &.active .step-title {
+        color: $primary-color;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .registration-form {
+    padding: 2rem;
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+
+      h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: $primary-color;
+      }
+
+      p {
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
+
+    .form-step {
+      min-height: 400px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .form-group {
+      &.full-width {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #2d3748;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+        }
+
+        &:required:invalid {
+          border-color: #ef4444;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+    }
+
+    .form-section {
+      margin-bottom: 2rem;
+
+      h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: $primary-color;
+      }
+
+      p {
+        color: #666;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+      }
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+      }
+
+      label {
+        margin: 0;
+        font-weight: 500;
+        color: #2d3748;
+        cursor: pointer;
+      }
+    }
+
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e2e8f0;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+      }
+
+      .btn {
+        padding: 0.8rem 2rem;
+        font-weight: 600;
+        min-width: 120px;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
