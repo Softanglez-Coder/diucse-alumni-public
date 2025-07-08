@@ -1,0 +1,245 @@
+<div class="membership-page">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Join Our Alumni Community</h1>
+                <p class="hero-subtitle">
+                    Connect with 5000+ DIUCSE graduates worldwide and unlock endless opportunities
+                    for networking, career growth, and professional development.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">5000+</span>
+                        <span class="stat-label">Alumni Members</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Countries</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">200+</span>
+                        <span class="stat-label">Companies</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a routerLink="/register" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-plus"></i>
+                        Apply for Membership
+                    </a>
+                    <a routerLink="/login" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Member Login
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="membership-content benefits-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Membership Benefits</h2>
+                <p>Discover the exclusive advantages of being part of our alumni network</p>
+            </div>
+
+            <!-- Networking Benefits -->
+            <div class="benefits-category">
+                <h3 class="category-title">
+                    <i class="fas fa-users"></i>
+                    Networking Opportunities
+                </h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card" *ngFor="let benefit of getBenefitsByCategory('networking')">
+                        <div class="benefit-icon">
+                            <i class="fas {{benefit.icon}}"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>{{benefit.title}}</h4>
+                            <p>{{benefit.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Career Benefits -->
+            <div class="benefits-category">
+                <h3 class="category-title">
+                    <i class="fas fa-briefcase"></i>
+                    Career Development
+                </h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card" *ngFor="let benefit of getBenefitsByCategory('career')">
+                        <div class="benefit-icon">
+                            <i class="fas {{benefit.icon}}"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>{{benefit.title}}</h4>
+                            <p>{{benefit.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learning Benefits -->
+            <div class="benefits-category">
+                <h3 class="category-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    Learning & Development
+                </h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card" *ngFor="let benefit of getBenefitsByCategory('learning')">
+                        <div class="benefit-icon">
+                            <i class="fas {{benefit.icon}}"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>{{benefit.title}}</h4>
+                            <p>{{benefit.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exclusive Benefits -->
+            <div class="benefits-category">
+                <h3 class="category-title">
+                    <i class="fas fa-crown"></i>
+                    Exclusive Access
+                </h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card" *ngFor="let benefit of getBenefitsByCategory('exclusive')">
+                        <div class="benefit-icon">
+                            <i class="fas {{benefit.icon}}"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>{{benefit.title}}</h4>
+                            <p>{{benefit.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="membership-content requirements-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Membership Requirements</h2>
+                <p>Understanding the criteria for joining our alumni community</p>
+            </div>
+
+            <div class="requirements-container">
+                <!-- Required Requirements -->
+                <div class="requirements-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-exclamation-circle text-danger"></i>
+                        Required Criteria
+                    </h3>
+                    <div class="requirements-list">
+                        <div class="requirement-card required" *ngFor="let requirement of getRequiredRequirements()">
+                            <div class="requirement-icon">
+                                <i class="fas {{requirement.icon}}"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h4>{{requirement.title}}</h4>
+                                <p>{{requirement.description}}</p>
+                                <span class="requirement-badge required">Required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optional Requirements -->
+                <div class="requirements-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-plus-circle text-success"></i>
+                        Additional Criteria
+                    </h3>
+                    <div class="requirements-list">
+                        <div class="requirement-card optional" *ngFor="let requirement of getOptionalRequirements()">
+                            <div class="requirement-icon">
+                                <i class="fas {{requirement.icon}}"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h4>{{requirement.title}}</h4>
+                                <p>{{requirement.description}}</p>
+                                <span class="requirement-badge optional">Recommended</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="application-cta">
+                <div class="cta-content">
+                    <h3>Ready to Apply?</h3>
+                    <p>Join thousands of alumni who are already part of our thriving community</p>
+                    <a routerLink="/register" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane"></i>
+                        Start Your Application
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Members Section -->
+    <section class="membership-content members-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Key Members</h2>
+                <p>Meet some of our distinguished alumni who are making a difference in the tech industry</p>
+            </div>
+
+            <div class="members-grid">
+                <div class="member-card" *ngFor="let member of keyMembers">
+                    <div class="member-image">
+                        <img [src]="member.image" [alt]="member.name" onerror="this.src='/images/placeholder-avatar.jpg'">
+                        <div class="member-overlay">
+                            <a [href]="member.linkedinUrl" target="_blank" class="social-link" *ngIf="member.linkedinUrl">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h4 class="member-name">{{member.name}}</h4>
+                        <p class="member-position">{{member.position}}</p>
+                        <p class="member-company">{{member.company}}</p>
+                        <p class="member-year">Class of {{member.graduationYear}}</p>
+                        
+                        <div class="member-achievements">
+                            <h5>Key Achievements:</h5>
+                            <ul>
+                                <li *ngFor="let achievement of member.achievements">{{achievement}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="members-cta">
+                <div class="cta-content">
+                    <h3>Join These Leaders</h3>
+                    <p>Become part of a network that includes industry leaders, innovators, and changemakers</p>
+                    <div class="cta-actions">
+                        <a routerLink="/register" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            Apply Now
+                        </a>
+                        <a routerLink="/contact" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope"></i>
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

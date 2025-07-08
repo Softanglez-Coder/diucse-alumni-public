@@ -28,6 +28,13 @@ export const routes: Routes = [
         loadComponent: () => import('./pages').then(c => c.VerifyEmail)
     },
 
+    // Membership
+    {
+        path: 'membership',
+        title: 'Membership - DIUCSE Alumni',
+        loadComponent: () => import('./pages').then(c => c.Membership)
+    },
+
     // Events
     {
         path: 'events',
