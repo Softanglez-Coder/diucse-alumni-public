@@ -1,107 +1,123 @@
-<div class="settings-container">
-    <div class="settings-header">
-        <h1>Settings</h1>
-        <p>Manage your account preferences and privacy settings</p>
-    </div>
-
-    <div class="settings-content">
-        <div class="settings-tabs">
-            <button 
-                class="tab-button"
-                [class.active]="activeTab() === 'notifications'"
-                (click)="setActiveTab('notifications')">
-                <i class="fa-solid fa-bell"></i>
-                Notifications
-            </button>
-            <button 
-                class="tab-button"
-                [class.active]="activeTab() === 'privacy'"
-                (click)="setActiveTab('privacy')">
-                <i class="fa-solid fa-shield-alt"></i>
-                Privacy
-            </button>
-            <button 
-                class="tab-button"
-                [class.active]="activeTab() === 'account'"
-                (click)="setActiveTab('account')">
-                <i class="fa-solid fa-user-cog"></i>
-                Account
-            </button>
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Settings</h1>
+            <p class="text-gray-600">Manage your account preferences and privacy settings</p>
         </div>
 
-        <div class="settings-panel">
+        <div class="flex flex-col">
+            <div class="flex flex-wrap border-b border-gray-200 mb-6">
+                <button 
+                    class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
+                    [class.border-blue-600]="activeTab() === 'notifications'"
+                    [class.text-blue-600]="activeTab() === 'notifications'"
+                    [class.border-transparent]="activeTab() !== 'notifications'"
+                    (click)="setActiveTab('notifications')">
+                    <i class="fa-solid fa-bell"></i>
+                    Notifications
+                </button>
+                <button 
+                    class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
+                    [class.border-blue-600]="activeTab() === 'privacy'"
+                    [class.text-blue-600]="activeTab() === 'privacy'"
+                    [class.border-transparent]="activeTab() !== 'privacy'"
+                    (click)="setActiveTab('privacy')">
+                    <i class="fa-solid fa-shield-alt"></i>
+                    Privacy
+                </button>
+                <button 
+                    class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
+                    [class.border-blue-600]="activeTab() === 'account'"
+                    [class.text-blue-600]="activeTab() === 'account'"
+                    [class.border-transparent]="activeTab() !== 'account'"
+                    (click)="setActiveTab('account')">
+                    <i class="fa-solid fa-user-cog"></i>
+                    Account
+                </button>
+            </div>
+
+        <div class="mt-6">
             @if (activeTab() === 'notifications') {
-                <div class="settings-section">
-                    <h2>Notification Preferences</h2>
-                    <p>Choose how you want to be notified about alumni activities and updates.</p>
+                <div class="bg-white rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Notification Preferences</h2>
+                    <p class="text-gray-600 mb-6">Choose how you want to be notified about alumni activities and updates.</p>
                     
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="notifications().emailNotifications">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>Email Notifications</strong>
-                                <span>Receive updates via email</span>
+                    <div class="space-y-4">
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="emailNotifications"
+                                    type="checkbox"
+                                    [(ngModel)]="notifications().emailNotifications"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                             </div>
-                        </label>
+                            <div class="ml-3 text-sm">
+                                <label for="emailNotifications" class="font-medium text-gray-800">Email Notifications</label>
+                                <p class="text-gray-600">Receive updates via email</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="smsNotifications"
+                                    type="checkbox"
+                                    [(ngModel)]="notifications().smsNotifications"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="smsNotifications" class="font-medium text-gray-800">SMS Notifications</label>
+                                <p class="text-gray-600">Receive urgent updates via SMS</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="eventReminders"
+                                    type="checkbox"
+                                    [(ngModel)]="notifications().eventReminders"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="eventReminders" class="font-medium text-gray-800">Event Reminders</label>
+                                <p class="text-gray-600">Get reminded about upcoming events</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="newsUpdates"
+                                    type="checkbox"
+                                    [(ngModel)]="notifications().newsUpdates"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="newsUpdates" class="font-medium text-gray-800">News Updates</label>
+                                <p class="text-gray-600">Receive alumni news and announcements</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="alumniConnections"
+                                    type="checkbox"
+                                    [(ngModel)]="notifications().alumniConnections"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="alumniConnections" class="font-medium text-gray-800">Alumni Connections</label>
+                                <p class="text-gray-600">Get notified when other alumni want to connect</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="notifications().smsNotifications">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>SMS Notifications</strong>
-                                <span>Receive urgent updates via SMS</span>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="notifications().eventReminders">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>Event Reminders</strong>
-                                <span>Get reminded about upcoming events</span>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="notifications().newsUpdates">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>News Updates</strong>
-                                <span>Receive alumni news and announcements</span>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="notifications().alumniConnections">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>Alumni Connections</strong>
-                                <span>Get notified when other alumni want to connect</span>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="settings-actions">
-                        <button class="btn btn-primary" (click)="saveNotifications()">
+                    <div class="mt-8 flex justify-end">
+                        <button 
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                            (click)="saveNotifications()">
                             <i class="fa-solid fa-save"></i>
                             Save Notification Settings
                         </button>
@@ -110,76 +126,84 @@
             }
 
             @if (activeTab() === 'privacy') {
-                <div class="settings-section">
-                    <h2>Privacy Settings</h2>
-                    <p>Control who can see your information and how your data is used.</p>
+                <div class="bg-white rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Privacy Settings</h2>
+                    <p class="text-gray-600 mb-6">Control who can see your information and how your data is used.</p>
                     
-                    <div class="setting-item">
-                        <label for="profileVisibility">Profile Visibility</label>
-                        <select 
-                            id="profileVisibility"
-                            class="form-control"
-                            [(ngModel)]="privacy().profileVisibility">
-                            <option value="public">Public - Visible to everyone</option>
-                            <option value="alumni">Alumni Only - Visible to verified alumni</option>
-                            <option value="private">Private - Only visible to you</option>
-                        </select>
-                    </div>
+                    <div class="space-y-6">
+                        <div class="mb-6">
+                            <label for="profileVisibility" class="block text-sm font-medium text-gray-700 mb-2">Profile Visibility</label>
+                            <select 
+                                id="profileVisibility"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                [(ngModel)]="privacy().profileVisibility">
+                                <option value="public">Public - Visible to everyone</option>
+                                <option value="alumni">Alumni Only - Visible to verified alumni</option>
+                                <option value="private">Private - Only visible to you</option>
+                            </select>
+                        </div>
 
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="privacy().showEmail">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>Show Email Address</strong>
-                                <span>Allow others to see your email address</span>
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="showEmail"
+                                    type="checkbox"
+                                    [(ngModel)]="privacy().showEmail"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                             </div>
-                        </label>
-                    </div>
-
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="privacy().showPhone">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>Show Phone Number</strong>
-                                <span>Allow others to see your phone number</span>
+                            <div class="ml-3 text-sm">
+                                <label for="showEmail" class="font-medium text-gray-800">Show Email Address</label>
+                                <p class="text-gray-600">Allow others to see your email address</p>
                             </div>
-                        </label>
-                    </div>
+                        </div>
 
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="privacy().showLocation">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>Show Location</strong>
-                                <span>Display your current location on profile</span>
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="showPhone"
+                                    type="checkbox"
+                                    [(ngModel)]="privacy().showPhone"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                             </div>
-                        </label>
-                    </div>
-
-                    <div class="setting-item">
-                        <label class="setting-label">
-                            <input 
-                                type="checkbox"
-                                [(ngModel)]="privacy().showCompany">
-                            <span class="checkmark"></span>
-                            <div class="setting-info">
-                                <strong>Show Company Information</strong>
-                                <span>Display your current workplace</span>
+                            <div class="ml-3 text-sm">
+                                <label for="showPhone" class="font-medium text-gray-800">Show Phone Number</label>
+                                <p class="text-gray-600">Allow others to see your phone number</p>
                             </div>
-                        </label>
+                        </div>
+
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="showLocation"
+                                    type="checkbox"
+                                    [(ngModel)]="privacy().showLocation"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="showLocation" class="font-medium text-gray-800">Show Location</label>
+                                <p class="text-gray-600">Display your current location on profile</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center h-5">
+                                <input 
+                                    id="showCompany"
+                                    type="checkbox"
+                                    [(ngModel)]="privacy().showCompany"
+                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="showCompany" class="font-medium text-gray-800">Show Company Information</label>
+                                <p class="text-gray-600">Display your current workplace</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="settings-actions">
-                        <button class="btn btn-primary" (click)="savePrivacy()">
+                    <div class="mt-8 flex justify-end">
+                        <button 
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                            (click)="savePrivacy()">
                             <i class="fa-solid fa-save"></i>
                             Save Privacy Settings
                         </button>
@@ -188,48 +212,52 @@
             }
 
             @if (activeTab() === 'account') {
-                <div class="settings-section">
-                    <h2>Account Settings</h2>
-                    <p>Manage your account preferences and display options.</p>
+                <div class="bg-white rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Account Settings</h2>
+                    <p class="text-gray-600 mb-6">Manage your account preferences and display options.</p>
                     
-                    <div class="setting-item">
-                        <label for="language">Language</label>
-                        <select 
-                            id="language"
-                            class="form-control"
-                            [(ngModel)]="account().language">
-                            <option value="en">English</option>
-                            <option value="bn">বাংলা (Bengali)</option>
-                        </select>
+                    <div class="space-y-6">
+                        <div class="mb-4">
+                            <label for="language" class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                            <select 
+                                id="language"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                [(ngModel)]="account().language">
+                                <option value="en">English</option>
+                                <option value="bn">বাংলা (Bengali)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="timezone" class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+                            <select 
+                                id="timezone"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                [(ngModel)]="account().timezone">
+                                <option value="Asia/Dhaka">Asia/Dhaka (GMT+6)</option>
+                                <option value="America/New_York">America/New_York (GMT-5)</option>
+                                <option value="Europe/London">Europe/London (GMT+0)</option>
+                                <option value="Asia/Dubai">Asia/Dubai (GMT+4)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="theme" class="block text-sm font-medium text-gray-700 mb-2">Theme</label>
+                            <select 
+                                id="theme"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                [(ngModel)]="account().theme">
+                                <option value="auto">Auto (System Preference)</option>
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="setting-item">
-                        <label for="timezone">Timezone</label>
-                        <select 
-                            id="timezone"
-                            class="form-control"
-                            [(ngModel)]="account().timezone">
-                            <option value="Asia/Dhaka">Asia/Dhaka (GMT+6)</option>
-                            <option value="America/New_York">America/New_York (GMT-5)</option>
-                            <option value="Europe/London">Europe/London (GMT+0)</option>
-                            <option value="Asia/Dubai">Asia/Dubai (GMT+4)</option>
-                        </select>
-                    </div>
-
-                    <div class="setting-item">
-                        <label for="theme">Theme</label>
-                        <select 
-                            id="theme"
-                            class="form-control"
-                            [(ngModel)]="account().theme">
-                            <option value="auto">Auto (System Preference)</option>
-                            <option value="light">Light</option>
-                            <option value="dark">Dark</option>
-                        </select>
-                    </div>
-
-                    <div class="settings-actions">
-                        <button class="btn btn-primary" (click)="saveAccount()">
+                    <div class="mt-8 flex justify-end">
+                        <button 
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                            (click)="saveAccount()">
                             <i class="fa-solid fa-save"></i>
                             Save Account Settings
                         </button>
@@ -238,8 +266,10 @@
             }
         </div>
 
-        <div class="settings-footer">
-            <button class="btn btn-secondary" (click)="resetToDefaults()">
+        <div class="mt-8 border-t border-gray-200 pt-6 flex justify-center">
+            <button 
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2"
+                (click)="resetToDefaults()">
                 <i class="fa-solid fa-undo"></i>
                 Reset to Defaults
             </button>
