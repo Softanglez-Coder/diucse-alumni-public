@@ -1,0 +1,143 @@
+<div class="profile-container">
+    <div class="profile-header">
+        <h1>My Profile</h1>
+        <button 
+            class="btn btn-primary" 
+            (click)="toggleEdit()"
+            [disabled]="isEditing()">
+            <i class="fa-solid fa-edit"></i>
+            {{ isEditing() ? 'Editing...' : 'Edit Profile' }}
+        </button>
+    </div>
+
+    <div class="profile-content">
+        <div class="profile-section">
+            <h2>Personal Information</h2>
+            <div class="profile-grid">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input 
+                        type="text" 
+                        id="firstName"
+                        class="form-control"
+                        [(ngModel)]="profile().firstName"
+                        [readonly]="!isEditing()">
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input 
+                        type="text" 
+                        id="lastName"
+                        class="form-control"
+                        [(ngModel)]="profile().lastName"
+                        [readonly]="!isEditing()">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email"
+                        class="form-control"
+                        [(ngModel)]="profile().email"
+                        [readonly]="!isEditing()">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input 
+                        type="tel" 
+                        id="phone"
+                        class="form-control"
+                        [(ngModel)]="profile().phone"
+                        [readonly]="!isEditing()">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input 
+                        type="text" 
+                        id="location"
+                        class="form-control"
+                        [(ngModel)]="profile().location"
+                        [readonly]="!isEditing()">
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h2>Academic Information</h2>
+            <div class="profile-grid">
+                <div class="form-group">
+                    <label for="graduationYear">Graduation Year</label>
+                    <input 
+                        type="number" 
+                        id="graduationYear"
+                        class="form-control"
+                        [(ngModel)]="profile().graduationYear"
+                        [readonly]="!isEditing()">
+                </div>
+
+                <div class="form-group">
+                    <label for="major">Major</label>
+                    <input 
+                        type="text" 
+                        id="major"
+                        class="form-control"
+                        [(ngModel)]="profile().major"
+                        [readonly]="!isEditing()">
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h2>Professional Information</h2>
+            <div class="profile-grid">
+                <div class="form-group">
+                    <label for="currentPosition">Current Position</label>
+                    <input 
+                        type="text" 
+                        id="currentPosition"
+                        class="form-control"
+                        [(ngModel)]="profile().currentPosition"
+                        [readonly]="!isEditing()">
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input 
+                        type="text" 
+                        id="company"
+                        class="form-control"
+                        [(ngModel)]="profile().company"
+                        [readonly]="!isEditing()">
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="bio">Bio</label>
+                    <textarea 
+                        id="bio"
+                        class="form-control"
+                        rows="4"
+                        [(ngModel)]="profile().bio"
+                        [readonly]="!isEditing()"
+                        placeholder="Tell us about yourself..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        @if (isEditing()) {
+            <div class="profile-actions">
+                <button class="btn btn-success" (click)="saveProfile()">
+                    <i class="fa-solid fa-save"></i>
+                    Save Changes
+                </button>
+                <button class="btn btn-secondary" (click)="cancelEdit()">
+                    <i class="fa-solid fa-times"></i>
+                    Cancel
+                </button>
+            </div>
+        }
+    </div>
+</div>

@@ -69,14 +69,16 @@ export const routes: Routes = [
                 title: 'Dashboard - DIUCSE Alumni',
                 loadComponent: () => import('./pages').then(c => c.Dashboard)
             },
-            // {
-            //     path: 'profile',
-            //     title: 'Profile - DIUCSE Alumni',
-            // },
-            // {
-            //     path: 'settings',
-            //     title: 'Settings - DIUCSE Alumni',
-            // },
+            {
+                path: 'profile',
+                title: 'Profile - DIUCSE Alumni',
+                loadComponent: () => import('./pages').then(c => c.Profile)
+            },
+            {
+                path: 'settings',
+                title: 'Settings - DIUCSE Alumni',
+                loadComponent: () => import('./pages').then(c => c.Settings)
+            },
             // {
             //     path: 'membership',
             //     title: 'Membership - DIUCSE Alumni',

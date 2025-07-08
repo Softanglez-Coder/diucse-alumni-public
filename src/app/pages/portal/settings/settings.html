@@ -1,0 +1,248 @@
+<div class="settings-container">
+    <div class="settings-header">
+        <h1>Settings</h1>
+        <p>Manage your account preferences and privacy settings</p>
+    </div>
+
+    <div class="settings-content">
+        <div class="settings-tabs">
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'notifications'"
+                (click)="setActiveTab('notifications')">
+                <i class="fa-solid fa-bell"></i>
+                Notifications
+            </button>
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'privacy'"
+                (click)="setActiveTab('privacy')">
+                <i class="fa-solid fa-shield-alt"></i>
+                Privacy
+            </button>
+            <button 
+                class="tab-button"
+                [class.active]="activeTab() === 'account'"
+                (click)="setActiveTab('account')">
+                <i class="fa-solid fa-user-cog"></i>
+                Account
+            </button>
+        </div>
+
+        <div class="settings-panel">
+            @if (activeTab() === 'notifications') {
+                <div class="settings-section">
+                    <h2>Notification Preferences</h2>
+                    <p>Choose how you want to be notified about alumni activities and updates.</p>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="notifications().emailNotifications">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>Email Notifications</strong>
+                                <span>Receive updates via email</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="notifications().smsNotifications">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>SMS Notifications</strong>
+                                <span>Receive urgent updates via SMS</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="notifications().eventReminders">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>Event Reminders</strong>
+                                <span>Get reminded about upcoming events</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="notifications().newsUpdates">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>News Updates</strong>
+                                <span>Receive alumni news and announcements</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="notifications().alumniConnections">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>Alumni Connections</strong>
+                                <span>Get notified when other alumni want to connect</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="btn btn-primary" (click)="saveNotifications()">
+                            <i class="fa-solid fa-save"></i>
+                            Save Notification Settings
+                        </button>
+                    </div>
+                </div>
+            }
+
+            @if (activeTab() === 'privacy') {
+                <div class="settings-section">
+                    <h2>Privacy Settings</h2>
+                    <p>Control who can see your information and how your data is used.</p>
+                    
+                    <div class="setting-item">
+                        <label for="profileVisibility">Profile Visibility</label>
+                        <select 
+                            id="profileVisibility"
+                            class="form-control"
+                            [(ngModel)]="privacy().profileVisibility">
+                            <option value="public">Public - Visible to everyone</option>
+                            <option value="alumni">Alumni Only - Visible to verified alumni</option>
+                            <option value="private">Private - Only visible to you</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="privacy().showEmail">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>Show Email Address</strong>
+                                <span>Allow others to see your email address</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="privacy().showPhone">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>Show Phone Number</strong>
+                                <span>Allow others to see your phone number</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="privacy().showLocation">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>Show Location</strong>
+                                <span>Display your current location on profile</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input 
+                                type="checkbox"
+                                [(ngModel)]="privacy().showCompany">
+                            <span class="checkmark"></span>
+                            <div class="setting-info">
+                                <strong>Show Company Information</strong>
+                                <span>Display your current workplace</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="btn btn-primary" (click)="savePrivacy()">
+                            <i class="fa-solid fa-save"></i>
+                            Save Privacy Settings
+                        </button>
+                    </div>
+                </div>
+            }
+
+            @if (activeTab() === 'account') {
+                <div class="settings-section">
+                    <h2>Account Settings</h2>
+                    <p>Manage your account preferences and display options.</p>
+                    
+                    <div class="setting-item">
+                        <label for="language">Language</label>
+                        <select 
+                            id="language"
+                            class="form-control"
+                            [(ngModel)]="account().language">
+                            <option value="en">English</option>
+                            <option value="bn">বাংলা (Bengali)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="timezone">Timezone</label>
+                        <select 
+                            id="timezone"
+                            class="form-control"
+                            [(ngModel)]="account().timezone">
+                            <option value="Asia/Dhaka">Asia/Dhaka (GMT+6)</option>
+                            <option value="America/New_York">America/New_York (GMT-5)</option>
+                            <option value="Europe/London">Europe/London (GMT+0)</option>
+                            <option value="Asia/Dubai">Asia/Dubai (GMT+4)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="theme">Theme</label>
+                        <select 
+                            id="theme"
+                            class="form-control"
+                            [(ngModel)]="account().theme">
+                            <option value="auto">Auto (System Preference)</option>
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="btn btn-primary" (click)="saveAccount()">
+                            <i class="fa-solid fa-save"></i>
+                            Save Account Settings
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="settings-footer">
+            <button class="btn btn-secondary" (click)="resetToDefaults()">
+                <i class="fa-solid fa-undo"></i>
+                Reset to Defaults
+            </button>
+        </div>
+    </div>
+</div>
