@@ -32,7 +32,6 @@ interface BlogCategory {
 @Component({
     selector: 'blogs',
     templateUrl: './blogs.html',
-    styleUrl: './blogs.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, FormsModule]
 })

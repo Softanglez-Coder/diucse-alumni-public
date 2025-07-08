@@ -38,7 +38,7 @@ interface MembershipRequirement {
 @Component({
     selector: 'membership',
     templateUrl: './membership.html',
-    styleUrl: './membership.scss',
+    
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule, CommonModule]
 })

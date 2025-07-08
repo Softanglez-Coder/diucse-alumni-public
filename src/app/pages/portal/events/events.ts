@@ -24,7 +24,6 @@ interface Event {
 @Component({
     selector: 'events',
     templateUrl: './events.html',
-    styleUrl: './events.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, FormsModule]
 })

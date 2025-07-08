@@ -15,7 +15,6 @@ interface Link {
 @Component({
     selector: 'portal',
     templateUrl: './portal.html',
-    styleUrl: './portal.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         RouterOutlet,

@@ -17,7 +17,6 @@ interface ProfileData {
 @Component({
     selector: 'profile',
     templateUrl: './profile.html',
-    styleUrl: './profile.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule]
 })

@@ -26,7 +26,7 @@ interface AccountSettings {
 @Component({
     selector: 'settings',
     templateUrl: './settings.html',
-    styleUrl: './settings.scss',
+    
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule]
 })

@@ -1,105 +1,115 @@
-<div class="dashboard-container">
-    <div class="dashboard-header">
-        <h1>Dashboard</h1>
-        <p>Welcome back! Here's what's happening in the alumni community.</p>
+<div class="max-w-7xl mx-auto">
+    <div class="mb-8 pb-4 border-b-2 border-gray-200">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+        <p class="text-gray-600">Welcome back! Here's what's happening in the alumni community.</p>
     </div>
 
-    <div class="dashboard-grid">
-        <div class="stats-card">
-            <div class="stat-icon">
-                <i class="fa-solid fa-users"></i>
-            </div>
-            <div class="stat-info">
-                <h3>1,245</h3>
-                <span>Total Alumni</span>
-            </div>
-        </div>
-
-        <div class="stats-card">
-            <div class="stat-icon">
-                <i class="fa-solid fa-calendar-alt"></i>
-            </div>
-            <div class="stat-info">
-                <h3>8</h3>
-                <span>Upcoming Events</span>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-users text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900">1,245</h3>
+                    <span class="text-sm text-gray-500">Total Alumni</span>
+                </div>
             </div>
         </div>
 
-        <div class="stats-card">
-            <div class="stat-icon">
-                <i class="fa-solid fa-newspaper"></i>
-            </div>
-            <div class="stat-info">
-                <h3>24</h3>
-                <span>Recent News</span>
-            </div>
-        </div>
-
-        <div class="stats-card">
-            <div class="stat-icon">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-            <div class="stat-info">
-                <h3>2024</h3>
-                <span>Latest Graduation</span>
+        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-calendar-alt text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900">8</h3>
+                    <span class="text-sm text-gray-500">Upcoming Events</span>
+                </div>
             </div>
         </div>
 
-        <div class="quick-actions">
-            <h2>Quick Actions</h2>
-            <div class="action-buttons">
-                <a href="/portal/profile" class="action-btn">
-                    <i class="fa-solid fa-user-edit"></i>
-                    Update Profile
+        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-newspaper text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900">24</h3>
+                    <span class="text-sm text-gray-500">Recent News</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900">2024</h3>
+                    <span class="text-sm text-gray-500">Latest Graduation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="/portal/profile" class="flex items-center gap-3 p-4 bg-blue-50 text-blue-700 rounded-xl hover:bg-blue-100 transition-all duration-300 no-underline group">
+                    <i class="fa-solid fa-user-edit text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Update Profile</span>
                 </a>
-                <a href="/portal/events" class="action-btn">
-                    <i class="fa-solid fa-calendar-plus"></i>
-                    Register for Event
+                <a href="/portal/events" class="flex items-center gap-3 p-4 bg-green-50 text-green-700 rounded-xl hover:bg-green-100 transition-all duration-300 no-underline group">
+                    <i class="fa-solid fa-calendar-plus text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Register for Event</span>
                 </a>
-                <a href="/portal/membership" class="action-btn">
-                    <i class="fa-solid fa-id-card"></i>
-                    Membership Details
+                <a href="/portal/membership" class="flex items-center gap-3 p-4 bg-purple-50 text-purple-700 rounded-xl hover:bg-purple-100 transition-all duration-300 no-underline group">
+                    <i class="fa-solid fa-id-card text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Membership Details</span>
                 </a>
-                <a href="/portal/settings" class="action-btn">
-                    <i class="fa-solid fa-cog"></i>
-                    Account Settings
+                <a href="/portal/settings" class="flex items-center gap-3 p-4 bg-gray-50 text-gray-700 rounded-xl hover:bg-gray-100 transition-all duration-300 no-underline group">
+                    <i class="fa-solid fa-cog text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Account Settings</span>
                 </a>
             </div>
         </div>
 
-        <div class="recent-activity">
-            <h2>Recent Activity</h2>
-            <div class="activity-list">
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fa-solid fa-user-plus"></i>
+        <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-6">Recent Activity</h2>
+            <div class="space-y-4">
+                <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-user-plus text-sm"></i>
                     </div>
-                    <div class="activity-content">
-                        <strong>New Alumni Joined</strong>
-                        <span>5 new alumni joined this week</span>
-                        <small>2 days ago</small>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-gray-900">New Alumni Joined</div>
+                        <div class="text-sm text-gray-600 mb-1">5 new alumni joined this week</div>
+                        <div class="text-xs text-gray-500">2 days ago</div>
                     </div>
                 </div>
                 
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fa-solid fa-calendar-check"></i>
+                <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
+                    <div class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-calendar-check text-sm"></i>
                     </div>
-                    <div class="activity-content">
-                        <strong>Event Registration</strong>
-                        <span>Annual Alumni Meetup 2024</span>
-                        <small>1 week ago</small>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-gray-900">Event Registration</div>
+                        <div class="text-sm text-gray-600 mb-1">Annual Alumni Meetup 2024</div>
+                        <div class="text-xs text-gray-500">1 week ago</div>
                     </div>
                 </div>
                 
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fa-solid fa-bell"></i>
+                <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
+                    <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-bell text-sm"></i>
                     </div>
-                    <div class="activity-content">
-                        <strong>System Update</strong>
-                        <span>New features added to portal</span>
-                        <small>2 weeks ago</small>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-gray-900">System Update</div>
+                        <div class="text-sm text-gray-600 mb-1">New features added to portal</div>
+                        <div class="text-xs text-gray-500">2 weeks ago</div>
                     </div>
                 </div>
             </div>

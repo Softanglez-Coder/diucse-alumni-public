@@ -1,49 +1,65 @@
-<div class="container">
-    <aside class="menus" [ngClass]="{ 'collapsed': collapsed }" role="navigation" aria-label="Portal navigation">
-        <nav>
-            <button 
-                class="toggle-button" 
-                (click)="collapsed = !collapsed"
-                [attr.aria-label]="collapsed ? 'Expand navigation menu' : 'Collapse navigation menu'"
-                [attr.aria-expanded]="!collapsed">
-                <i class="icon" [ngClass]="collapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'"></i>
-                <span class="toggle-text">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
-            </button>
+<div class="block overflow-x-hidden w-full h-screen">
+    <div class="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 relative overflow-x-hidden max-w-full lg:flex-row flex-col">
+        <aside class="lg:w-80 w-full bg-white shadow-lg transition-all duration-300 ease-in-out relative z-10 border-r border-gray-200 lg:shadow-xl lg:border-gray-200" 
+               [ngClass]="{ 'lg:w-20': collapsed }" 
+               role="navigation" 
+               aria-label="Portal navigation">
+            <nav class="h-full flex flex-col">
+                <button 
+                    class="flex items-center lg:justify-start justify-start w-full p-5 lg:p-6 bg-blue-600 text-white border-none cursor-pointer text-sm font-semibold transition-all duration-300 relative hover:bg-blue-700 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-300" 
+                    [ngClass]="{ 'lg:justify-center': collapsed }"
+                    (click)="collapsed = !collapsed"
+                    [attr.aria-label]="collapsed ? 'Expand navigation menu' : 'Collapse navigation menu'"
+                    [attr.aria-expanded]="!collapsed">
+                    <i class="text-base mr-3 transition-all duration-300 flex-shrink-0" 
+                       [ngClass]="[collapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left', collapsed ? 'lg:mr-0' : '']"></i>
+                    <span class="transition-all duration-300 whitespace-nowrap overflow-hidden flex-shrink-0 lg:block"
+                          [ngClass]="{ 'lg:opacity-0 lg:invisible lg:w-0 lg:overflow-hidden': collapsed }">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
+                </button>
 
-            <ul role="menubar">
-                @for (link of links.value(); track link.path) {
-                    <li role="none" (click)="onLinkClicked(link)">
-                        <a 
-                            [routerLink]="link.path" 
-                            routerLinkActive="active" 
-                            [routerLinkActiveOptions]="{ exact: true }"
-                            role="menuitem"
-                            [attr.aria-label]="link.title + ': ' + link.description"
-                            [attr.data-tooltip]="link.title">
-                            <div class="icon-container" aria-hidden="true">
-                                <i [ngClass]="link.icon"></i>
-                            </div>
-                            
-                            <div class="link-details">
-                                <span>{{ link.title }}</span>
-                                <span class="small">{{ link.description }}</span>
-                            </div>
-                        </a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    </aside>
-    <main class="content" role="main">
-        <!-- <header>
-            <div>
-                <h1>{{ selected().title || 'Alumni Portal' }}</h1>
-                <p>{{ selected().description || 'Welcome to the Alumni Portal' }}</p>
+                <ul class="list-none m-0 py-6 flex-1 lg:block flex flex-wrap gap-2 lg:gap-0 px-4 lg:px-0" role="menubar">
+                    @for (link of links.value(); track link.path) {
+                        <li class="m-0 lg:hover:bg-blue-50 lg:flex-none flex-1 lg:min-w-0 min-w-48" 
+                            role="none" 
+                            (click)="onLinkClicked(link)">
+                            <a 
+                                [routerLink]="link.path" 
+                                routerLinkActive="text-blue-600 lg:border-l-4 lg:border-blue-600 lg:bg-blue-100 font-semibold lg:rounded-none rounded-lg bg-blue-50" 
+                                [routerLinkActiveOptions]="{ exact: true }"
+                                class="flex items-center p-4 lg:px-6 text-gray-700 transition-all duration-300 relative border-l-4 border-transparent no-underline hover:text-blue-600 hover:border-blue-600 hover:bg-blue-50 lg:rounded-none rounded-lg lg:mx-0 mx-2 group"
+                                [ngClass]="{ 'lg:justify-center lg:px-3': collapsed }"
+                                role="menuitem"
+                                [attr.aria-label]="link.title + ': ' + link.description"
+                                [attr.data-tooltip]="link.title">
+                                <div class="w-6 h-6 flex items-center justify-center mr-4 transition-all duration-300 flex-shrink-0 relative"
+                                     [ngClass]="{ 'lg:mr-0': collapsed }">
+                                    <i class="text-lg text-gray-500 transition-all duration-300 group-hover:text-blue-600" [ngClass]="link.icon"></i>
+                                    <!-- Tooltip for collapsed state on desktop -->
+                                    <span class="hidden lg:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white rounded-md text-sm whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none"
+                                          [ngClass]="{ 'lg:opacity-0 lg:invisible': !collapsed }">
+                                        {{ link.title }}
+                                        <span class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900"></span>
+                                    </span>
+                                </div>
+                                
+                                <div class="flex flex-col transition-all duration-300 flex-1 min-w-0 overflow-hidden"
+                                     [ngClass]="{ 'lg:opacity-0 lg:invisible lg:w-0 lg:overflow-hidden': collapsed }">
+                                    <span class="text-sm font-medium mb-0.5 leading-tight whitespace-nowrap overflow-hidden text-ellipsis">{{ link.title }}</span>
+                                    <span class="text-xs text-gray-500 leading-tight opacity-80 whitespace-nowrap overflow-hidden text-ellipsis lg:block hidden">{{ link.description }}</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="flex-1 flex flex-col overflow-hidden min-w-0 relative" role="main">
+            <div class="flex-1 p-6 lg:p-10 overflow-y-auto bg-transparent">
+                <div class="max-w-6xl mx-auto">
+                    <router-outlet />
+                </div>
             </div>
-        </header> -->
-
-        <div class="content-area">
-            <router-outlet />
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
