@@ -29,7 +29,6 @@ interface KeyMember {
 @Component({
     selector: 'membership',
     templateUrl: './membership.html',
-    styleUrl: './membership.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, RouterModule]
 })

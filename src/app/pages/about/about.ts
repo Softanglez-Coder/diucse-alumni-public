@@ -8,7 +8,6 @@ import { AlumniService } from '../../services';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './about.html',
-  styleUrl: './about.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [AlumniService]
 })

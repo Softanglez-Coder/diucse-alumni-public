@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './forgot-password.html',
-  styleUrl: './forgot-password.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForgotPassword {

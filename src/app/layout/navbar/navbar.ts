@@ -6,7 +6,6 @@ import { Link } from "../../shared";
 @Component({
     selector: '[navbar]',
     templateUrl: './navbar.html',
-    styleUrls: ['./navbar.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         RouterLink,

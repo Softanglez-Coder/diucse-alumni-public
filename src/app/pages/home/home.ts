@@ -12,7 +12,6 @@ import {
 @Component({
     selector: 'home',
     templateUrl: './home.html',
-    styleUrl: './home.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [BannerService],
     imports: [
