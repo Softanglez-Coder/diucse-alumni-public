@@ -1,0 +1,50 @@
+<section class="contact-section">
+    <div class="container mx-auto px-4 py-16">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h2 class="contact-title">Get in Touch</h2>
+                <p class="contact-description">
+                    Have questions or want to connect with our alumni community? We'd love to hear from you.
+                </p>
+                <div class="contact-details">
+                    @for (info of contactInfo; track info.title) {
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fa-solid {{info.icon}}"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>{{info.title}}</h4>
+                                <p [innerHTML]="info.content"></p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="social-links">
+                    @for (social of socialLinks; track social.label) {
+                        <a [href]="social.url" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="social-link"
+                           [attr.aria-label]="social.label">
+                            <i class="{{social.icon}}"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.905728551594!2d90.36311731536284!3d23.747829094608834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755bf4a901f786d%3A0x334677c8922324ca!2sDhaka%20International%20University!5e0!3m2!1sen!2sbd!4v1625741234567!5m2!1sen!2sbd"
+                        width="100%" 
+                        height="400" 
+                        style="border:0; border-radius: 0.5rem;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Dhaka International University Location">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

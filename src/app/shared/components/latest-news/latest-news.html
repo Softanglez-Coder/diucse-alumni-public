@@ -1,0 +1,48 @@
+<section class="news-section">
+    <div class="container mx-auto px-4 py-16">
+        <div class="section-header">
+            <h2 class="section-title">Latest News & Updates</h2>
+            <p class="section-subtitle">Stay informed about the latest happenings in our community</p>
+        </div>
+        @if (news.value() && news.value().length > 0) {
+            <div class="news-grid">
+                @for (article of news.value(); track article.id; let i = $index) {
+                    <article class="news-card" [class.featured-news]="article.featured">
+                        <div class="news-image">
+                            <img [src]="article.image" [alt]="article.title" loading="lazy">
+                            <div class="news-category">{{article.category}}</div>
+                        </div>
+                        <div class="news-content">
+                            <time class="news-date">{{formatDate(article.date)}}</time>
+                            <h3 class="news-title">{{article.title}}</h3>
+                            <p class="news-excerpt">{{article.excerpt}}</p>
+                            <div class="news-footer">
+                                <span class="news-author">
+                                    <i class="fa-solid fa-user"></i>
+                                    {{article.author}}
+                                </span>
+                                <a [href]="'/news/' + article.slug" class="news-link">
+                                    Read More
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        } @else {
+            <div class="news-placeholder">
+                <div class="placeholder-content">
+                    <i class="fa-solid fa-newspaper placeholder-icon"></i>
+                    <p class="placeholder-text">No news articles available</p>
+                </div>
+            </div>
+        }
+        <div class="section-footer">
+            <a href="/news" class="btn btn-outline">
+                View All News
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>

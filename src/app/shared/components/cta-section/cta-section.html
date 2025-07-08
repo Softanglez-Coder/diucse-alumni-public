@@ -1,0 +1,46 @@
+<section class="cta-section">
+    <div class="container mx-auto px-4 py-16">
+        <div class="cta-grid">
+            <div class="cta-content">
+                <h2 class="cta-title">Join Our Growing Alumni Network</h2>
+                <p class="cta-description">
+                    Connect with fellow graduates from Dhaka International University, access exclusive opportunities, and stay updated with the latest news from DIU CSE department.
+                </p>
+                <div class="cta-stats">
+                    @for (stat of stats; track stat.label) {
+                        <div class="stat-item">
+                            <span class="stat-number">{{stat.number}}</span>
+                            <span class="stat-label">{{stat.label}}</span>
+                        </div>
+                    }
+                </div>
+                <div class="cta-buttons">
+                    <a href="/register" class="btn btn-primary">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Join Now
+                    </a>
+                    <a href="/portal" class="btn btn-secondary">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        Explore Portal
+                    </a>
+                </div>
+            </div>
+            <div class="cta-visual">
+                <div class="cta-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>DIU Alumni Portal</span>
+                    </div>
+                    <div class="card-features">
+                        @for (feature of features; track feature) {
+                            <div class="feature-item">
+                                <i class="fa-solid fa-check"></i>
+                                <span>{{feature}}</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

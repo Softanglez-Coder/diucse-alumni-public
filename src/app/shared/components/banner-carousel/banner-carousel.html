@@ -1,0 +1,70 @@
+<div class="banner-carousel" 
+     (mouseenter)="onMouseEnter()" 
+     (mouseleave)="onMouseLeave()">
+    @if (banners && banners.length > 0) {
+        <div class="carousel-container">
+            <!-- Carousel slides -->
+            <div class="carousel-wrapper" 
+                 [style.transform]="'translateX(-' + (currentIndex() * 100) + '%)'">
+                @for (banner of banners; track banner.id; let i = $index) {
+                    <div class="carousel-slide">
+                        <img class="carousel-image" 
+                             [src]="banner.image" 
+                             [alt]="banner.title"
+                             loading="lazy">
+                        
+                        <div class="carousel-content">
+                            <h3 class="carousel-title">{{banner.title}}</h3>
+                            <p class="carousel-description">{{banner.description}}</p>
+                            @if (banner.link) {
+                                <a [href]="banner.link" class="carousel-link">
+                                    Learn More
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Navigation controls -->
+            @if (showControls && totalBanners() > 1) {
+                <div class="carousel-controls">
+                    <button class="carousel-control carousel-control-prev" 
+                            (click)="goToPrevious()"
+                            [attr.aria-label]="'Previous slide'"
+                            type="button">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                    <button class="carousel-control carousel-control-next" 
+                            (click)="goToNext()"
+                            [attr.aria-label]="'Next slide'"
+                            type="button">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            }
+
+            <!-- Pagination dots -->
+            @if (showPagination && totalBanners() > 1) {
+                <div class="carousel-pagination">
+                    @for (banner of banners; track banner.id; let i = $index) {
+                        <button class="carousel-dot" 
+                                [class.active]="i === currentIndex()"
+                                (click)="goToSlide(i)"
+                                [attr.aria-label]="'Go to slide ' + (i + 1)"
+                                type="button">
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+    } @else {
+        <div class="carousel-placeholder">
+            <div class="placeholder-content">
+                <i class="fa-regular fa-image placeholder-icon"></i>
+                <p class="placeholder-text">No banners available</p>
+            </div>
+        </div>
+    }
+</div>

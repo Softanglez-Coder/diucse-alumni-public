@@ -1,0 +1,45 @@
+<section class="featured-alumni-section">
+    <div class="container mx-auto px-4 py-16">
+        <div class="section-header">
+            <h2 class="section-title">Success Stories</h2>
+            <p class="section-subtitle">Meet our accomplished alumni making waves in the tech industry</p>
+        </div>
+        @if (alumni.value() && alumni.value().length > 0) {
+            <div class="alumni-grid">
+                @for (alumnus of alumni.value(); track alumnus.id) {
+                    <div class="alumni-card">
+                        <div class="alumni-image">
+                            <img [src]="alumnus.image" [alt]="alumnus.name" loading="lazy">
+                            <div class="alumni-badge">
+                                <a [href]="alumnus.linkedin" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="alumni-info">
+                            <h3 class="alumni-name">{{alumnus.name}}</h3>
+                            <p class="alumni-position">{{alumnus.position}}</p>
+                            <p class="alumni-company">{{alumnus.company}}</p>
+                            <p class="alumni-location">{{alumnus.location}}</p>
+                            <p class="alumni-year">{{alumnus.year}}</p>
+                            <p class="alumni-bio">{{alumnus.bio}}</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        } @else {
+            <div class="alumni-placeholder">
+                <div class="placeholder-content">
+                    <i class="fa-solid fa-users placeholder-icon"></i>
+                    <p class="placeholder-text">No featured alumni available</p>
+                </div>
+            </div>
+        }
+        <div class="section-footer">
+            <a href="/alumni" class="btn btn-outline">
+                View All Alumni
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>

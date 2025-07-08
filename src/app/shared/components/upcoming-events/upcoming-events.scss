@@ -1,0 +1,298 @@
+// Events Section
+.events-section {
+    background: white;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    color: #6b7280;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.section-footer {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    
+    &.btn-outline {
+        background: transparent;
+        color: #3b82f6;
+        border-color: #3b82f6;
+        
+        &:hover {
+            background: #3b82f6;
+            color: white;
+        }
+    }
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
+.event-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    display: flex;
+    gap: 1.5rem;
+    
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    &.featured-event {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        border: none;
+        
+        .event-category {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .event-title {
+            color: white;
+        }
+        
+        .event-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .event-meta span {
+            color: rgba(255, 255, 255, 0.9);
+            
+            i {
+                color: rgba(255, 255, 255, 0.7);
+            }
+        }
+        
+        .event-btn {
+            background: white;
+            color: #3b82f6;
+            
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+            }
+        }
+        
+        .registration-info {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .registration-progress {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .progress-bar {
+            background: white;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        flex-direction: column;
+        text-align: center;
+        
+        .event-date {
+            align-self: center;
+        }
+    }
+}
+
+.event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f3f4f6;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    min-width: 80px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.date-day {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.date-month {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.event-content {
+    flex: 1;
+}
+
+.event-category {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1d4ed8;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.event-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.event-description {
+    color: #6b7280;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.event-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.event-location,
+.event-time,
+.event-price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    
+    i {
+        color: #9ca3af;
+        width: 16px;
+    }
+}
+
+.event-registration {
+    margin-bottom: 1.5rem;
+}
+
+.registration-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.registration-count {
+    font-weight: 500;
+}
+
+.registration-percentage {
+    font-weight: 600;
+    color: #3b82f6;
+}
+
+.registration-progress {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.event-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #3b82f6;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+}
+
+.events-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    background: #f9fafb;
+    border-radius: 1rem;
+    border: 2px dashed #e5e7eb;
+}
+
+.placeholder-content {
+    text-align: center;
+    color: #6b7280;
+}
+
+.placeholder-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.placeholder-text {
+    font-size: 1.125rem;
+    font-weight: 500;
+}

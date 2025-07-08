@@ -1,0 +1,67 @@
+<section class="events-section">
+    <div class="container mx-auto px-4 py-16">
+        <div class="section-header">
+            <h2 class="section-title">Upcoming Events</h2>
+            <p class="section-subtitle">Don't miss out on networking and learning opportunities</p>
+        </div>
+        @if (events.value() && events.value().length > 0) {
+            <div class="events-grid">
+                @for (event of events.value(); track event.id; let i = $index) {
+                    <div class="event-card" [class.featured-event]="event.featured">
+                        <div class="event-date">
+                            <span class="date-day">{{formatDate(event.date).day}}</span>
+                            <span class="date-month">{{formatDate(event.date).month}}</span>
+                        </div>
+                        <div class="event-content">
+                            <span class="event-category">{{event.category}}</span>
+                            <h3 class="event-title">{{event.title}}</h3>
+                            <p class="event-description">{{event.description}}</p>
+                            <div class="event-meta">
+                                <span class="event-location">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    {{event.location}}
+                                </span>
+                                <span class="event-time">
+                                    <i class="fa-solid fa-clock"></i>
+                                    {{event.time}}
+                                </span>
+                                <span class="event-price">
+                                    <i class="fa-solid fa-tag"></i>
+                                    {{event.price}}
+                                </span>
+                            </div>
+                            @if (event.capacity > 0) {
+                                <div class="event-registration">
+                                    <div class="registration-info">
+                                        <span class="registration-count">{{event.registered}}/{{event.capacity}} registered</span>
+                                        <span class="registration-percentage">{{getProgressPercentage(event.registered, event.capacity)}}%</span>
+                                    </div>
+                                    <div class="registration-progress">
+                                        <div class="progress-bar" [style.width.%]="getProgressPercentage(event.registered, event.capacity)"></div>
+                                    </div>
+                                </div>
+                            }
+                            <a [href]="event.registrationLink" class="event-btn">
+                                Register Now
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        } @else {
+            <div class="events-placeholder">
+                <div class="placeholder-content">
+                    <i class="fa-solid fa-calendar placeholder-icon"></i>
+                    <p class="placeholder-text">No upcoming events</p>
+                </div>
+            </div>
+        }
+        <div class="section-footer">
+            <a href="/events" class="btn btn-outline">
+                View All Events
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
