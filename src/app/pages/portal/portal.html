@@ -7,7 +7,7 @@
                aria-label="Portal navigation">
             <nav class="h-full flex flex-col">
                 <button 
-                    class="flex items-center lg:justify-start justify-start w-full p-5 lg:p-6 bg-blue-600 text-white border-none cursor-pointer text-sm font-semibold transition-all duration-300 relative hover:bg-blue-700 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-300" 
+                    class="flex items-center lg:justify-start justify-start w-full p-5 lg:p-6 bg-primary-600 text-white border-none cursor-pointer text-sm font-semibold transition-all duration-300 relative hover:bg-primary-700 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-300" 
                     [ngClass]="{ 'lg:justify-center': collapsed }"
                     (click)="collapsed = !collapsed"
                     [attr.aria-label]="collapsed ? 'Expand navigation menu' : 'Collapse navigation menu'"
@@ -18,23 +18,23 @@
                           [ngClass]="{ 'lg:hidden': collapsed }">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
                 </button>
 
-                <ul class="list-none m-0 py-6 flex-1 lg:block flex flex-wrap gap-2 lg:gap-0 px-4 lg:px-0" role="menubar">
+                <ul [ngClass]="{ 'hidden': collapsed, 'block': !collapsed }" class="list-none m-0 py-6 flex-1 lg:block flex flex-wrap gap-2 lg:gap-0 px-4 lg:px-0" role="menubar">
                     @for (link of links.value(); track link.path) {
-                        <li class="m-0 lg:hover:bg-blue-50 lg:flex-none flex-1 lg:min-w-0 min-w-48" 
+                        <li class="m-0 lg:hover:bg-primary-50 lg:flex-none flex-1 lg:min-w-0 min-w-48" 
                             role="none" 
                             (click)="onLinkClicked(link)">
                             <a 
                                 [routerLink]="link.path" 
-                                routerLinkActive="text-blue-600 lg:border-l-4 lg:border-blue-600 lg:bg-blue-100 font-semibold lg:rounded-none rounded-lg bg-blue-50" 
+                                routerLinkActive="text-primary-600 lg:border-l-4 lg:border-primary-600 lg:bg-primary-100 font-semibold lg:rounded-none rounded-lg bg-primary-50" 
                                 [routerLinkActiveOptions]="{ exact: true }"
-                                class="flex items-center p-4 lg:px-6 text-gray-700 transition-all duration-300 relative border-l-4 border-transparent no-underline hover:text-blue-600 hover:border-blue-600 hover:bg-blue-50 lg:rounded-none rounded-lg lg:mx-0 mx-2 group"
+                                class="flex items-center p-4 lg:px-6 text-gray-700 transition-all duration-300 relative border-l-4 border-transparent no-underline hover:text-primary-600 hover:border-primary-600 hover:bg-primary-50 lg:rounded-none rounded-lg lg:mx-0 mx-2 group"
                                 [ngClass]="{ 'lg:justify-center lg:px-3': collapsed }"
                                 role="menuitem"
                                 [attr.aria-label]="link.title + ': ' + link.description"
                                 [attr.data-tooltip]="link.title">
                                 <div class="w-6 h-6 flex items-center justify-center mr-4 transition-all duration-300 flex-shrink-0 relative"
                                      [ngClass]="{ 'lg:mr-0': collapsed }">
-                                    <i class="text-lg text-gray-500 transition-all duration-300 group-hover:text-blue-600" [ngClass]="link.icon"></i>
+                                    <i class="text-lg text-gray-500 transition-all duration-300 group-hover:text-primary-600" [ngClass]="link.icon"></i>
                                     <!-- Tooltip for collapsed state on desktop -->
                                     <span class="hidden lg:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white rounded-md text-sm whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none"
                                           [class.lg:opacity-0]="!collapsed"

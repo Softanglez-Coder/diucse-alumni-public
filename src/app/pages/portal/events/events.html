@@ -10,7 +10,7 @@
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
                     [class.border-primary]="activeTab() === 'registered'"
-                    [class.text-blue-600]="activeTab() === 'registered'"
+                    [class.text-primary-600]="activeTab() === 'registered'"
                     [class.border-transparent]="activeTab() !== 'registered'"
                     (click)="setActiveTab('registered')">
                     <i class="fa-solid fa-calendar-check"></i>
@@ -20,7 +20,7 @@
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
                     [class.border-primary]="activeTab() === 'organized'"
-                    [class.text-blue-600]="activeTab() === 'organized'"
+                    [class.text-primary-600]="activeTab() === 'organized'"
                     [class.border-transparent]="activeTab() !== 'organized'"
                     (click)="setActiveTab('organized')">
                     <i class="fa-solid fa-users-cog"></i>
@@ -30,7 +30,7 @@
                 <button 
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
                     [class.border-primary]="activeTab() === 'available'"
-                    [class.text-blue-600]="activeTab() === 'available'"
+                    [class.text-primary-600]="activeTab() === 'available'"
                     [class.border-transparent]="activeTab() !== 'available'"
                     (click)="setActiveTab('available')">
                     <i class="fa-solid fa-calendar-plus"></i>
@@ -45,7 +45,7 @@
                 <input 
                     type="text" 
                     placeholder="Search events..."
-                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                     [(ngModel)]="searchQuery">
             </div>
             
@@ -123,8 +123,8 @@
                             <div class="mb-4">
                                 <div class="flex flex-wrap gap-2 mb-3">
                                     <span class="px-2 py-0.5 rounded text-xs font-medium" 
-                                          [class.bg-blue-100]="getEventTypeClass(event.type).includes('conference')"
-                                          [class.text-blue-800]="getEventTypeClass(event.type).includes('conference')"
+                                          [class.bg-primary-100]="getEventTypeClass(event.type).includes('conference')"
+                                          [class.text-primary-800]="getEventTypeClass(event.type).includes('conference')"
                                           [class.bg-green-100]="getEventTypeClass(event.type).includes('workshop')"
                                           [class.text-green-800]="getEventTypeClass(event.type).includes('workshop')"
                                           [class.bg-purple-100]="getEventTypeClass(event.type).includes('social')"
@@ -142,8 +142,8 @@
                                     </span>
                                     @if (activeTab() === 'registered') {
                                         <span class="px-2 py-0.5 rounded text-xs font-medium"
-                                              [class.bg-blue-100]="getRegistrationStatusClass(event.registrationStatus).includes('confirmed')"
-                                              [class.text-blue-800]="getRegistrationStatusClass(event.registrationStatus).includes('confirmed')"
+                                              [class.bg-primary-100]="getRegistrationStatusClass(event.registrationStatus).includes('confirmed')"
+                                              [class.text-primary-800]="getRegistrationStatusClass(event.registrationStatus).includes('confirmed')"
                                               [class.bg-yellow-100]="getRegistrationStatusClass(event.registrationStatus).includes('pending')"
                                               [class.text-yellow-800]="getRegistrationStatusClass(event.registrationStatus).includes('pending')">
                                             {{ event.registrationStatus | titlecase }}
