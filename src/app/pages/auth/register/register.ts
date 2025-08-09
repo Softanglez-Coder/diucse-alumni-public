@@ -35,7 +35,6 @@ export class Register {
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]],
 
       // Academic Information
-      studentId: ['', [Validators.required]],
       batch: ['', [Validators.required]],
       graduationYear: ['', [Validators.required, Validators.min(2010), Validators.max(new Date().getFullYear())]],
       degree: ['BSc in Computer Science and Engineering', [Validators.required]],
@@ -83,7 +82,7 @@ export class Register {
 
   isStepValid(): boolean {
     const step1Fields = ['name', 'email', 'phone'];
-    const step2Fields = ['studentId', 'batch', 'graduationYear', 'degree'];
+    const step2Fields = ['batch', 'graduationYear', 'degree'];
     const step3Fields = ['password', 'confirmPassword', 'acceptTerms'];
 
     let fieldsToCheck: string[] = [];
@@ -108,7 +107,7 @@ export class Register {
 
   markStepGroupTouched() {
     const step1Fields = ['name', 'email', 'phone'];
-    const step2Fields = ['studentId', 'batch', 'graduationYear', 'degree'];
+    const step2Fields = ['batch', 'graduationYear', 'degree'];
     const step3Fields = ['password', 'confirmPassword', 'acceptTerms'];
 
     let fieldsToMark: string[] = [];
@@ -139,7 +138,6 @@ export class Register {
         name: this.registerForm.value.name,
         email: this.registerForm.value.email,
         phone: this.registerForm.value.phone,
-        studentId: this.registerForm.value.studentId,
         batch: this.registerForm.value.batch,
         graduationYear: this.registerForm.value.graduationYear,
         degree: this.registerForm.value.degree,
@@ -205,7 +203,6 @@ export class Register {
       name: 'Name',
       email: 'Email',
       phone: 'Phone number',
-      studentId: 'Student ID',
       batch: 'Batch',
       graduationYear: 'Graduation year',
       degree: 'Degree',
