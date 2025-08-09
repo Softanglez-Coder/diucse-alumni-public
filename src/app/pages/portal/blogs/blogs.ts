@@ -1,26 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal, inject, computed } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-
-interface BlogPost {
-    id: string;
-    title: string;
-    content: string;
-    excerpt: string;
-    status: 'draft' | 'published' | 'under_review' | 'rejected';
-    createdDate: string;
-    publishedDate?: string;
-    lastModified: string;
-    author: string;
-    tags: string[];
-    category: string;
-    readingTime: number;
-    likes: number;
-    comments: number;
-    views: number;
-    featuredImage?: string;
-    isLiked?: boolean;
-}
+import { BlogService, Blog } from "../../../services";
 
 interface BlogCategory {
     id: string;
@@ -33,113 +14,92 @@ interface BlogCategory {
     selector: 'blogs',
     templateUrl: './blogs.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, FormsModule]
+    imports: [CommonModule, FormsModule],
+    providers: [BlogService]
 })
 export class PortalBlogs {
+    private blogService = inject(BlogService);
+
     protected activeTab = signal<'my-blogs' | 'create' | 'published'>('my-blogs');
     protected selectedFilter = signal<'all' | 'draft' | 'published' | 'under_review' | 'rejected'>('all');
     protected selectedCategory = signal<string>('all');
     protected searchQuery = signal('');
 
-    // Mock data - in real app this would come from backend
-    protected myBlogs = signal<BlogPost[]>([
-        {
-            id: '1',
-            title: 'My Journey in Software Engineering',
-            content: 'Full content would be here...',
-            excerpt: 'Sharing my experiences and lessons learned during my transition from university to the professional world of software engineering.',
-            status: 'published',
-            createdDate: '2024-11-01',
-            publishedDate: '2024-11-05',
-            lastModified: '2024-11-03',
-            author: 'John Doe',
-            tags: ['career', 'software engineering', 'experience'],
-            category: 'Career',
-            readingTime: 8,
-            likes: 23,
-            comments: 7,
-            views: 156,
-            featuredImage: '/images/blogs/software-journey.jpg',
-            isLiked: true
-        },
-        {
-            id: '2',
-            title: 'Best Practices for React Development',
-            content: 'Full content would be here...',
-            excerpt: 'A comprehensive guide to modern React development practices, including hooks, performance optimization, and testing strategies.',
-            status: 'under_review',
-            createdDate: '2024-11-15',
-            lastModified: '2024-11-16',
-            author: 'John Doe',
-            tags: ['react', 'javascript', 'web development', 'best practices'],
-            category: 'Technology',
-            readingTime: 12,
-            likes: 0,
-            comments: 0,
-            views: 0
-        },
-        {
-            id: '3',
-            title: 'Alumni Network: Building Professional Connections',
-            content: 'Full content would be here...',
-            excerpt: 'How to effectively leverage your alumni network for career growth and professional development.',
-            status: 'draft',
-            createdDate: '2024-11-20',
-            lastModified: '2024-11-22',
-            author: 'John Doe',
-            tags: ['networking', 'career', 'alumni'],
-            category: 'Career',
-            readingTime: 6,
-            likes: 0,
-            comments: 0,
-            views: 0
+    // Get user's blogs from API
+    protected myBlogsResource = this.blogService.findAll({
+        author: 'current-user', // This would be determined by auth service
+        sortBy: 'lastModified',
+        sort: 'desc'
+    });
+
+    // Get published blogs from API
+    protected publishedBlogsResource = this.blogService.findAll({
+        status: 'published',
+        sortBy: 'publishedDate',
+        sort: 'desc'
+    });
+
+    // Computed properties for blogs
+    protected myBlogs = computed(() => this.myBlogsResource.value());
+
+    protected publishedBlogs = computed(() => this.publishedBlogsResource.value());
+
+    protected publishedBlogsCount = computed(() => this.publishedBlogs().length);
+
+    // Computed filtered blogs based on selected filter
+    protected filteredMyBlogs = computed(() => {
+        const blogs = this.myBlogsResource.value();
+        const filter = this.selectedFilter();
+        const search = this.searchQuery().toLowerCase();
+        const category = this.selectedCategory();
+
+        let filtered = blogs;
+
+        // Apply status filter
+        if (filter !== 'all') {
+            filtered = filtered.filter(blog => blog.status === filter);
         }
-    ]);
 
+        // Apply search filter
+        if (search) {
+            filtered = filtered.filter(blog =>
+                blog.title.toLowerCase().includes(search) ||
+                blog.excerpt.toLowerCase().includes(search) ||
+                blog.tags.some(tag => tag.toLowerCase().includes(search))
+            );
+        }
+
+        // Apply category filter
+        if (category !== 'all') {
+            filtered = filtered.filter(blog => blog.category === category);
+        }
+
+        return filtered;
+    });
+
+    // Alias for template compatibility
+    protected getFilteredBlogs = this.filteredMyBlogs;
+
+    // Blog categories - could be fetched from API
     protected categories = signal<BlogCategory[]>([
-        { id: 'technology', name: 'Technology', description: 'Tech trends, tutorials, and insights', count: 45 },
-        { id: 'career', name: 'Career', description: 'Career advice and professional development', count: 32 },
-        { id: 'entrepreneurship', name: 'Entrepreneurship', description: 'Startup stories and business insights', count: 18 },
-        { id: 'lifestyle', name: 'Lifestyle', description: 'Work-life balance and personal growth', count: 24 },
-        { id: 'education', name: 'Education', description: 'Learning resources and academic insights', count: 16 }
+        { id: 'technology', name: 'Technology', description: 'Tech articles and tutorials', count: 0 },
+        { id: 'career', name: 'Career', description: 'Career advice and professional development', count: 0 },
+        { id: 'education', name: 'Education', description: 'Educational content and resources', count: 0 },
+        { id: 'personal', name: 'Personal', description: 'Personal experiences and stories', count: 0 }
     ]);
 
+    // New blog form data
     protected newBlog = signal({
         title: '',
-        excerpt: '',
         content: '',
+        excerpt: '',
         category: '',
         tags: '',
         featuredImage: ''
     });
 
+    // Form submission state
     protected isSubmitting = signal(false);
-
-    // Computed properties to avoid complex template expressions
-    protected get publishedBlogsCount(): number {
-        return this.myBlogs().filter(b => b.status === 'published').length;
-    }
-
-    protected get publishedBlogs(): BlogPost[] {
-        return this.myBlogs().filter(b => b.status === 'published');
-    }
-
-    protected get filteredBlogs(): BlogPost[] {
-        const filter = this.selectedFilter();
-        const category = this.selectedCategory();
-        const query = this.searchQuery().toLowerCase();
-
-        return this.myBlogs().filter(blog => {
-            const matchesFilter = filter === 'all' || blog.status === filter;
-            const matchesCategory = category === 'all' || blog.category === category;
-            const matchesSearch = !query || 
-                blog.title.toLowerCase().includes(query) ||
-                blog.content.toLowerCase().includes(query) ||
-                blog.tags.some(tag => tag.toLowerCase().includes(query));
-
-            return matchesFilter && matchesCategory && matchesSearch;
-        });
-    }
 
     protected setActiveTab(tab: 'my-blogs' | 'create' | 'published') {
         this.activeTab.set(tab);
@@ -153,199 +113,166 @@ export class PortalBlogs {
         this.selectedCategory.set(category);
     }
 
-    protected getFilteredBlogs(): BlogPost[] {
-        let blogs = this.myBlogs();
-
-        // Apply status filter
-        if (this.selectedFilter() !== 'all') {
-            blogs = blogs.filter(blog => blog.status === this.selectedFilter());
-        }
-
-        // Apply category filter
-        if (this.selectedCategory() !== 'all') {
-            blogs = blogs.filter(blog => blog.category.toLowerCase() === this.selectedCategory());
-        }
-
-        // Apply search filter
-        const query = this.searchQuery().toLowerCase();
-        if (query) {
-            blogs = blogs.filter(blog => 
-                blog.title.toLowerCase().includes(query) ||
-                blog.excerpt.toLowerCase().includes(query) ||
-                blog.tags.some(tag => tag.toLowerCase().includes(query))
-            );
-        }
-
-        return blogs.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime());
+    protected updateSearchQuery(query: string) {
+        this.searchQuery.set(query);
     }
 
     protected getStatusClass(status: string): string {
-        switch (status) {
-            case 'published': return 'status-published';
-            case 'draft': return 'status-draft';
-            case 'under_review': return 'status-review';
-            case 'rejected': return 'status-rejected';
-            default: return 'status-default';
-        }
+        const statusClasses = {
+            'draft': 'bg-gray-100 text-gray-600',
+            'published': 'bg-green-100 text-green-600',
+            'under_review': 'bg-yellow-100 text-yellow-600',
+            'rejected': 'bg-red-100 text-red-600'
+        };
+        return statusClasses[status as keyof typeof statusClasses] || 'bg-gray-100 text-gray-600';
     }
 
-    protected getStatusText(status: string): string {
-        switch (status) {
-            case 'published': return 'Published';
-            case 'draft': return 'Draft';
-            case 'under_review': return 'Under Review';
-            case 'rejected': return 'Rejected';
-            default: return 'Unknown';
-        }
+    protected getStatusLabel(status: string): string {
+        const statusLabels = {
+            'draft': 'Draft',
+            'published': 'Published',
+            'under_review': 'Under Review',
+            'rejected': 'Rejected'
+        };
+        return statusLabels[status as keyof typeof statusLabels] || status;
     }
 
-    protected formatDate(dateString: string): string {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
+    protected getStatusText(status: string | undefined): string {
+        return this.getStatusLabel(status || 'draft');
+    }
+
+    protected formatDate(date: string | Date | undefined): string {
+        if (!date) return '';
+        const dateObj = new Date(date);
+        return dateObj.toLocaleDateString('en-US', {
             year: 'numeric',
-            month: 'long',
+            month: 'short',
             day: 'numeric'
         });
     }
 
     protected calculateReadingTime(content: string): number {
         const wordsPerMinute = 200;
-        const wordCount = content.split(' ').length;
+        const wordCount = content.trim().split(/\s+/).length;
         return Math.ceil(wordCount / wordsPerMinute);
     }
 
     protected validateBlog(): boolean {
         const blog = this.newBlog();
-        return !!(
-            blog.title.trim() &&
-            blog.excerpt.trim() &&
-            blog.content.trim().length >= 100 &&
-            blog.category.trim() &&
-            blog.tags.trim()
-        );
+        return !!(blog.title.trim() && blog.content.trim() && blog.category);
     }
 
-    protected async saveDraft() {
-        if (!this.newBlog().title.trim()) {
-            alert('Please enter a title for your blog post');
-            return;
-        }
-
-        this.isSubmitting.set(true);
-
-        try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            const newPost: BlogPost = {
-                id: Date.now().toString(),
-                title: this.newBlog().title,
-                excerpt: this.newBlog().excerpt,
-                content: this.newBlog().content,
-                status: 'draft',
-                createdDate: new Date().toISOString().split('T')[0],
-                lastModified: new Date().toISOString().split('T')[0],
-                author: 'John Doe', // Current user
-                tags: this.newBlog().tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-                category: this.newBlog().category || 'General',
-                readingTime: this.calculateReadingTime(this.newBlog().content),
-                likes: 0,
-                comments: 0,
-                views: 0,
-                featuredImage: this.newBlog().featuredImage
-            };
-
-            this.myBlogs.update(blogs => [newPost, ...blogs]);
-            this.resetForm();
-            this.setActiveTab('my-blogs');
-            
-            alert('Blog post saved as draft successfully!');
-        } catch (error) {
-            alert('Failed to save draft. Please try again.');
-        } finally {
-            this.isSubmitting.set(false);
-        }
-    }
-
-    protected async submitForReview() {
-        if (!this.validateBlog()) {
-            alert('Please fill in all required fields with adequate content');
-            return;
-        }
-
-        this.isSubmitting.set(true);
-
-        try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            const newPost: BlogPost = {
-                id: Date.now().toString(),
-                title: this.newBlog().title,
-                excerpt: this.newBlog().excerpt,
-                content: this.newBlog().content,
-                status: 'under_review',
-                createdDate: new Date().toISOString().split('T')[0],
-                lastModified: new Date().toISOString().split('T')[0],
-                author: 'John Doe', // Current user
-                tags: this.newBlog().tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-                category: this.newBlog().category,
-                readingTime: this.calculateReadingTime(this.newBlog().content),
-                likes: 0,
-                comments: 0,
-                views: 0,
-                featuredImage: this.newBlog().featuredImage
-            };
-
-            this.myBlogs.update(blogs => [newPost, ...blogs]);
-            this.resetForm();
-            this.setActiveTab('my-blogs');
-            
-            alert('Blog post submitted for review successfully! You will be notified once it is reviewed.');
-        } catch (error) {
-            alert('Failed to submit for review. Please try again.');
-        } finally {
-            this.isSubmitting.set(false);
-        }
-    }
-
-    protected resetForm() {
+    protected resetForm(): void {
         this.newBlog.set({
             title: '',
-            excerpt: '',
             content: '',
+            excerpt: '',
             category: '',
             tags: '',
             featuredImage: ''
         });
     }
 
-    protected editBlog(blog: BlogPost) {
-        // In real app, this would open an edit form or navigate to edit page
-        console.log('Editing blog:', blog.title);
-        alert(`Edit functionality for "${blog.title}" would be implemented here.`);
-    }
+    protected async saveDraft(): Promise<void> {
+        if (!this.newBlog().title.trim()) return;
 
-    protected deleteBlog(blog: BlogPost) {
-        if (confirm(`Are you sure you want to delete "${blog.title}"?`)) {
-            this.myBlogs.update(blogs => blogs.filter(b => b.id !== blog.id));
-            alert('Blog post deleted successfully.');
+        this.isSubmitting.set(true);
+        try {
+            // In a real app, this would call the API to save draft
+            console.log('Saving draft:', this.newBlog());
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+            // Optionally reset form and switch tab
+            this.resetForm();
+            this.setActiveTab('my-blogs');
+        } catch (error) {
+            console.error('Error saving draft:', error);
+        } finally {
+            this.isSubmitting.set(false);
         }
     }
 
-    protected viewBlog(blog: BlogPost) {
-        // In real app, this would navigate to the full blog view
-        console.log('Viewing blog:', blog.title);
-        alert(`Full blog view for "${blog.title}" would open here.`);
+    protected async submitForReview(): Promise<void> {
+        if (!this.validateBlog()) return;
+
+        this.isSubmitting.set(true);
+        try {
+            // In a real app, this would call the API to submit for review
+            console.log('Submitting for review:', this.newBlog());
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+            this.resetForm();
+            this.setActiveTab('my-blogs');
+        } catch (error) {
+            console.error('Error submitting for review:', error);
+        } finally {
+            this.isSubmitting.set(false);
+        }
     }
 
-    protected publishBlog(blog: BlogPost) {
-        if (confirm(`Are you sure you want to publish "${blog.title}"?`)) {
-            // In real app, this would make an API call
-            blog.status = 'under_review';
-            blog.lastModified = new Date().toISOString().split('T')[0];
-            this.myBlogs.update(blogs => [...blogs]);
-            alert('Blog submitted for review before publishing.');
+    protected viewBlog(blog: Blog): void {
+        // In a real app, this would navigate to blog detail view
+        console.log('Viewing blog:', blog);
+    }
+
+    protected editBlog(blog: Blog): void {
+        // In a real app, this would populate the form with blog data for editing
+        this.newBlog.set({
+            title: blog.title,
+            content: blog.content || '',
+            excerpt: blog.excerpt,
+            category: blog.category,
+            tags: blog.tags.join(', '),
+            featuredImage: blog.image || ''
+        });
+        this.setActiveTab('create');
+    }
+
+    protected async publishBlog(blog: Blog): Promise<void> {
+        if (confirm('Are you sure you want to publish this blog?')) {
+            try {
+                // In a real app, this would call the API to publish the blog
+                console.log('Publishing blog:', blog);
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+            } catch (error) {
+                console.error('Error publishing blog:', error);
+            }
         }
+    }
+
+    protected createBlog() {
+        const blog = this.newBlog();
+        if (blog.title && blog.content && blog.category) {
+            // In a real app, this would call the API to create the blog
+            console.log('Creating blog:', blog);
+
+            // Reset form
+            this.newBlog.set({
+                title: '',
+                content: '',
+                excerpt: '',
+                category: '',
+                tags: '',
+                featuredImage: ''
+            });
+
+            // Switch to my blogs tab
+            this.setActiveTab('my-blogs');
+        }
+    }
+
+    protected updateNewBlog(field: string, value: string) {
+        this.newBlog.update(blog => ({ ...blog, [field]: value }));
+    }
+
+    protected deleteBlog(blog: Blog | string) {
+        const blogId = typeof blog === 'string' ? blog : blog.id;
+        if (confirm('Are you sure you want to delete this blog?')) {
+            // In a real app, this would call the API to delete the blog
+            console.log('Deleting blog:', blogId);
+        }
+    }
+
+    protected toggleLike(blogId: string) {
+        // In a real app, this would call the API to toggle like
+        console.log('Toggling like for blog:', blogId);
     }
 }

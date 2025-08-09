@@ -18,6 +18,6 @@ export interface News {
 @Injectable()
 export class NewsService extends BaseService<News> {
     constructor() {
-        super('news.json', '/data');
+        super('news');
     }
 }

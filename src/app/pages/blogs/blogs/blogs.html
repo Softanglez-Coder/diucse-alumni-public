@@ -17,26 +17,55 @@
   <section class="py-20 bg-white">
     <div class="container mx-auto max-w-5xl px-8">
       <h2 class="text-3xl font-bold text-center mb-12 text-primary-600">Featured Article</h2>
-      <article class="grid md:grid-cols-2 gap-12 cursor-pointer transition-transform hover:-translate-y-1" [routerLink]="['/blogs', featuredBlog.id]">
-        <div class="relative rounded-xl overflow-hidden aspect-[16/10] group">
-          <img [src]="featuredBlog.image" [alt]="featuredBlog.title" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-          <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <span class="text-white font-semibold text-lg">Read Article</span>
+
+      @if (blogsResource.isLoading()) {
+        <!-- Loading skeleton for featured blog -->
+        <div class="grid md:grid-cols-2 gap-12 animate-pulse">
+          <div class="relative rounded-xl overflow-hidden aspect-[16/10] bg-gray-200"></div>
+          <div class="flex flex-col justify-center">
+            <div class="flex gap-4 mb-3">
+              <div class="h-4 bg-gray-200 rounded w-24"></div>
+              <div class="h-4 bg-gray-200 rounded w-20"></div>
+              <div class="h-4 bg-gray-200 rounded w-16"></div>
+            </div>
+            <div class="h-8 bg-gray-200 rounded mb-3"></div>
+            <div class="h-6 bg-gray-200 rounded mb-6 w-4/5"></div>
+            <div class="flex gap-2">
+              <div class="h-6 bg-gray-200 rounded-full w-16"></div>
+              <div class="h-6 bg-gray-200 rounded-full w-20"></div>
+            </div>
           </div>
         </div>
-        <div class="flex flex-col justify-center">
-          <div class="flex gap-4 mb-3 text-sm text-gray-600">
-            <span class="font-semibold text-primary-600">{{ featuredBlog.author }}</span>
-            <span>{{ featuredBlog.date }}</span>
-            <span>{{ featuredBlog.readTime }}</span>
+      } @else if (blogsResource.error()) {
+        <div class="text-center py-12">
+          <div class="text-red-600 mb-4">
+            <i class="fa-solid fa-exclamation-triangle text-4xl"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-3 text-gray-900 leading-snug">{{ featuredBlog.title }}</h3>
-          <p class="text-lg text-gray-600 mb-6">{{ featuredBlog.excerpt }}</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-3 py-1 rounded-full text-xs font-medium" *ngFor="let tag of featuredBlog.tags">{{ tag }}</span>
-          </div>
+          <h3 class="text-xl font-semibold text-red-600 mb-2">Failed to load blogs</h3>
+          <p class="text-gray-600">Please try again later</p>
         </div>
-      </article>
+      } @else if (featuredBlog()) {
+        <article class="grid md:grid-cols-2 gap-12 cursor-pointer transition-transform hover:-translate-y-1" [routerLink]="['/blogs', featuredBlog()!.slug || featuredBlog()!.id]">
+          <div class="relative rounded-xl overflow-hidden aspect-[16/10] group">
+            <img [src]="featuredBlog()!.image" [alt]="featuredBlog()!.title" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-white font-semibold text-lg">Read Article</span>
+            </div>
+          </div>
+          <div class="flex flex-col justify-center">
+            <div class="flex gap-4 mb-3 text-sm text-gray-600">
+              <span class="font-semibold text-primary-600">{{ featuredBlog()!.author }}</span>
+              <span>{{ featuredBlog()!.date }}</span>
+              <span>{{ featuredBlog()!.readTime }}</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-3 text-gray-900 leading-snug">{{ featuredBlog()!.title }}</h3>
+            <p class="text-lg text-gray-600 mb-6">{{ featuredBlog()!.excerpt }}</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-3 py-1 rounded-full text-xs font-medium" *ngFor="let tag of featuredBlog()!.tags">{{ tag }}</span>
+            </div>
+          </div>
+        </article>
+      }
     </div>
   </section>
 
@@ -54,26 +83,57 @@
         </div>
       </div>
       <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-12">
-        <article class="bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-2xl" *ngFor="let blog of recentBlogs" [routerLink]="['/blogs', blog.id]">
-          <div class="relative aspect-[16/10] overflow-hidden group">
-            <img [src]="blog.image" [alt]="blog.title" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-            <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <span class="text-white font-semibold">Read More</span>
+        @if (blogsResource.isLoading()) {
+          <!-- Loading skeletons for recent blogs -->
+          @for (item of [1,2,3]; track item) {
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg animate-pulse">
+              <div class="relative aspect-[16/10] bg-gray-200"></div>
+              <div class="p-6">
+                <div class="flex gap-4 mb-2">
+                  <div class="h-3 bg-gray-200 rounded w-16"></div>
+                  <div class="h-3 bg-gray-200 rounded w-12"></div>
+                  <div class="h-3 bg-gray-200 rounded w-14"></div>
+                </div>
+                <div class="h-5 bg-gray-200 rounded mb-2"></div>
+                <div class="h-4 bg-gray-200 rounded mb-4 w-4/5"></div>
+                <div class="flex gap-1">
+                  <div class="h-5 bg-gray-200 rounded-full w-12"></div>
+                  <div class="h-5 bg-gray-200 rounded-full w-16"></div>
+                </div>
+              </div>
             </div>
+          }
+        } @else if (blogsResource.error()) {
+          <div class="col-span-full text-center py-12">
+            <div class="text-red-600 mb-4">
+              <i class="fa-solid fa-exclamation-triangle text-2xl"></i>
+            </div>
+            <p class="text-red-600">Failed to load recent articles</p>
           </div>
-          <div class="p-6">
-            <div class="flex gap-4 mb-2 text-xs text-gray-600">
-              <span class="font-semibold text-primary-600">{{ blog.author }}</span>
-              <span>{{ blog.date }}</span>
-              <span>{{ blog.readTime }}</span>
-            </div>
-            <h3 class="text-lg font-bold mb-2 text-gray-900 leading-snug">{{ blog.title }}</h3>
-            <p class="text-gray-600 text-sm mb-4">{{ blog.excerpt }}</p>
-            <div class="flex flex-wrap gap-1">
-              <span class="bg-primary-100 text-primary-600 px-2 py-1 rounded-full text-xs font-medium" *ngFor="let tag of blog.tags">{{ tag }}</span>
-            </div>
-          </div>
-        </article>
+        } @else {
+          @for (blog of recentBlogs(); track blog.id) {
+            <article class="bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-2xl" [routerLink]="['/blogs', blog.slug || blog.id]">
+              <div class="relative aspect-[16/10] overflow-hidden group">
+                <img [src]="blog.image" [alt]="blog.title" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span class="text-white font-semibold">Read More</span>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="flex gap-4 mb-2 text-xs text-gray-600">
+                  <span class="font-semibold text-primary-600">{{ blog.author }}</span>
+                  <span>{{ blog.date }}</span>
+                  <span>{{ blog.readTime }}</span>
+                </div>
+                <h3 class="text-lg font-bold mb-2 text-gray-900 leading-snug">{{ blog.title }}</h3>
+                <p class="text-gray-600 text-sm mb-4">{{ blog.excerpt }}</p>
+                <div class="flex flex-wrap gap-1">
+                  <span class="bg-primary-100 text-primary-600 px-2 py-1 rounded-full text-xs font-medium" *ngFor="let tag of blog.tags">{{ tag }}</span>
+                </div>
+              </div>
+            </article>
+          }
+        }
       </div>
       <div class="text-center">
         <button class="px-8 py-3 font-bold rounded-lg border-2 border-primary-500 text-primary-600 bg-white hover:bg-primary-50 transition">Load More Articles</button>

@@ -7,7 +7,7 @@
 
         <div class="flex flex-col">
             <div class="flex flex-wrap border-b border-gray-200 mb-6">
-                <button 
+                <button
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
                     [class.border-primary]="activeTab() === 'my-blogs'"
                     [class.text-primary-600]="activeTab() === 'my-blogs'"
@@ -17,7 +17,7 @@
                     My Blogs
                     <span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">{{ myBlogs().length }}</span>
                 </button>
-                <button 
+                <button
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
                     [class.border-primary]="activeTab() === 'create'"
                     [class.text-primary-600]="activeTab() === 'create'"
@@ -26,7 +26,7 @@
                     <i class="fa-solid fa-plus"></i>
                     Create New Blog
                 </button>
-                <button 
+                <button
                     class="px-6 py-3 text-gray-700 font-medium border-b-2 transition-colors flex items-center gap-2"
                     [class.border-primary]="activeTab() === 'published'"
                     [class.text-primary-600]="activeTab() === 'published'"
@@ -34,7 +34,7 @@
                     (click)="setActiveTab('published')">
                     <i class="fa-solid fa-globe"></i>
                     Published Blogs
-                    <span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">{{ publishedBlogsCount }}</span>
+                    <span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">{{ publishedBlogsCount() }}</span>
                 </button>
             </div>
 
@@ -42,15 +42,15 @@
             <div class="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
                 <div class="relative w-full md:w-1/3">
                     <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         placeholder="Search your blogs..."
                         class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                         [(ngModel)]="searchQuery">
                 </div>
-                
+
                 <div class="flex flex-wrap gap-2">
-                    <button 
+                    <button
                         class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
                         [class.bg-primary]="selectedFilter() === 'all'"
                         [class.text-white]="selectedFilter() === 'all'"
@@ -59,7 +59,7 @@
                         (click)="setFilter('all')">
                         All
                     </button>
-                    <button 
+                    <button
                         class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
                         [class.bg-primary]="selectedFilter() === 'published'"
                         [class.text-white]="selectedFilter() === 'published'"
@@ -68,7 +68,7 @@
                         (click)="setFilter('published')">
                         Published
                     </button>
-                    <button 
+                    <button
                         class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
                         [class.bg-primary]="selectedFilter() === 'draft'"
                         [class.text-white]="selectedFilter() === 'draft'"
@@ -77,7 +77,7 @@
                         (click)="setFilter('draft')">
                         Drafts
                     </button>
-                    <button 
+                    <button
                         class="px-4 py-1.5 text-sm font-medium rounded-md transition-colors"
                         [class.bg-primary]="selectedFilter() === 'under_review'"
                         [class.text-white]="selectedFilter() === 'under_review'"
@@ -120,15 +120,15 @@
                 } @else {
                     @for (blog of getFilteredBlogs(); track blog.id) {
                         <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-all">
-                            @if (blog.featuredImage) {
+                            @if (blog.image) {
                                 <div class="h-48 overflow-hidden">
-                                    <img [src]="blog.featuredImage" [alt]="blog.title" class="w-full h-full object-cover">
+                                    <img [src]="blog.image" [alt]="blog.title" class="w-full h-full object-cover">
                                 </div>
                             }
-                            
+
                             <div class="p-4">
                                 <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="px-2 py-0.5 rounded text-xs font-medium" 
+                                    <span class="px-2 py-0.5 rounded text-xs font-medium"
                                           [class.bg-green-100]="blog.status === 'published'"
                                           [class.text-green-800]="blog.status === 'published'"
                                           [class.bg-yellow-100]="blog.status === 'under_review'"
@@ -139,14 +139,14 @@
                                     </span>
                                     <span class="px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">{{ blog.category }}</span>
                                 </div>
-                                    
+
                                 <h3 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{{ blog.title }}</h3>
                                 <p class="text-sm text-gray-600 mb-4 line-clamp-3">{{ blog.excerpt }}</p>
 
                                 <div class="grid grid-cols-2 gap-2 text-xs text-gray-500">
                                     <div class="flex items-center">
                                         <i class="fa-solid fa-calendar mr-1.5"></i>
-                                        <span>Created: {{ formatDate(blog.createdDate) }}</span>
+                                        <span>Created: {{ formatDate(blog.date) }}</span>
                                     </div>
                                     <div class="flex items-center">
                                         <i class="fa-solid fa-edit mr-1.5"></i>
@@ -160,7 +160,7 @@
                                     }
                                     <div class="flex items-center">
                                         <i class="fa-solid fa-clock mr-1.5"></i>
-                                        <span>{{ blog.readingTime }} min read</span>
+                                        <span>{{ blog.readTime }}</span>
                                     </div>
                                 </div>
 
@@ -194,7 +194,7 @@
                                         <i class="fa-solid fa-eye"></i>
                                         View
                                     </button>
-                                    
+
                                     @if (blog.status === 'draft' || blog.status === 'rejected') {
                                         <button class="px-3 py-1 bg-primary text-white rounded hover:bg-primary text-sm flex items-center gap-1.5" (click)="editBlog(blog)">
                                             <i class="fa-solid fa-edit"></i>
@@ -210,7 +210,7 @@
                                             Edit
                                         </button>
                                     }
-                                    
+
                                     <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm flex items-center gap-1.5" (click)="deleteBlog(blog)">
                                         <i class="fa-solid fa-trash"></i>
                                         Delete
@@ -231,8 +231,8 @@
                 <form class="space-y-6">
                     <div class="space-y-2">
                         <label for="title" class="block text-sm font-medium text-gray-700">Title *</label>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             id="title"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                             [(ngModel)]="newBlog().title"
@@ -244,7 +244,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label for="category" class="block text-sm font-medium text-gray-700">Category *</label>
-                            <select 
+                            <select
                                 id="category"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 bg-white"
                                 [(ngModel)]="newBlog().category"
@@ -259,8 +259,8 @@
 
                         <div class="space-y-2">
                             <label for="tags" class="block text-sm font-medium text-gray-700">Tags *</label>
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 id="tags"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                                 [(ngModel)]="newBlog().tags"
@@ -272,8 +272,8 @@
 
                     <div class="space-y-2">
                         <label for="featuredImage" class="block text-sm font-medium text-gray-700">Featured Image URL (Optional)</label>
-                        <input 
-                            type="url" 
+                        <input
+                            type="url"
                             id="featuredImage"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                             [(ngModel)]="newBlog().featuredImage"
@@ -283,7 +283,7 @@
 
                     <div class="space-y-2">
                         <label for="excerpt" class="block text-sm font-medium text-gray-700">Excerpt *</label>
-                        <textarea 
+                        <textarea
                             id="excerpt"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                             rows="3"
@@ -296,7 +296,7 @@
 
                     <div class="space-y-2">
                         <label for="content" class="block text-sm font-medium text-gray-700">Content *</label>
-                        <textarea 
+                        <textarea
                             id="content"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 min-h-[300px]"
                             [(ngModel)]="newBlog().content"
@@ -304,7 +304,7 @@
                             placeholder="Write your blog content here. Share your experiences, insights, and knowledge with the community..."
                             required></textarea>
                         <p class="text-xs text-gray-500">
-                            {{ newBlog().content.length }} characters | 
+                            {{ newBlog().content.length }} characters |
                             ~{{ calculateReadingTime(newBlog().content) }} min read |
                             Minimum 100 characters required
                         </p>
@@ -328,26 +328,26 @@
                     </div>
 
                     <div class="flex flex-wrap gap-4 justify-end mt-8">
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-colors flex items-center gap-2"
                             (click)="resetForm()"
                             [disabled]="isSubmitting()">
                             <i class="fa-solid fa-refresh"></i>
                             Reset Form
                         </button>
-                        
-                        <button 
-                            type="button" 
+
+                        <button
+                            type="button"
                             class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors flex items-center gap-2"
                             (click)="saveDraft()"
                             [disabled]="isSubmitting() || !newBlog().title.trim()">
                             <i class="fa-solid fa-save"></i>
                             {{ isSubmitting() ? 'Saving...' : 'Save as Draft' }}
                         </button>
-                        
-                        <button 
-                            type="button" 
+
+                        <button
+                            type="button"
                             class="px-4 py-2 bg-primary hover:bg-primary text-white rounded-lg transition-colors flex items-center gap-2"
                             (click)="submitForReview()"
                             [disabled]="isSubmitting() || !validateBlog()">
@@ -364,7 +364,7 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Published Blog Posts</h2>
                 <p class="text-gray-600 mb-6">Your published blogs that are live for the community to read.</p>
 
-                @if (publishedBlogsCount === 0) {
+                @if (publishedBlogsCount() === 0) {
                     <div class="flex flex-col items-center justify-center py-16 text-center">
                         <i class="fa-solid fa-globe text-5xl text-gray-300 mb-4"></i>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">No Published Blogs</h3>
@@ -376,22 +376,22 @@
                     </div>
                 } @else {
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @for (blog of publishedBlogs; track blog.id) {
+                        @for (blog of publishedBlogs(); track blog.id) {
                             <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-all">
-                                @if (blog.featuredImage) {
+                                @if (blog.image) {
                                     <div class="h-48 overflow-hidden">
-                                        <img [src]="blog.featuredImage" [alt]="blog.title" class="w-full h-full object-cover">
+                                        <img [src]="blog.image" [alt]="blog.title" class="w-full h-full object-cover">
                                     </div>
                                 }
-                                
+
                                 <div class="p-4">
                                     <h3 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{{ blog.title }}</h3>
                                     <p class="text-sm text-gray-600 mb-4 line-clamp-3">{{ blog.excerpt }}</p>
-                                    
+
                                     <div class="flex flex-wrap gap-2 text-xs text-gray-500 mb-4">
                                         <span class="flex items-center gap-1"><i class="fa-solid fa-calendar"></i> {{ formatDate(blog.publishedDate!) }}</span>
                                         <span class="flex items-center gap-1 px-2 py-0.5 bg-primary-100 text-primary-800 rounded-full">{{ blog.category }}</span>
-                                        <span class="flex items-center gap-1"><i class="fa-solid fa-clock"></i> {{ blog.readingTime }} min read</span>
+                                        <span class="flex items-center gap-1"><i class="fa-solid fa-clock"></i> {{ blog.readTime }}</span>
                                     </div>
 
                                     <div class="flex justify-between text-xs text-gray-600 mb-4">
