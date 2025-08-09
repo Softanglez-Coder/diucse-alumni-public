@@ -65,7 +65,7 @@ export class UserService extends BaseService<User> {
      */
     updateCurrentUser(userData: Partial<User>): Observable<User> {
         const transformedData = this.transformRequest(userData);
-        return this.httpClient.patch<User>(`${this.apiBaseUrl}/auth/me`, transformedData, {
+        return this.httpClient.patch<User>(`${this.apiBaseUrl}/users`, transformedData, {
             withCredentials: true
         }).pipe(
             map(response => this.transformResponse(response))

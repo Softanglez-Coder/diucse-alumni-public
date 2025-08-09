@@ -59,8 +59,8 @@ export class AuthService {
   }
 
   verifyEmail(token: string): Observable<any> {
-    const url = `${this.baseUrl}/auth/verify-email`;
-    return this.http.post(url, { token });
+    const url = `${this.baseUrl}/auth/verify-email?token=${encodeURIComponent(token)}`;
+    return this.http.patch(url, {});
   }
 
   resendVerificationEmail(): Observable<any> {
