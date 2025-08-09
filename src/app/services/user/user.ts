@@ -73,6 +73,20 @@ export class UserService extends BaseService<User> {
     }
 
     /**
+     * Upload user photo
+     */
+    uploadPhoto(file: File): Observable<User> {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        return this.httpClient.patch<User>(`${this.apiBaseUrl}/users/photo`, formData, {
+            withCredentials: true
+        }).pipe(
+            map(response => this.transformResponse(response))
+        );
+    }
+
+    /**
      * Transform API response by mapping _id to id
      */
     private transformResponse(obj: any): any {

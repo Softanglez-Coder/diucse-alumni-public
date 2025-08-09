@@ -27,6 +27,7 @@ export class PortalProfile implements OnInit {
     protected error = signal<string | null>(null);
     protected userData = signal<User | null>(null);
     protected isSendingVerification = signal(false);
+    protected isUploadingPhoto = signal(false);
 
     protected profile = signal<ProfileData>({
         name: '',
@@ -179,5 +180,52 @@ export class PortalProfile implements OnInit {
                 this.isSendingVerification.set(false);
             }
         });
+    }
+
+    protected onPhotoSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (!input.files || input.files.length === 0) return;
+
+        const file = input.files[0];
+        this.uploadPhoto(file);
+    }
+
+    protected uploadPhoto(file: File) {
+        // Validate file type
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+            this.error.set('Please select a valid image file (JPEG, PNG, or GIF).');
+            return;
+        }
+
+        // Validate file size (5MB max)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            this.error.set('File size must be less than 5MB.');
+            return;
+        }
+
+        this.isUploadingPhoto.set(true);
+        this.error.set(null);
+
+        this.userService.uploadPhoto(file).subscribe({
+            next: (updatedUser) => {
+                this.userData.set(updatedUser);
+                this.mapUserToProfile(updatedUser);
+                this.isUploadingPhoto.set(false);
+                console.log('Photo uploaded successfully');
+                // You could add a success toast notification here
+            },
+            error: (error) => {
+                console.error('Error uploading photo:', error);
+                this.error.set('Failed to upload photo. Please try again.');
+                this.isUploadingPhoto.set(false);
+            }
+        });
+    }
+
+    protected triggerPhotoUpload() {
+        const fileInput = document.getElementById('photo-upload') as HTMLInputElement;
+        fileInput?.click();
     }
 }
