@@ -63,6 +63,11 @@ export class AuthService {
     return this.http.post(url, { token });
   }
 
+  resendVerificationEmail(): Observable<any> {
+    const url = `${this.baseUrl}/auth/resend-verification`;
+    return this.http.post(url, {}, { withCredentials: true });
+  }
+
   refreshToken(): Observable<any> {
     const url = `${this.baseUrl}/auth/refresh`;
     return this.http.post(url, {}, {
@@ -77,6 +82,22 @@ export class AuthService {
   }
 
   checkAuthStatus(): Observable<any> {
+    const url = `${this.baseUrl}/auth/me`;
+    return this.http.get(url, { withCredentials: true }).pipe(
+      tap(() => {
+        this.authState.next(true);
+      }),
+      catchError((error: any) => {
+        this.authState.next(false);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Get current authenticated user profile data
+   */
+  getCurrentUser(): Observable<any> {
     const url = `${this.baseUrl}/auth/me`;
     return this.http.get(url, { withCredentials: true }).pipe(
       tap(() => {
