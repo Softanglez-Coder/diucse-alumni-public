@@ -28,8 +28,7 @@ export class Login {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -39,8 +38,7 @@ export class Login {
       this.loginError = null;
       this.auth.login(
         this.loginForm.value.email,
-        this.loginForm.value.password,
-        this.loginForm.value.rememberMe
+        this.loginForm.value.password
       ).subscribe({
         next: () => {
           this.isSubmitting = false;

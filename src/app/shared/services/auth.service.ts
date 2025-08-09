@@ -20,9 +20,9 @@ export class AuthService {
     return this.authState.asObservable();
   }
 
-  login(email: string, password: string, rememberMe: boolean): Observable<any> {
+  login(email: string, password: string): Observable<any> {
     const url = `${this.baseUrl}/auth/login`;
-    return this.http.post(url, { email, password, rememberMe }, {
+    return this.http.post(url, { email, password }, {
       withCredentials: true,
       observe: 'response'
     }).pipe(

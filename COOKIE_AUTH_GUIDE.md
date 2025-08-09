@@ -37,9 +37,9 @@ Set-Cookie: auth_token=<jwt_token>; Path=/; Domain=localhost; HttpOnly; SameSite
 ### API Endpoints Required
 
 1. **POST /auth/login**
-   - Body: `{ email, password, rememberMe }`
+   - Body: `{ email, password }`
    - Response: Sets cookie and returns user data
-   - Cookie expiry: 30 days if rememberMe=true, 1 day otherwise
+   - Cookie expiry: 1 day (session-based)
 
 2. **POST /auth/logout**
    - Clears the auth cookie
@@ -125,4 +125,3 @@ All portal routes are protected with `authGuard`, and authentication routes use 
 2. Verify cookie sharing between subdomains in production
 3. Test automatic token refresh
 4. Verify proper redirection on authentication failures
-5. Test "Remember Me" functionality with different cookie expiries

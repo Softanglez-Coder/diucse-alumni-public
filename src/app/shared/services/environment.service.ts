@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class EnvironmentService {
-  
+
   get isProduction(): boolean {
     return window.location.hostname.includes('csediualumni.com');
   }
@@ -43,18 +43,5 @@ export class EnvironmentService {
 
   get cookieSecure(): boolean {
     return this.isProduction;
-  }
-
-  getCookieAttributes(remember: boolean = false): string {
-    const domain = `; domain=${this.cookieDomain}`;
-    const secure = this.cookieSecure ? '; Secure' : '';
-    const sameSite = '; SameSite=Lax';
-    const path = '; path=/';
-    
-    const expires = remember
-      ? `; expires=${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString()}` // 30 days
-      : `; expires=${new Date(Date.now() + 24 * 60 * 60 * 1000).toUTCString()}`; // 1 day for session
-    
-    return `${path}${domain}${expires}${secure}${sameSite}`;
   }
 }
