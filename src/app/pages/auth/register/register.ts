@@ -16,8 +16,8 @@ export class Register {
   isSubmitting = false;
   showPassword = false;
   showConfirmPassword = false;
-  currentStep = 1;
-  totalSteps = 3;
+  currentStep: number = 1;
+  totalSteps: number = 3;
   registrationError: string | null = null;
 
   Math = Math;
@@ -30,23 +30,22 @@ export class Register {
   ) {
     this.registerForm = this.fb.group({
       // Personal Information
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]],
-      
+
       // Academic Information
       studentId: ['', [Validators.required]],
       batch: ['', [Validators.required]],
       graduationYear: ['', [Validators.required, Validators.min(2010), Validators.max(new Date().getFullYear())]],
       degree: ['BSc in Computer Science and Engineering', [Validators.required]],
-      
+
       // Professional Information
       currentPosition: [''],
       company: [''],
       experience: [''],
       location: [''],
-      
+
       // Account Security
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]],
@@ -58,7 +57,7 @@ export class Register {
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
-    
+
     if (password && confirmPassword && password.value !== confirmPassword?.value) {
       confirmPassword?.setErrors({ passwordMismatch: true });
     } else if (confirmPassword?.errors?.['passwordMismatch']) {
@@ -83,12 +82,12 @@ export class Register {
   }
 
   isStepValid(): boolean {
-    const step1Fields = ['firstName', 'lastName', 'email', 'phone'];
+    const step1Fields = ['name', 'email', 'phone'];
     const step2Fields = ['studentId', 'batch', 'graduationYear', 'degree'];
     const step3Fields = ['password', 'confirmPassword', 'acceptTerms'];
 
     let fieldsToCheck: string[] = [];
-    
+
     switch (this.currentStep) {
       case 1:
         fieldsToCheck = step1Fields;
@@ -108,12 +107,12 @@ export class Register {
   }
 
   markStepGroupTouched() {
-    const step1Fields = ['firstName', 'lastName', 'email', 'phone'];
+    const step1Fields = ['name', 'email', 'phone'];
     const step2Fields = ['studentId', 'batch', 'graduationYear', 'degree'];
     const step3Fields = ['password', 'confirmPassword', 'acceptTerms'];
 
     let fieldsToMark: string[] = [];
-    
+
     switch (this.currentStep) {
       case 1:
         fieldsToMark = step1Fields;
@@ -135,10 +134,9 @@ export class Register {
     if (this.registerForm.valid) {
       this.isSubmitting = true;
       this.registrationError = null;
-      
+
       const formData = {
-        firstName: this.registerForm.value.firstName,
-        lastName: this.registerForm.value.lastName,
+        name: this.registerForm.value.name,
         email: this.registerForm.value.email,
         phone: this.registerForm.value.phone,
         studentId: this.registerForm.value.studentId,
@@ -204,8 +202,7 @@ export class Register {
 
   private getFieldLabel(fieldName: string): string {
     const labels: { [key: string]: string } = {
-      firstName: 'First name',
-      lastName: 'Last name',
+      name: 'Name',
       email: 'Email',
       phone: 'Phone number',
       studentId: 'Student ID',

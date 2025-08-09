@@ -16,3 +16,14 @@ input,
 textarea {
     @apply font-regular;
 }
+
+/* Custom placeholder styles */
+input::placeholder,
+textarea::placeholder {
+    @apply text-gray-400;
+}
+
+/* Make sure placeholder color is more visible */
+.placeholder-gray-400::placeholder {
+    color: #9CA3AF !important;
+}
