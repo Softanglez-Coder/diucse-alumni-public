@@ -4,5 +4,6 @@ export * from './batch';
 export * from './blog';
 export * from './dashboard';
 export * from './event';
+export * from './membership';
 export * from './news';
 export * from './user';
