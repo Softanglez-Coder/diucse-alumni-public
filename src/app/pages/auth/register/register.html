@@ -101,25 +101,28 @@
                 formControlName="batch"
                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
                 [class.border-red-300]="getFieldError('batch')"
+                [disabled]="batches.isLoading()"
               >
-                <option value="">Select your batch</option>
-                <option value="Spring 2015">Spring 2015</option>
-                <option value="Fall 2015">Fall 2015</option>
-                <option value="Spring 2016">Spring 2016</option>
-                <option value="Fall 2016">Fall 2016</option>
-                <option value="Spring 2017">Spring 2017</option>
-                <option value="Fall 2017">Fall 2017</option>
-                <option value="Spring 2018">Spring 2018</option>
-                <option value="Fall 2018">Fall 2018</option>
-                <option value="Spring 2019">Spring 2019</option>
-                <option value="Fall 2019">Fall 2019</option>
-                <option value="Spring 2020">Spring 2020</option>
-                <option value="Fall 2020">Fall 2020</option>
-                <option value="Spring 2021">Spring 2021</option>
-                <option value="Fall 2021">Fall 2021</option>
+                <option value="">
+                  @if (batches.isLoading()) {
+                    Loading batches...
+                  } @else if (batches.hasError()) {
+                    Error loading batches
+                  } @else {
+                    Select your batch
+                  }
+                </option>
+                @if (!batches.hasError()) {
+                  @for (batch of batches.value(); track batch.id) {
+                    <option [value]="batch.name">{{ batch.name }}</option>
+                  }
+                }
               </select>
               @if (getFieldError('batch')) {
                 <p class="mt-2 text-sm text-red-600">{{ getFieldError('batch') }}</p>
+              }
+              @if (batches.hasError()) {
+                <p class="mt-2 text-sm text-red-600">Failed to load batch options. Please refresh the page.</p>
               }
             </div>
           </div>

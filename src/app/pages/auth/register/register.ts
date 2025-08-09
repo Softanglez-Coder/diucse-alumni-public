@@ -3,11 +3,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../shared/services';
+import { BatchService } from '../../../services';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  providers: [BatchService],
   templateUrl: './register.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -22,12 +24,18 @@ export class Register {
 
   Math = Math;
 
+  // Batch data from API
+  batches: any;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
+    private batchService: BatchService,
     private cdr: ChangeDetectorRef
   ) {
+    // Initialize batches data from API
+    this.batches = this.batchService.findAll();
     this.registerForm = this.fb.group({
       // Personal Information
       name: ['', [Validators.required, Validators.minLength(2)]],
