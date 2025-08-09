@@ -4,9 +4,6 @@ import { BaseService } from "../../shared/services";
 export interface Batch {
     id: string;
     name: string;
-    year: number;
-    semester: string;
-    isActive: boolean;
 }
 
 @Injectable()

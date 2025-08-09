@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ResourceRef } from '@angular/core';
 import { AuthService } from '../../../shared/services';
-import { BatchService } from '../../../services';
+import { BatchService, Batch } from '../../../services';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,7 @@ export class Register {
   Math = Math;
 
   // Batch data from API
-  batches: any;
+  batches: ResourceRef<Batch[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -44,14 +45,10 @@ export class Register {
 
       // Academic Information
       batch: ['', [Validators.required]],
-      graduationYear: ['', [Validators.required, Validators.min(2010), Validators.max(new Date().getFullYear())]],
-      degree: ['BSc in Computer Science and Engineering', [Validators.required]],
 
       // Professional Information
       currentPosition: [''],
       company: [''],
-      experience: [''],
-      location: [''],
 
       // Account Security
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -90,7 +87,7 @@ export class Register {
 
   isStepValid(): boolean {
     const step1Fields = ['name', 'email', 'phone'];
-    const step2Fields = ['batch', 'graduationYear', 'degree'];
+    const step2Fields = ['batch'];
     const step3Fields = ['password', 'confirmPassword', 'acceptTerms'];
 
     let fieldsToCheck: string[] = [];
@@ -115,7 +112,7 @@ export class Register {
 
   markStepGroupTouched() {
     const step1Fields = ['name', 'email', 'phone'];
-    const step2Fields = ['batch', 'graduationYear', 'degree'];
+    const step2Fields = ['batch'];
     const step3Fields = ['password', 'confirmPassword', 'acceptTerms'];
 
     let fieldsToMark: string[] = [];
@@ -147,12 +144,8 @@ export class Register {
         email: this.registerForm.value.email,
         phone: this.registerForm.value.phone,
         batch: this.registerForm.value.batch,
-        graduationYear: this.registerForm.value.graduationYear,
-        degree: this.registerForm.value.degree,
         currentPosition: this.registerForm.value.currentPosition,
         company: this.registerForm.value.company,
-        experience: this.registerForm.value.experience,
-        location: this.registerForm.value.location,
         password: this.registerForm.value.password,
         newsletter: this.registerForm.value.newsletter
       };
@@ -198,8 +191,6 @@ export class Register {
       if (control?.errors['email']) return 'Please enter a valid email';
       if (control?.errors['minlength']) return `${this.getFieldLabel(fieldName)} must be at least ${control?.errors['minlength'].requiredLength} characters`;
       if (control?.errors['pattern']) return 'Please enter a valid phone number (11 digits)';
-      if (control?.errors['min']) return `Graduation year must be at least ${control?.errors['min'].min}`;
-      if (control?.errors['max']) return `Graduation year cannot exceed ${control?.errors['max'].max}`;
       if (control?.errors['passwordMismatch']) return 'Passwords do not match';
       if (control?.errors['requiredTrue']) return 'You must accept the terms and conditions';
     }
@@ -212,15 +203,9 @@ export class Register {
       email: 'Email',
       phone: 'Phone number',
       batch: 'Batch',
-      graduationYear: 'Graduation year',
-      degree: 'Degree',
       password: 'Password',
       confirmPassword: 'Confirm password'
     };
     return labels[fieldName] || fieldName;
-  }
-
-  getCurrentYear(): number {
-    return new Date().getFullYear();
   }
 }
