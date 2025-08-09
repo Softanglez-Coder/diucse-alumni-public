@@ -1,6 +1,6 @@
 # Simplified Angular CRUD BaseService with Resource API
 
-A streamlined BaseService implementation using Angular's Resource API for modern, reactive CRUD operations.
+A streamlined BaseService implementation using Angular's Resource API for modern, reactive CRUD operations with automatic MongoDB `_id` to frontend `id` field transformation.
 
 ## Features
 
@@ -9,6 +9,7 @@ A streamlined BaseService implementation using Angular's Resource API for modern
 - ✅ **Full CRUD Operations**: Create, Read, Update, Delete, and Patch operations
 - ✅ **Type Safety**: Full TypeScript support with generics
 - ✅ **Automatic Loading States**: Built-in loading and error handling
+- ✅ **ID Field Transformation**: Automatic `_id` ↔ `id` conversion for MongoDB compatibility
 - ✅ **Lightweight**: No bulk operations or Observable compatibility - pure Resource API
 
 ## BaseService API

@@ -1,6 +1,6 @@
 # Angular CRUD BaseService with Resource API
 
-This BaseService provides a comprehensive CRUD (Create, Read, Update, Delete) implementation using Angular's new Resource API along with traditional Observable-based methods for backward compatibility.
+This BaseService provides a comprehensive CRUD (Create, Read, Update, Delete) implementation using Angular's new Resource API along with traditional Observable-based methods for backward compatibility, including automatic MongoDB `_id` to frontend `id` field transformation.
 
 ## Features
 
@@ -13,6 +13,7 @@ This BaseService provides a comprehensive CRUD (Create, Read, Update, Delete) im
 - ✅ **Type Safety**: Full TypeScript support with generics
 - ✅ **Error Handling**: Comprehensive error handling
 - ✅ **Loading States**: Automatic loading state management
+- ✅ **ID Field Transformation**: Automatic `_id` ↔ `id` conversion for MongoDB compatibility
 
 ## Installation
 
