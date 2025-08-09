@@ -64,7 +64,7 @@ export class AuthService {
   }
 
   resendVerificationEmail(): Observable<any> {
-    const url = `${this.baseUrl}/auth/resend-verification`;
+    const url = `${this.baseUrl}/auth/resend-verification-email`;
     return this.http.post(url, {}, { withCredentials: true });
   }
 
