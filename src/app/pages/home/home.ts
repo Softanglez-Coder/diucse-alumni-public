@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { BannerService } from "../../services";
-import { 
-    BannerCarousel, 
-    CtaSection, 
-    FeaturedAlumni, 
-    UpcomingEvents, 
-    LatestNews, 
-    ContactSection 
+import {
+    BannerCarousel,
+    CtaSection,
+    UpcomingEvents,
+    LatestNews,
+    ContactSection
 } from "../../shared";
 
 @Component({
@@ -17,7 +16,6 @@ import {
     imports: [
         BannerCarousel,
         CtaSection,
-        FeaturedAlumni,
         UpcomingEvents,
         LatestNews,
         ContactSection

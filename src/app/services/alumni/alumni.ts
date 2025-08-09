@@ -18,6 +18,6 @@ export interface Alumni {
 @Injectable()
 export class AlumniService extends BaseService<Alumni> {
     constructor() {
-        super('alumni');
+        super('users');
     }
 }
