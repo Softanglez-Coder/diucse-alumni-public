@@ -22,7 +22,7 @@ export class AuthService {
 
   login(email: string, password: string, rememberMe: boolean): Observable<any> {
     const url = `${this.baseUrl}/auth/login`;
-    return this.http.post(url, { email, password, rememberMe }, { 
+    return this.http.post(url, { email, password, rememberMe }, {
       withCredentials: true,
       observe: 'response'
     }).pipe(
@@ -54,8 +54,8 @@ export class AuthService {
   }
 
   resetPassword(token: string, password: string): Observable<any> {
-    const url = `${this.baseUrl}/auth/reset-password`;
-    return this.http.post(url, { token, password });
+    const url = `${this.baseUrl}/auth/reset-password?token=${encodeURIComponent(token)}`;
+    return this.http.patch(url, { password });
   }
 
   verifyEmail(token: string): Observable<any> {
@@ -65,7 +65,7 @@ export class AuthService {
 
   refreshToken(): Observable<any> {
     const url = `${this.baseUrl}/auth/refresh`;
-    return this.http.post(url, {}, { 
+    return this.http.post(url, {}, {
       withCredentials: true,
       observe: 'response'
     }).pipe(

@@ -153,8 +153,8 @@ export class Register {
       this.authService.register(formData).subscribe({
         next: () => {
           this.isSubmitting = false;
-          this.router.navigate(['/verify-email'], {
-            queryParams: { email: this.registerForm.value.email }
+          this.router.navigate(['/login'], {
+            queryParams: { message: 'Registration successful! Please log in with your credentials.' }
           });
           this.cdr.markForCheck();
         },

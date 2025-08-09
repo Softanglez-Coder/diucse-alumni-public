@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -21,6 +22,39 @@ import { CommonModule } from '@angular/common';
         </div>
 
         <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          @if (success) {
+            <div class="text-center">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-2">Password Reset Successfully!</h2>
+              <p class="text-gray-600 mb-6">Your password has been updated. You will be redirected to the login page in a few seconds.</p>
+              <a routerLink="/login" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors">
+                Go to Login
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          } @else {
+
+          @if (error) {
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-red-800">{{ error }}</p>
+                </div>
+              </div>
+            </div>
+          }
+
           <form [formGroup]="resetForm" (ngSubmit)="onSubmit()" class="space-y-6">
             <div>
               <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">New Password</label>
@@ -69,7 +103,7 @@ import { CommonModule } from '@angular/common';
 
             <button
               type="submit"
-              [disabled]="isSubmitting"
+              [disabled]="isSubmitting || !token"
               class="w-full bg-gradient-to-r from-primary-600 to-primary-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-700 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               @if (isSubmitting) {
@@ -91,20 +125,27 @@ import { CommonModule } from '@angular/common';
               Back to login
             </a>
           </div>
+
+          }
         </div>
       </div>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResetPassword {
+export class ResetPassword implements OnInit {
   resetForm: FormGroup;
   isSubmitting = false;
   showPassword = false;
+  token: string | null = null;
+  error: string | null = null;
+  success = false;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {
     this.resetForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -112,10 +153,18 @@ export class ResetPassword {
     }, { validators: this.passwordMatchValidator });
   }
 
+  ngOnInit() {
+    // Extract token from query parameters
+    this.token = this.route.snapshot.queryParamMap.get('token');
+    if (!this.token) {
+      this.error = 'Invalid reset token. Please request a new password reset.';
+    }
+  }
+
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
-    
+
     if (password && confirmPassword && password.value !== confirmPassword?.value) {
       confirmPassword?.setErrors({ passwordMismatch: true });
     } else if (confirmPassword?.errors?.['passwordMismatch']) {
@@ -128,12 +177,31 @@ export class ResetPassword {
   }
 
   onSubmit() {
+    if (!this.token) {
+      this.error = 'Invalid reset token. Please request a new password reset.';
+      return;
+    }
+
     if (this.resetForm.valid) {
       this.isSubmitting = true;
-      setTimeout(() => {
-        this.isSubmitting = false;
-        this.router.navigate(['/login']);
-      }, 2000);
+      this.error = null;
+
+      const password = this.resetForm.value.password;
+
+      this.authService.resetPassword(this.token, password).subscribe({
+        next: (response) => {
+          this.isSubmitting = false;
+          this.success = true;
+          // Auto-redirect after 3 seconds
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 3000);
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          this.error = error.error?.message || 'Failed to reset password. Please try again.';
+        }
+      });
     } else {
       this.markFormGroupTouched();
     }
