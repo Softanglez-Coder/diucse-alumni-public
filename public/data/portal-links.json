@@ -16,23 +16,5 @@
         "path": "/portal/membership",
         "icon": "fa-solid fa-users",
         "description": "View and manage your membership details."
-    },
-    {
-        "title": "Events",
-        "path": "/portal/events",
-        "icon": "fa-solid fa-calendar-alt",
-        "description": "Manage your event registrations and discover new opportunities."
-    },
-    {
-        "title": "Blogs",
-        "path": "/portal/blogs",
-        "icon": "fa-solid fa-blog",
-        "description": "Create and manage your blog posts for the community."
-    },
-    {
-        "title": "Settings",
-        "path": "/portal/settings",
-        "icon": "fa-solid fa-cog",
-        "description": "Adjust your account settings and preferences."
     }
 ]
