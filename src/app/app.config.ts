@@ -15,17 +15,14 @@ import { firstValueFrom } from 'rxjs';
 
 function getBaseUrl(): string {
   const isProduction = window.location.hostname.includes('csediualumni.com');
-  const isDevInProd = window.location.hostname.includes('dev.csediualumni.com');
   const isLocalhost = window.location.hostname === 'localhost';
 
   let baseUrl = '';
 
   if (isLocalhost) {
     baseUrl = 'http://localhost:3000';
-  } else if (isDevInProd) {
-    baseUrl = 'https://api-dev.csediualumni.com';
   } else if (isProduction) {
-    baseUrl = 'https://api.csediualumni.com';
+    baseUrl = 'https://csediualumni.com/api';
   } else {
     baseUrl = 'http://localhost:3000'; // Fallback for other environments
   }
