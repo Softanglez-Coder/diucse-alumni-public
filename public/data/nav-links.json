@@ -4,10 +4,6 @@
         "url": "/membership"
     },
     {
-        "label": "Events",
-        "url": "/events"
-    },
-    {
         "label": "About Us",
         "url": "/about"
     },
