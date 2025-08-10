@@ -21,9 +21,7 @@
                 </div>
                 <div class="flex gap-4 flex-wrap">
                     @for (social of socialLinks; track social.label) {
-                        <a [href]="social.url"
-                           target="_blank"
-                           rel="noopener noreferrer"
+                        <a [routerLink]="social.url"
                            class="w-12 h-12 bg-gray-100 text-gray-600 rounded-xl flex items-center justify-center hover:bg-primary-500 hover:text-white hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary-500/30 transition-all duration-300"
                            [attr.aria-label]="social.label">
                             <i class="{{social.icon}} text-lg"></i>

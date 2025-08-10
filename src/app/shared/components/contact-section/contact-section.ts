@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'contact-section',
     templateUrl: './contact-section.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [RouterModule]
 })
 export class ContactSection {
     protected contactInfo = [
@@ -22,22 +25,22 @@ export class ContactSection {
     protected socialLinks = [
         {
             icon: 'fa-brands fa-facebook',
-            url: 'https://facebook.com/diubd',
+            url: '/facebook',
             label: 'Facebook'
         },
         {
             icon: 'fa-brands fa-linkedin',
-            url: 'https://linkedin.com/company/diu-alumni',
+            url: '/linkedin',
             label: 'LinkedIn'
         },
         {
             icon: 'fa-brands fa-twitter',
-            url: 'https://twitter.com/diubd',
+            url: '/twitter',
             label: 'Twitter'
         },
         {
             icon: 'fa-brands fa-instagram',
-            url: 'https://instagram.com/diubd',
+            url: '/instagram',
             label: 'Instagram'
         }
     ];

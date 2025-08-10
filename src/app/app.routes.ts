@@ -80,6 +80,28 @@ export const routes: Routes = [
         loadComponent: () => import('./pages').then(c => c.Contact)
     },
 
+    // Social Media Redirects
+    {
+        path: 'facebook',
+        title: 'Redirecting to Facebook - DIUCSE Alumni',
+        loadComponent: () => import('./pages').then(c => c.FacebookRedirect)
+    },
+    {
+        path: 'linkedin',
+        title: 'Redirecting to LinkedIn - DIUCSE Alumni',
+        loadComponent: () => import('./pages').then(c => c.LinkedinRedirect)
+    },
+    {
+        path: 'twitter',
+        title: 'Redirecting to Twitter - DIUCSE Alumni',
+        loadComponent: () => import('./pages').then(c => c.TwitterRedirect)
+    },
+    {
+        path: 'instagram',
+        title: 'Redirecting to Instagram - DIUCSE Alumni',
+        loadComponent: () => import('./pages').then(c => c.InstagramRedirect)
+    },
+
 
     // Portal
     {
