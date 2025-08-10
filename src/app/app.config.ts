@@ -22,7 +22,7 @@ function getBaseUrl(): string {
   if (isLocalhost) {
     baseUrl = 'http://localhost:3000';
   } else if (isProduction) {
-    baseUrl = 'https://csediualumni.com/api';
+    baseUrl = 'https://api.csediualumni.com';
   } else {
     baseUrl = 'http://localhost:3000'; // Fallback for other environments
   }
