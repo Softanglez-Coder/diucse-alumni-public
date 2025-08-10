@@ -2,9 +2,6 @@ import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { BannerService } from "../../services";
 import {
     BannerCarousel,
-    CtaSection,
-    UpcomingEvents,
-    LatestNews,
     ContactSection
 } from "../../shared";
 
@@ -15,9 +12,6 @@ import {
     providers: [BannerService],
     imports: [
         BannerCarousel,
-        CtaSection,
-        UpcomingEvents,
-        LatestNews,
         ContactSection
     ]
 })

@@ -10,17 +10,12 @@ export class ContactSection {
         {
             icon: 'fa-location-dot',
             title: 'Address',
-            content: 'Dhaka International University\n102/1, Shukrabad, Mirpur Road\nDhaka-1207, Bangladesh'
-        },
-        {
-            icon: 'fa-phone',
-            title: 'Phone',
-            content: '+880-2-9138234-5'
+            content: 'Satarkul Rd, Dhaka 1212'
         },
         {
             icon: 'fa-envelope',
             title: 'Email',
-            content: 'alumni&#64;diu.edu.bd'
+            content: 'support&#64;csediualumni.com'
         }
     ];
 
