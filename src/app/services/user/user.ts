@@ -70,6 +70,15 @@ export class UserService extends BaseService<User> {
     }
 
     /**
+     * Get a specific member by ID
+     */
+    getMemberById(id: string): Observable<User> {
+        return this.httpClient.get<User>(`${this.apiBaseUrl}/users/${id}`).pipe(
+            map(response => this.transformResponse(response))
+        );
+    }
+
+    /**
      * Update current user profile
      */
     updateCurrentUser(userData: Partial<User>): Observable<User> {

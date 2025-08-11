@@ -7,4 +7,5 @@ export * from './about';
 export * from './contact';
 export * from './membership';
 export * from './members';
+export * from './member-details';
 export * from './social-redirects';
