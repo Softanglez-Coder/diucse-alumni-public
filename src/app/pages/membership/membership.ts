@@ -1,6 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
+import { UserService } from "../../services";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { MembersList } from "../../shared/components/members-list/members-list";
 
 interface MembershipBenefit {
     title: string;
@@ -30,9 +33,18 @@ interface KeyMember {
     selector: 'membership',
     templateUrl: './membership.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, RouterModule]
+    providers: [UserService],
+    imports: [CommonModule, RouterModule, MembersList]
 })
 export class Membership {
+    private userService = inject(UserService);
+
+    // Get all members and take first 6 for membership page
+    private allMembers = toSignal(this.userService.getMembers(), { initialValue: [] });
+
+    protected featuredMembers = computed(() => {
+        return this.allMembers().slice(0, 6);
+    });
 
     protected membershipBenefits: MembershipBenefit[] = [
         // Networking Benefits

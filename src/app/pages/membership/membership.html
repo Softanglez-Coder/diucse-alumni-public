@@ -2,7 +2,7 @@
     <!-- Hero Section -->
     <section class="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white py-32 px-4 overflow-hidden">
         <div class="absolute inset-0 bg-black/30"></div>
-        
+
         <div class="container mx-auto relative z-10 max-w-4xl text-center">
             <h1 class="text-5xl md:text-6xl font-bold mb-6 text-shadow-lg">Join Our Alumni Community</h1>
             <p class="text-xl md:text-2xl mb-12 opacity-95 leading-relaxed">
@@ -33,7 +33,7 @@
                     Member Login
                 </a>
             </div>
-            
+
             <!-- Scroll Indicator -->
             <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
                 <i class="fas fa-chevron-down text-2xl"></i>
@@ -189,57 +189,12 @@
         </div>
     </section>
 
-    <!-- Key Members Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Key Members</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Meet some of our distinguished alumni who are making a difference in the tech industry</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2" *ngFor="let member of keyMembers">
-                    <div class="relative mb-6">
-                        <img [src]="member.image" [alt]="member.name" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-gray-200">
-                        <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                            <a [href]="member.linkedinUrl" target="_blank" class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary transition-colors" *ngIf="member.linkedinUrl">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <h4 class="text-xl font-bold text-gray-900 mb-2">{{member.name}}</h4>
-                        <p class="text-primary-600 font-semibold mb-1">{{member.position}}</p>
-                        <p class="text-gray-600 mb-2">{{member.company}}</p>
-                        <p class="text-sm text-gray-500 mb-4">Class of {{member.graduationYear}}</p>
-                        
-                        <div class="text-left">
-                            <h5 class="font-semibold text-gray-900 mb-2">Key Achievements:</h5>
-                            <ul class="text-sm text-gray-600 space-y-1">
-                                <li *ngFor="let achievement of member.achievements" class="flex items-start gap-2">
-                                    <i class="fas fa-check-circle text-green-500 mt-0.5 flex-shrink-0"></i>
-                                    <span>{{achievement}}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-12 text-center shadow-lg mt-16">
-                <h3 class="text-3xl font-bold text-gray-900 mb-4">Join These Leaders</h3>
-                <p class="text-xl text-gray-600 mb-8">Become part of a network that includes industry leaders, innovators, and changemakers</p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a routerLink="/register" class="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-2xl font-semibold hover:bg-primary transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-user-plus"></i>
-                        Apply Now
-                    </a>
-                    <a routerLink="/contact" class="inline-flex items-center gap-3 border-2 border-primary text-primary-600 px-8 py-4 rounded-2xl font-semibold hover:bg-primary hover:text-white transition-all duration-300">
-                        <i class="fas fa-envelope"></i>
-                        Contact Us
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Featured Members Section -->
+    <members-list
+        [members]="featuredMembers()"
+        [title]="'Meet Our Community'"
+        [subtitle]="'Connect with talented professionals from our alumni network'"
+        [showViewAllLink]="true"
+        [showContact]="false">
+    </members-list>
 </div>
