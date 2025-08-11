@@ -1,11 +1,5 @@
 [
     {
-        "title": "Dashboard",
-        "path": "/portal/dashboard",
-        "icon": "fa-solid fa-tachometer-alt",
-        "description": "View your dashboard with recent activity and updates."
-    },
-    {
         "title": "Profile",
         "path": "/portal/profile",
         "icon": "fa-solid fa-user",
