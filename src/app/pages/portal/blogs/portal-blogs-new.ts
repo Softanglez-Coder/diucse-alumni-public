@@ -108,10 +108,8 @@ export class PortalBlogs {
         this.isCreating.set(true);
         const result = this.blogService.createBlog(createData);
 
-        // Handle result based on loading state
-        if (!result.isLoading()) {
-            this.isCreating.set(false);
-        }
+        // You might want to handle the result here
+        result.isLoading && this.isCreating.set(false);
         this.resetForm();
         this.setActiveTab('my-blogs');
     }

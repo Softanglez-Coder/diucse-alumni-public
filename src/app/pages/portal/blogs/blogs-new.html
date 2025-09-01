@@ -8,7 +8,7 @@
             <h1 class="text-2xl font-bold text-gray-900">My Blogs</h1>
             <p class="text-gray-600">Create and manage your blog posts</p>
           </div>
-          <button 
+          <button
             (click)="setActiveTab('create')"
             class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
             + New Blog
@@ -44,7 +44,7 @@
 
   <!-- Content -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
+
     <!-- My Blogs Tab -->
     @if (activeTab() === 'my-blogs') {
       <div class="space-y-6">
@@ -60,7 +60,7 @@
                 (input)="setSearchQuery($any($event.target).value)"
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
             </div>
-            
+
             <!-- Status Filter -->
             <div>
               <select
@@ -84,17 +84,17 @@
                 <div class="flex-1">
                   <div class="flex items-center gap-3 mb-2">
                     <h3 class="text-lg font-semibold text-gray-900">{{ blog.title }}</h3>
-                    <span 
+                    <span
                       [class]="getStatusBadgeClass(blog.status)"
                       class="px-2 py-1 text-xs font-medium rounded-full">
                       {{ blog.status | titlecase }}
                     </span>
                   </div>
-                  
+
                   @if (blog.excerpt) {
                     <p class="text-gray-600 mb-3 line-clamp-2">{{ blog.excerpt }}</p>
                   }
-                  
+
                   <div class="flex items-center gap-4 text-sm text-gray-500">
                     <span>Updated {{ formatDate(blog.updatedAt) }}</span>
                     @if (blog.tags && blog.tags.length > 0) {
@@ -110,7 +110,7 @@
                     class="px-3 py-1 text-primary-600 border border-primary-600 rounded hover:bg-primary-50 transition-colors">
                     Edit
                   </button>
-                  
+
                   @if (blog.status === 'draft') {
                     <button
                       (click)="submitForReview(blog.id)"
@@ -118,7 +118,7 @@
                       Submit for Review
                     </button>
                   }
-                  
+
                   @if (blog.status === 'published') {
                     <a
                       [routerLink]="['/blogs', blog.id]"
@@ -187,7 +187,7 @@
               {{ editingBlog() ? 'Edit Blog' : 'Create New Blog' }}
             </h2>
           </div>
-          
+
           <div class="p-6 space-y-6">
             <!-- Title -->
             <div>
@@ -274,7 +274,7 @@
                 class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                 Cancel
               </button>
-              
+
               <div class="flex gap-3">
                 @if (editingBlog()) {
                   <button

@@ -5,3 +5,4 @@ export * from './cta-section';
 export * from './contact-section';
 export * from './member-card';
 export * from './members-list';
+export * from './blog-list';

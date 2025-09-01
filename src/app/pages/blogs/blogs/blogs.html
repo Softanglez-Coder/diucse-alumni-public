@@ -1,157 +1,127 @@
-<div class="min-h-screen bg-gradient-to-br from-primary-500 to-primary-600">
-  <!-- Hero Section -->
-  <section class="py-32 pb-20 bg-gradient-to-br from-primary-500/90 to-primary-600/90 text-white text-center">
-    <div class="container mx-auto max-w-3xl px-8">
-      <div>
-        <h1 class="text-5xl md:text-3xl font-bold mb-6 leading-tight">
-          DIUCSE Alumni <span class="bg-gradient-to-r from-pink-300 to-pink-500 bg-clip-text text-transparent">Blog</span>
-        </h1>
-        <p class="text-lg max-w-xl mx-auto opacity-90 leading-relaxed">
-          Insights, stories, and knowledge from our vibrant community of Computer Science &amp; Engineering alumni
-        </p>
-      </div>
-    </div>
-  </section>
+<!-- Page Header -->
+<section class="py-20 bg-gradient-to-br from-primary-500 to-primary-600 text-white">
+  <div class="container mx-auto px-4 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-6">
+      DIUCSE Alumni <span class="bg-gradient-to-r from-pink-300 to-pink-500 bg-clip-text text-transparent">Blog</span>
+    </h1>
+    <p class="text-xl max-w-3xl mx-auto opacity-90">
+      Insights, stories, and knowledge from our vibrant community of Computer Science & Engineering alumni
+    </p>
+  </div>
+</section>
 
-  <!-- Featured Blog -->
-  <section class="py-20 bg-white">
-    <div class="container mx-auto max-w-5xl px-8">
-      <h2 class="text-3xl font-bold text-center mb-12 text-primary-600">Featured Article</h2>
-
-      @if (blogsResource.isLoading()) {
-        <!-- Loading skeleton for featured blog -->
-        <div class="grid md:grid-cols-2 gap-12 animate-pulse">
-          <div class="relative rounded-xl overflow-hidden aspect-[16/10] bg-gray-200"></div>
-          <div class="flex flex-col justify-center">
-            <div class="flex gap-4 mb-3">
-              <div class="h-4 bg-gray-200 rounded w-24"></div>
-              <div class="h-4 bg-gray-200 rounded w-20"></div>
-              <div class="h-4 bg-gray-200 rounded w-16"></div>
-            </div>
-            <div class="h-8 bg-gray-200 rounded mb-3"></div>
-            <div class="h-6 bg-gray-200 rounded mb-6 w-4/5"></div>
-            <div class="flex gap-2">
-              <div class="h-6 bg-gray-200 rounded-full w-16"></div>
-              <div class="h-6 bg-gray-200 rounded-full w-20"></div>
-            </div>
-          </div>
-        </div>
-      } @else if (blogsResource.error()) {
-        <div class="text-center py-12">
-          <div class="text-red-600 mb-4">
-            <i class="fa-solid fa-exclamation-triangle text-4xl"></i>
-          </div>
-          <h3 class="text-xl font-semibold text-red-600 mb-2">Failed to load blogs</h3>
-          <p class="text-gray-600">Please try again later</p>
-        </div>
-      } @else if (featuredBlog()) {
-        <article class="grid md:grid-cols-2 gap-12 cursor-pointer transition-transform hover:-translate-y-1" [routerLink]="['/blogs', featuredBlog()!.slug || featuredBlog()!.id]">
-          <div class="relative rounded-xl overflow-hidden aspect-[16/10] group">
-            <img [src]="featuredBlog()!.image" [alt]="featuredBlog()!.title" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-            <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <span class="text-white font-semibold text-lg">Read Article</span>
-            </div>
-          </div>
-          <div class="flex flex-col justify-center">
-            <div class="flex gap-4 mb-3 text-sm text-gray-600">
-              <span class="font-semibold text-primary-600">{{ featuredBlog()!.author }}</span>
-              <span>{{ featuredBlog()!.date }}</span>
-              <span>{{ featuredBlog()!.readTime }}</span>
-            </div>
-            <h3 class="text-2xl font-bold mb-3 text-gray-900 leading-snug">{{ featuredBlog()!.title }}</h3>
-            <p class="text-lg text-gray-600 mb-6">{{ featuredBlog()!.excerpt }}</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-3 py-1 rounded-full text-xs font-medium" *ngFor="let tag of featuredBlog()!.tags">{{ tag }}</span>
-            </div>
-          </div>
-        </article>
-      }
-    </div>
-  </section>
-
-  <!-- Recent Blogs -->
-  <section class="py-20 bg-gray-50">
-    <div class="container mx-auto max-w-6xl px-8">
-      <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-12 gap-6">
-        <h2 class="text-3xl font-bold text-primary-600 m-0">Recent Articles</h2>
-        <div class="flex flex-wrap gap-2 justify-center md:justify-end">
-          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent active:bg-gradient-to-r active:from-primary-500 active:to-primary-600 active:text-white" [ngClass]="{ 'bg-gradient-to-r from-primary-500 to-primary-600 text-white border-transparent': true }">All</button>
-          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent">Technology</button>
-          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent">Career</button>
-          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent">Education</button>
-          <button class="px-4 py-2 border-2 border-gray-200 bg-white text-gray-600 rounded-full font-medium transition hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white hover:border-transparent">Alumni Stories</button>
+<!-- Blog Content -->
+<div class="bg-gray-50 min-h-screen">
+  @if (blogsResource.isLoading()) {
+    <!-- Loading State -->
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p class="text-gray-600">Loading blogs...</p>
         </div>
       </div>
-      <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-12">
-        @if (blogsResource.isLoading()) {
-          <!-- Loading skeletons for recent blogs -->
-          @for (item of [1,2,3]; track item) {
-            <div class="bg-white rounded-xl overflow-hidden shadow-lg animate-pulse">
-              <div class="relative aspect-[16/10] bg-gray-200"></div>
-              <div class="p-6">
-                <div class="flex gap-4 mb-2">
-                  <div class="h-3 bg-gray-200 rounded w-16"></div>
-                  <div class="h-3 bg-gray-200 rounded w-12"></div>
-                  <div class="h-3 bg-gray-200 rounded w-14"></div>
+    </section>
+  } @else if (blogsResource.error()) {
+    <!-- Error State -->
+    <section class="py-16">
+      <div class="container mx-auto px-4 text-center">
+        <div class="text-red-600 text-6xl mb-4">⚠️</div>
+        <h2 class="text-2xl font-bold text-red-600 mb-2">Failed to load blogs</h2>
+        <p class="text-gray-600 mb-6">There was an error loading the blog content. Please try again later.</p>
+        <button
+          (click)="blogsResource.reload()"
+          class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+          Try Again
+        </button>
+      </div>
+    </section>
+  } @else {
+    <!-- Featured Blog Section -->
+    @if (featuredBlog()) {
+      <section class="py-16 bg-white border-b">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold text-center mb-12 text-primary-600">Featured Article</h2>
+
+          <article
+            class="max-w-4xl mx-auto cursor-pointer group"
+            [routerLink]="['/blogs', featuredBlog()!.id]">
+
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+              <!-- Featured Image -->
+              <div class="relative rounded-xl overflow-hidden aspect-video">
+                <img
+                  [src]="featuredBlog()!.image || '/images/blog-placeholder.svg'"
+                  [alt]="featuredBlog()!.title"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="text-white font-semibold text-lg">Read Article</span>
                 </div>
-                <div class="h-5 bg-gray-200 rounded mb-2"></div>
-                <div class="h-4 bg-gray-200 rounded mb-4 w-4/5"></div>
-                <div class="flex gap-1">
-                  <div class="h-5 bg-gray-200 rounded-full w-12"></div>
-                  <div class="h-5 bg-gray-200 rounded-full w-16"></div>
+              </div>
+
+              <!-- Featured Content -->
+              <div>
+                <div class="flex items-center gap-4 mb-4 text-sm text-gray-600">
+                  <span class="font-semibold text-primary-600">{{ getAuthorName(featuredBlog()!.author) }}</span>
+                  <span>{{ formatDate(featuredBlog()!.createdAt) }}</span>
+                  @if (featuredBlog()!.readTime) {
+                    <span>{{ featuredBlog()!.readTime }}</span>
+                  }
                 </div>
+
+                <h3 class="text-2xl md:text-3xl font-bold mb-4 text-gray-900 group-hover:text-primary-600 transition-colors">
+                  {{ featuredBlog()!.title }}
+                </h3>
+
+                <p class="text-lg text-gray-600 mb-6 line-clamp-3">
+                  {{ getExcerpt(featuredBlog()!) }}
+                </p>
+
+                @if (featuredBlog()!.tags && featuredBlog()!.tags!.length > 0) {
+                  <div class="flex flex-wrap gap-2">
+                    <span
+                      *ngFor="let tag of featuredBlog()!.tags!.slice(0, 4)"
+                      class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                      {{ tag }}
+                    </span>
+                  </div>
+                }
               </div>
             </div>
-          }
-        } @else if (blogsResource.error()) {
-          <div class="col-span-full text-center py-12">
-            <div class="text-red-600 mb-4">
-              <i class="fa-solid fa-exclamation-triangle text-2xl"></i>
-            </div>
-            <p class="text-red-600">Failed to load recent articles</p>
-          </div>
-        } @else {
-          @for (blog of recentBlogs(); track blog.id) {
-            <article class="bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-2xl" [routerLink]="['/blogs', blog.slug || blog.id]">
-              <div class="relative aspect-[16/10] overflow-hidden group">
-                <img [src]="blog.image" [alt]="blog.title" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                <div class="absolute inset-0 bg-gradient-to-br from-primary-500/80 to-primary-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span class="text-white font-semibold">Read More</span>
-                </div>
-              </div>
-              <div class="p-6">
-                <div class="flex gap-4 mb-2 text-xs text-gray-600">
-                  <span class="font-semibold text-primary-600">{{ blog.author }}</span>
-                  <span>{{ blog.date }}</span>
-                  <span>{{ blog.readTime }}</span>
-                </div>
-                <h3 class="text-lg font-bold mb-2 text-gray-900 leading-snug">{{ blog.title }}</h3>
-                <p class="text-gray-600 text-sm mb-4">{{ blog.excerpt }}</p>
-                <div class="flex flex-wrap gap-1">
-                  <span class="bg-primary-100 text-primary-600 px-2 py-1 rounded-full text-xs font-medium" *ngFor="let tag of blog.tags">{{ tag }}</span>
-                </div>
-              </div>
-            </article>
-          }
-        }
-      </div>
-      <div class="text-center">
-        <button class="px-8 py-3 font-bold rounded-lg border-2 border-primary-500 text-primary-600 bg-white hover:bg-primary-50 transition">Load More Articles</button>
-      </div>
-    </div>
-  </section>
+          </article>
+        </div>
+      </section>
+    }
+
+    <!-- All Blogs List -->
+    <blog-list
+      [blogs]="allBlogs()"
+      [title]="'All Articles'"
+      [subtitle]="'Explore our complete collection of insights and stories'"
+      [showViewAllLink]="false"
+      [layout]="'grid'"
+      [showExcerpt]="true">
+    </blog-list>
+  }
 
   <!-- Newsletter Section -->
-  <section class="py-20 bg-gradient-to-br from-primary-500 to-primary-600 text-white text-center">
-    <div class="container mx-auto max-w-xl">
-      <div class="mx-auto">
-        <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
-        <p class="text-lg mb-8 opacity-90">Subscribe to our newsletter for the latest articles and alumni updates</p>
-        <form class="flex gap-4 max-w-md mx-auto flex-col sm:flex-row">
-          <input type="email" placeholder="Enter your email address" class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white/30" />
-          <button type="submit" class="px-6 py-3 rounded-lg bg-white text-primary-600 font-bold whitespace-nowrap">Subscribe</button>
-        </form>
-      </div>
+  <section class="py-16 bg-gradient-to-br from-primary-500 to-primary-600 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+      <p class="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
+        Subscribe to our newsletter for the latest articles and alumni updates
+      </p>
+      <form class="flex gap-4 max-w-md mx-auto flex-col sm:flex-row">
+        <input
+          type="email"
+          placeholder="Enter your email address"
+          class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white/30">
+        <button
+          type="submit"
+          class="px-6 py-3 rounded-lg bg-white text-primary-600 font-bold whitespace-nowrap hover:bg-gray-100 transition-colors">
+          Subscribe
+        </button>
+      </form>
     </div>
   </section>
 </div>
