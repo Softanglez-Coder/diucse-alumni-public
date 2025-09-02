@@ -46,35 +46,6 @@ export const routes: Routes = [
         loadComponent: () => import('./pages').then(c => c.Members)
     },
 
-    // Events
-    {
-        path: 'events',
-        title: 'Events - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.Events)
-    },
-    {
-        path: 'events/:id',
-        title: 'Event Details - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.EventDetails)
-    },
-    {
-        path: 'events/:id/register',
-        title: 'Register for Event - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.EventRegistration)
-    },
-
-    // Blogs
-    {
-        path: 'blogs',
-        title: 'Blogs - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.Blogs)
-    },
-    {
-        path: 'blogs/:id',
-        title: 'Blog Details - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.BlogDetails)
-    },
-
     // Misc
     {
         path: 'about',
@@ -118,34 +89,14 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
             {
-                path: 'dashboard',
-                title: 'Dashboard - DIUCSE Alumni',
-                loadComponent: () => import('./pages').then(c => c.PortalDashboard)
-            },
-            {
                 path: 'profile',
                 title: 'Profile - DIUCSE Alumni',
                 loadComponent: () => import('./pages').then(c => c.PortalProfile)
             },
             {
-                path: 'settings',
-                title: 'Settings - DIUCSE Alumni',
-                loadComponent: () => import('./pages').then(c => c.PortalSettings)
-            },
-            {
                 path: 'membership',
                 title: 'Membership - DIUCSE Alumni',
                 loadComponent: () => import('./pages').then(c => c.PortalMembership)
-            },
-            {
-                path: 'events',
-                title: 'Events - DIUCSE Alumni',
-                loadComponent: () => import('./pages').then(c => c.PortalEvents)
-            },
-            {
-                path: 'blogs',
-                title: 'Blogs - DIUCSE Alumni',
-                loadComponent: () => import('./pages').then(c => c.PortalBlogs)
             },
             {
                 path: '',
