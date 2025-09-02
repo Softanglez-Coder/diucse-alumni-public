@@ -45,11 +45,6 @@ export const routes: Routes = [
         title: 'Members - DIUCSE Alumni',
         loadComponent: () => import('./pages').then(c => c.Members)
     },
-    {
-        path: 'members/:id',
-        title: 'Member Details - DIUCSE Alumni',
-        loadComponent: () => import('./pages').then(c => c.MemberDetails)
-    },
 
     // Events
     {
