@@ -1,1 +1,0 @@
-export { PortalEvents } from './events';
