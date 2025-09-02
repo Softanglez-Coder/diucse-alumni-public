@@ -4,7 +4,6 @@ import { toSignal } from "@angular/core/rxjs-interop";
 import {
     BannerCarousel,
     ContactSection,
-    BlogList
 } from "../../shared";
 import { MembersList } from "../../shared/components/members-list/members-list";
 
@@ -17,13 +16,11 @@ import { MembersList } from "../../shared/components/members-list/members-list";
         BannerCarousel,
         ContactSection,
         MembersList,
-        BlogList
     ]
 })
 export class Home {
     private bannerService = inject(BannerService);
     private userService = inject(UserService);
-    private blogService = inject(BlogService);
 
     protected banners = this.bannerService.findAll({
         active: true,
@@ -37,7 +34,4 @@ export class Home {
     protected featuredMembers = computed(() => {
         return this.allMembers().slice(0, 4);
     });
-
-    // Get latest blogs for homepage
-    protected latestBlogs = this.blogService.getLatestBlogs(4);
 }
