@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal, inject, computed } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal, inject, computed, effect } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
@@ -108,10 +108,16 @@ export class PortalBlogs {
         this.isCreating.set(true);
         const result = this.blogService.createBlog(createData);
 
-        // You might want to handle the result here
-        result.isLoading && this.isCreating.set(false);
-        this.resetForm();
-        this.setActiveTab('my-blogs');
+        // Handle the result based on loading state
+        effect(() => {
+            if (!result.isLoading()) {
+                this.isCreating.set(false);
+                if (result.value()) {
+                    this.resetForm();
+                    this.setActiveTab('my-blogs');
+                }
+            }
+        });
     }
 
     editBlog(blogId: string) {

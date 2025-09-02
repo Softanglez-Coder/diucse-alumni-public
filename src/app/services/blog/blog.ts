@@ -4,19 +4,12 @@ import { HttpClient } from "@angular/common/http";
 import { firstValueFrom, map } from "rxjs";
 import { resource, ResourceRef } from "@angular/core";
 import { API_BASE_URL } from "../../core";
+import { User } from "../../shared/models";
 
 export enum BlogStatus {
   DRAFT = 'draft',
   IN_REVIEW = 'in_review',
   PUBLISHED = 'published',
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  role?: string;
 }
 
 export interface Blog {
