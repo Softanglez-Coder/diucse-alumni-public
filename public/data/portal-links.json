@@ -10,5 +10,11 @@
         "path": "/portal/membership",
         "icon": "fa-solid fa-users",
         "description": "View and manage your membership details."
-    }
+    },
+  {
+    "title": "Blogs",
+    "path": "/portal/blogs",
+    "icon": "fa-solid fa-books",
+    "description": "View and manage your blogs."
+  }
 ]

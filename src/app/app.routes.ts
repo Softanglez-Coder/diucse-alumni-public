@@ -98,6 +98,11 @@ export const routes: Routes = [
                 title: 'Membership - DIUCSE Alumni',
                 loadComponent: () => import('./pages').then(c => c.PortalMembership)
             },
+          {
+            path: 'blogs',
+            title: 'Blogs - DIUCSE Alumni',
+            loadComponent: () => import('./pages').then(c => c.PortalBlogs)
+          },
             {
                 path: '',
                 redirectTo: 'profile',

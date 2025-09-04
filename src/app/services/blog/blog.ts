@@ -1,52 +1,10 @@
 import { Injectable, inject } from "@angular/core";
+import { Blog } from '../../shared';
 import { BaseService } from "../../shared/services";
 import { HttpClient } from "@angular/common/http";
 import { firstValueFrom, map } from "rxjs";
 import { resource, ResourceRef } from "@angular/core";
 import { API_BASE_URL } from "../../core";
-import { User } from "../../shared/models";
-
-export enum BlogStatus {
-  DRAFT = 'draft',
-  IN_REVIEW = 'in_review',
-  PUBLISHED = 'published',
-}
-
-export interface Blog {
-  id: string;
-  author: string | User;
-  title: string;
-  content: string;
-  status: BlogStatus;
-  createdAt: string;
-  updatedAt: string;
-  excerpt?: string;
-  image?: string;
-  tags?: string[];
-  slug?: string;
-  featured?: boolean;
-  publishedDate?: string;
-  readTime?: string;
-  likes?: number;
-  comments?: number;
-  views?: number;
-}
-
-export interface CreateBlogDto {
-  title: string;
-  content: string;
-  excerpt?: string;
-  image?: string;
-  tags?: string[];
-}
-
-export interface UpdateBlogDto {
-  title?: string;
-  content?: string;
-  excerpt?: string;
-  image?: string;
-  tags?: string[];
-}
 
 @Injectable()
 export class BlogService extends BaseService<Blog> {
@@ -93,30 +51,8 @@ export class BlogService extends BaseService<Blog> {
         });
     }
 
-    // Get my blogs by status
-    getMyBlogsByStatus(status: BlogStatus): ResourceRef<Blog[]> {
-        return resource<Blog[], unknown>({
-            loader: () => firstValueFrom(
-                this.httpClient.get<Blog[]>(`${this.apiBaseUrl}/blogs/me/status/${status}`)
-                    .pipe(map(response => this.transformResponse(response)))
-            ),
-            defaultValue: [] as Blog[]
-        });
-    }
-
-    // Get blogs in review (for publishers)
-    getBlogsInReview(): ResourceRef<Blog[]> {
-        return resource<Blog[], unknown>({
-            loader: () => firstValueFrom(
-                this.httpClient.get<Blog[]>(`${this.apiBaseUrl}/blogs/in-review`)
-                    .pipe(map(response => this.transformResponse(response)))
-            ),
-            defaultValue: [] as Blog[]
-        });
-    }
-
     // Create blog
-    createBlog(data: CreateBlogDto): ResourceRef<Blog> {
+    createBlog(data: Blog): ResourceRef<Blog> {
         return resource<Blog, unknown>({
             loader: () => firstValueFrom(
                 this.httpClient.post<Blog>(`${this.apiBaseUrl}/blogs`, data)
@@ -127,7 +63,7 @@ export class BlogService extends BaseService<Blog> {
     }
 
     // Update blog
-    updateBlog(id: string, data: UpdateBlogDto): ResourceRef<Blog> {
+    updateBlog(id: string, data: Blog): ResourceRef<Blog> {
         return resource<Blog, unknown>({
             loader: () => firstValueFrom(
                 this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}`, data)
@@ -152,26 +88,6 @@ export class BlogService extends BaseService<Blog> {
         return resource<Blog, unknown>({
             loader: () => firstValueFrom(
                 this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/review`, {})
-                    .pipe(map(response => this.transformResponse(response)))
-            ),
-            defaultValue: {} as Blog
-        });
-    }
-
-    publishBlog(id: string): ResourceRef<Blog> {
-        return resource<Blog, unknown>({
-            loader: () => firstValueFrom(
-                this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/publish`, {})
-                    .pipe(map(response => this.transformResponse(response)))
-            ),
-            defaultValue: {} as Blog
-        });
-    }
-
-    unpublishBlog(id: string): ResourceRef<Blog> {
-        return resource<Blog, unknown>({
-            loader: () => firstValueFrom(
-                this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/unpublish`, {})
                     .pipe(map(response => this.transformResponse(response)))
             ),
             defaultValue: {} as Blog
