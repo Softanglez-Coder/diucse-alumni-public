@@ -19,6 +19,7 @@ export class PortalBlogs {
   // Signals for state management
   showCreateForm = signal(false);
   isSubmitting = signal(false);
+  refreshTrigger = signal(0); // Used to trigger resource reload
 
   // Form for creating/editing blogs
   blogForm: FormGroup = this.fb.group({
@@ -78,8 +79,8 @@ export class PortalBlogs {
       this.blogForm.reset();
       this.showCreateForm.set(false);
 
-      // Refresh blog list
-      this.myBlogs = this.blogService.getMyBlogs();
+      // Refresh blog list by recreating the resource
+      this.refreshBlogList();
 
     } catch (error) {
       console.error('Error creating blog:', error);
@@ -92,7 +93,7 @@ export class PortalBlogs {
     try {
       await this.blogService.reviewBlog(blogId);
       // Refresh blog list
-      this.myBlogs = this.blogService.getMyBlogs();
+      this.refreshBlogList();
     } catch (error) {
       console.error('Error submitting blog for review:', error);
     }
@@ -102,10 +103,15 @@ export class PortalBlogs {
     try {
       await this.blogService.draftBlog(blogId);
       // Refresh blog list
-      this.myBlogs = this.blogService.getMyBlogs();
+      this.refreshBlogList();
     } catch (error) {
       console.error('Error marking blog as draft:', error);
     }
+  }
+
+  private refreshBlogList() {
+    // Force recreation of the resource to refresh the data
+    this.myBlogs = this.blogService.getMyBlogs();
   }
 
   canSubmitForReview(blog: Blog): boolean {

@@ -54,46 +54,38 @@ export class BlogService extends BaseService<Blog> {
     }
 
     // Create blog
-    createBlog(data: Blog): ResourceRef<Blog> {
-        return resource<Blog, unknown>({
-            loader: () => firstValueFrom(
-                this.httpClient.post<Blog>(`${this.apiBaseUrl}/blogs`, data)
-                    .pipe(map(response => this.transformResponse(response)))
-            ),
-            defaultValue: {} as Blog
-        });
+    async createBlog(data: Blog): Promise<Blog> {
+        const response = await firstValueFrom(
+            this.httpClient.post<Blog>(`${this.apiBaseUrl}/blogs`, data)
+                .pipe(map(response => this.transformResponse(response)))
+        );
+        return response;
     }
 
     // Update blog
-    updateBlog(id: string, data: Blog): ResourceRef<Blog> {
-        return resource<Blog, unknown>({
-            loader: () => firstValueFrom(
-                this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}`, data)
-                    .pipe(map(response => this.transformResponse(response)))
-            ),
-            defaultValue: {} as Blog
-        });
+    async updateBlog(id: string, data: Blog): Promise<Blog> {
+        const response = await firstValueFrom(
+            this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}`, data)
+                .pipe(map(response => this.transformResponse(response)))
+        );
+        return response;
     }
 
     // Change blog status
-    draftBlog(id: string): ResourceRef<Blog> {
-        return resource<Blog, unknown>({
-            loader: () => firstValueFrom(
-                this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/draft`, {})
-                    .pipe(map(response => this.transformResponse(response)))
-            ),
-            defaultValue: {} as Blog
-        });
+    async draftBlog(id: string): Promise<Blog> {
+        const response = await firstValueFrom(
+            this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/draft`, {})
+                .pipe(map(response => this.transformResponse(response)))
+        );
+        return response;
     }
 
-    reviewBlog(id: string): ResourceRef<Blog> {
-        return resource<Blog, unknown>({
-            loader: () => firstValueFrom(
-                this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/review`, {})
-                    .pipe(map(response => this.transformResponse(response)))
-            ),
-            defaultValue: {} as Blog
-        });
+    async reviewBlog(id: string): Promise<Blog> {
+        const response = await firstValueFrom(
+            this.httpClient.patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/review`, {})
+                .pipe(map(response => this.transformResponse(response)))
+        );
+        return response;
     }
 
     // Helper method to transform API responses
