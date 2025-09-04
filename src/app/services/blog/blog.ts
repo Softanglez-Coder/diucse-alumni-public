@@ -6,7 +6,9 @@ import { firstValueFrom, map } from "rxjs";
 import { resource, ResourceRef } from "@angular/core";
 import { API_BASE_URL } from "../../core";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BlogService extends BaseService<Blog> {
     private apiBaseUrl: string = inject(API_BASE_URL);
     private httpClient = inject(HttpClient);
