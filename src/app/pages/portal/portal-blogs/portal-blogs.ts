@@ -22,7 +22,6 @@ export class PortalBlogs {
   isSubmitting = signal(false);
   isEditing = signal(false);
   editingBlog = signal<Blog | null>(null);
-  refreshTrigger = signal(0); // Used to trigger resource reload
 
   // Form for creating/editing blogs
   blogForm: FormGroup = this.fb.group({
@@ -144,8 +143,8 @@ export class PortalBlogs {
   }
 
   private refreshBlogList() {
-    // Force recreation of the resource to refresh the data
-    this.myBlogs = this.blogService.getMyBlogs();
+    // Reload the resource to get fresh data from server
+    this.myBlogs.reload();
   }
 
   canSubmitForReview(blog: Blog): boolean {
