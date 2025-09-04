@@ -1,0 +1,103 @@
+// Blog-specific styles
+
+.blog-excerpt {
+  /* Ensure quill content displays properly in excerpt */
+  ::ng-deep {
+    .ql-editor {
+      padding: 0;
+      line-height: 1.6;
+
+      p {
+        margin-bottom: 0.5rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      // Limit nested elements in excerpt
+      h1, h2, h3, h4, h5, h6 {
+        font-size: inherit;
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+      }
+
+      ul, ol {
+        margin: 0.5rem 0;
+        padding-left: 1rem;
+      }
+
+      blockquote {
+        margin: 0.5rem 0;
+        padding-left: 1rem;
+        border-left: 3px solid #e5e7eb;
+        font-style: italic;
+      }
+
+      // Hide images in excerpt
+      img {
+        display: none;
+      }
+
+      // Simplify code blocks
+      pre, code {
+        background-color: #f3f4f6;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.875em;
+      }
+
+      pre {
+        display: block;
+        margin: 0.5rem 0;
+      }
+    }
+  }
+}
+
+// Hover effects for blog cards
+article {
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    .blog-excerpt {
+      color: #4b5563; // Slightly darker on hover
+    }
+  }
+}
+
+// Search section
+.search-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+// Custom scrollbar for content areas (if needed)
+.blog-content {
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+
+    &:hover {
+      background: #a8a8a8;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .blog-excerpt {
+    ::ng-deep .ql-editor {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  }
+}

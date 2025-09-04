@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { BannerService, UserService, BlogService } from '../../services';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { BannerCarousel, ContactSection } from '../../shared';
+import { BannerCarousel, ContactSection, LatestBlogs } from '../../shared';
 import { MembersList } from '../../shared/components/members-list/members-list';
 
 @Component({
@@ -14,7 +14,7 @@ import { MembersList } from '../../shared/components/members-list/members-list';
   templateUrl: './home.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [BannerService, UserService, BlogService],
-  imports: [BannerCarousel, ContactSection, MembersList],
+  imports: [BannerCarousel, ContactSection, MembersList, LatestBlogs],
 })
 export class Home {
   private bannerService = inject(BannerService);

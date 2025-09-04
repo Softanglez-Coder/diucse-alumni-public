@@ -1,0 +1,133 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-20">
+    <div class="container mx-auto px-4">
+      <div class="text-center">
+        <h1 class="text-5xl font-bold mb-4">Our Blog</h1>
+        <p class="text-xl opacity-90 max-w-2xl mx-auto">
+          Discover insights, stories, and updates from our vibrant alumni community
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Section -->
+  <section class="py-12 bg-white border-b">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex justify-center">
+          <!-- Search Input -->
+          <div class="relative w-full max-w-md">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fa-solid fa-search text-gray-400"></i>
+            </div>
+            <input
+              type="text"
+              placeholder="Search blogs..."
+              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              (input)="onSearchChange($event)"
+              [value]="searchTerm()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blogs Grid -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      @if (blogs.value() && blogs.value().length > 0) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          @for (blog of blogs.value(); track blog.id) {
+            <article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 ease-in-out">
+              <!-- Blog Image Placeholder -->
+              <div class="relative h-48 bg-gradient-to-r from-blue-500 to-purple-600">
+                <div class="w-full h-full flex items-center justify-center">
+                  <i class="fa-solid fa-blog text-white text-4xl opacity-20"></i>
+                </div>
+                <div class="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+                  Blog
+                </div>
+              </div>
+
+              <!-- Blog Content -->
+              <div class="p-6">
+                <!-- Author Info -->
+                <div class="flex items-center gap-2 text-gray-500 text-sm mb-3">
+                  @if (blog.author) {
+                    <span class="flex items-center gap-1">
+                      <i class="fa-solid fa-user text-gray-400"></i>
+                      {{ blog.author.name }}
+                    </span>
+                  }
+                  @if (blog.status) {
+                    <span class="flex items-center gap-1">
+                      <i class="fa-solid fa-circle text-green-400"></i>
+                      {{ blog.status }}
+                    </span>
+                  }
+                </div>
+
+                <!-- Blog Title -->
+                <h3 class="text-xl font-bold text-gray-900 mb-3 leading-tight hover:text-primary-500 transition-colors duration-300">
+                  <a [routerLink]="['/blogs', blog.id]" class="no-underline text-inherit">
+                    {{ blog.title }}
+                  </a>
+                </h3>
+
+                <!-- Blog Excerpt -->
+                <div class="text-gray-600 mb-6 leading-relaxed blog-excerpt">
+                  <quill-view-html
+                    [content]="getExcerpt(blog.content, 150)"
+                    theme="bubble"
+                  ></quill-view-html>
+                </div>
+
+                <!-- Read More Button -->
+                <div class="flex justify-end">
+                  <a
+                    [routerLink]="['/blogs', blog.id]"
+                    class="inline-flex items-center gap-2 text-primary-500 font-semibold text-sm hover:text-primary-700 hover:translate-x-1 transition-all duration-300 no-underline"
+                  >
+                    Read More
+                    <i class="fa-solid fa-arrow-right transition-transform duration-300"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+
+        <!-- Pagination (if needed) -->
+        <!-- <div class="mt-12 flex justify-center">
+          <nav class="flex space-x-2">
+            <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Previous</button>
+            <button class="px-4 py-2 text-sm bg-primary-500 text-white rounded-lg">1</button>
+            <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
+            <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">3</button>
+            <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Next</button>
+          </nav>
+        </div> -->
+      } @else {
+        <!-- Empty State -->
+        <div class="flex justify-center items-center min-h-[400px]">
+          <div class="text-center">
+            <div class="bg-gray-100 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+              <i class="fa-solid fa-blog text-gray-400 text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-semibold text-gray-900 mb-2">No blogs found</h3>
+            <p class="text-gray-600 mb-6">Check back later for new content from our alumni community.</p>
+            <a
+              routerLink="/"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300 no-underline"
+            >
+              <i class="fa-solid fa-home"></i>
+              Back to Home
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</div>

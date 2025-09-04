@@ -1,0 +1,91 @@
+<section class="bg-gray-50">
+  <div class="container mx-auto px-4 py-16">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-900 mb-4 leading-tight">
+        Latest Blogs
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        Discover insights and stories from our alumni community
+      </p>
+    </div>
+    @if (blogs.value() && blogs.value().length > 0) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      @for (blog of blogs.value(); track blog.id; let i = $index) {
+      <article
+        class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out"
+        [class.lg:col-span-2]="i === 0"
+      >
+        <div
+          class="relative h-48 overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600"
+          [class.lg:h-80]="i === 0"
+        >
+          <!-- Blog placeholder image with gradient background -->
+          <div class="w-full h-full flex items-center justify-center">
+            <i class="fa-solid fa-blog text-white text-6xl opacity-20"></i>
+          </div>
+          <div
+            class="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide"
+          >
+            Blog
+          </div>
+        </div>
+        <div class="p-6" [class.lg:p-8]="i === 0">
+          <div class="flex items-center gap-2 text-gray-500 text-sm mb-3">
+            @if (blog.author) {
+            <span class="flex items-center gap-1">
+              <i class="fa-solid fa-user text-gray-400"></i>
+              {{blog.author.name}}
+            </span>
+            }
+          </div>
+          <h3
+            class="text-xl font-bold text-gray-900 mb-3 leading-tight hover:text-primary-500 transition-colors duration-300"
+            [class.lg:text-2xl]="i === 0"
+          >
+            {{blog.title}}
+          </h3>
+          <p
+            class="text-gray-600 mb-6 leading-relaxed"
+            [class.lg:text-lg]="i === 0"
+          >
+            <quill-view-html
+              [content]="getExcerpt(blog.content, i === 0 ? 200 : 120)"
+              theme="bubble"
+            ></quill-view-html>
+          </p>
+          <div class="flex justify-end">
+            <a
+              [routerLink]="['/blogs', blog.id]"
+              class="inline-flex items-center gap-2 text-primary-500 font-semibold text-sm hover:text-primary-700 hover:translate-x-1 transition-all duration-300 no-underline"
+            >
+              Read More
+              <i
+                class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"
+              ></i>
+            </a>
+          </div>
+        </div>
+      </article>
+      }
+    </div>
+    } @else {
+    <div
+      class="flex justify-center items-center min-h-[300px] bg-white rounded-2xl border-2 border-dashed border-gray-300"
+    >
+      <div class="text-center text-gray-600">
+        <i class="fa-solid fa-blog text-5xl mb-4 opacity-50"></i>
+        <p class="text-lg font-medium">No blog posts available</p>
+      </div>
+    </div>
+    }
+    <div class="text-center mt-12">
+      <a
+        routerLink="/blogs"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-transparent text-primary-500 border-2 border-primary-500 rounded-lg font-semibold hover:bg-primary-500 hover:text-white transition-all duration-300 no-underline"
+      >
+        View All Blogs
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</section>

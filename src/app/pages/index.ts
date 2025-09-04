@@ -6,4 +6,5 @@ export * from './contact';
 export * from './membership';
 export * from './members';
 export * from './social-redirects';
+export * from './blogs';
 export * from './blog-details';
