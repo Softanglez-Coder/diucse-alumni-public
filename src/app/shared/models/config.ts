@@ -1,3 +1,3 @@
 export class Config {
-    baseUrl!: string;
+  baseUrl!: string;
 }

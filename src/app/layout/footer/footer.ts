@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-    selector: '[footer]',
-    templateUrl: './footer.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: '[footer]',
+  templateUrl: './footer.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Footer {}

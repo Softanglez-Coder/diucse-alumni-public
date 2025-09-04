@@ -1,20 +1,20 @@
 [
-    {
-        "title": "Profile",
-        "path": "/portal/profile",
-        "icon": "fa-solid fa-user",
-        "description": "Manage your profile information and settings."
-    },
-    {
-        "title": "Membership",
-        "path": "/portal/membership",
-        "icon": "fa-solid fa-users",
-        "description": "View and manage your membership details."
-    },
+  {
+    "title": "Profile",
+    "path": "/portal/profile",
+    "icon": "fa-solid fa-user",
+    "description": "Manage your profile information and settings."
+  },
+  {
+    "title": "Membership",
+    "path": "/portal/membership",
+    "icon": "fa-solid fa-users",
+    "description": "View and manage your membership details."
+  },
   {
     "title": "Blogs",
     "path": "/portal/blogs",
-    "icon": "fa-solid fa-books",
+    "icon": "fa-solid fa-blog",
     "description": "View and manage your blogs."
   }
 ]

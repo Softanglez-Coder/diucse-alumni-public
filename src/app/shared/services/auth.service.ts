@@ -22,16 +22,22 @@ export class AuthService {
 
   login(email: string, password: string): Observable<any> {
     const url = `${this.baseUrl}/auth/login`;
-    return this.http.post(url, { email, password }, {
-      withCredentials: true,
-      observe: 'response'
-    }).pipe(
-      tap((response: any) => {
-        // Backend sets the cookie automatically via Set-Cookie header
-        // Update auth state since login was successful
-        this.authState.next(true);
-      })
-    );
+    return this.http
+      .post(
+        url,
+        { email, password },
+        {
+          withCredentials: true,
+          observe: 'response',
+        },
+      )
+      .pipe(
+        tap((response: any) => {
+          // Backend sets the cookie automatically via Set-Cookie header
+          // Update auth state since login was successful
+          this.authState.next(true);
+        }),
+      );
   }
 
   logout(): Observable<any> {
@@ -39,7 +45,7 @@ export class AuthService {
     return this.http.post(url, {}, { withCredentials: true }).pipe(
       tap(() => {
         this.authState.next(false);
-      })
+      }),
     );
   }
 
@@ -70,15 +76,21 @@ export class AuthService {
 
   refreshToken(): Observable<any> {
     const url = `${this.baseUrl}/auth/refresh`;
-    return this.http.post(url, {}, {
-      withCredentials: true,
-      observe: 'response'
-    }).pipe(
-      tap((response: any) => {
-        // Backend refreshes the cookie automatically via Set-Cookie header
-        this.authState.next(true);
-      })
-    );
+    return this.http
+      .post(
+        url,
+        {},
+        {
+          withCredentials: true,
+          observe: 'response',
+        },
+      )
+      .pipe(
+        tap((response: any) => {
+          // Backend refreshes the cookie automatically via Set-Cookie header
+          this.authState.next(true);
+        }),
+      );
   }
 
   checkAuthStatus(): Observable<any> {
@@ -90,7 +102,7 @@ export class AuthService {
       catchError((error: any) => {
         this.authState.next(false);
         return throwError(() => error);
-      })
+      }),
     );
   }
 
@@ -106,7 +118,7 @@ export class AuthService {
       catchError((error: any) => {
         this.authState.next(false);
         return throwError(() => error);
-      })
+      }),
     );
   }
 

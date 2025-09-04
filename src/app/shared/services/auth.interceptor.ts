@@ -11,15 +11,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   let authRequest = req;
 
   authRequest = req.clone({
-    withCredentials: true
+    withCredentials: true,
   });
 
   return next(authRequest).pipe(
     catchError((error: HttpErrorResponse) => {
       // Handle 401 Unauthorized responses, but not for auth check or login requests
-      if (error.status === 401 && 
-          !req.url.includes('/auth/login') && 
-          !req.url.includes('/auth/me')) {
+      if (
+        error.status === 401 &&
+        !req.url.includes('/auth/login') &&
+        !req.url.includes('/auth/me')
+      ) {
         // Try to refresh token first
         return authService.refreshToken().pipe(
           switchMap(() => {
@@ -29,11 +31,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           catchError(() => {
             // Refresh failed, redirect to login
             authService.markAsUnauthenticated();
-            router.navigate(['/login'], { 
-              queryParams: { returnUrl: router.url } 
+            router.navigate(['/login'], {
+              queryParams: { returnUrl: router.url },
             });
             return throwError(() => error);
-          })
+          }),
         );
       }
 
@@ -44,6 +46,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       return throwError(() => error);
-    })
+    }),
   );
 };

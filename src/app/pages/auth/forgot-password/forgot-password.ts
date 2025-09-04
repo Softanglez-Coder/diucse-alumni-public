@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ChangeDetectorRef,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../shared/services';
@@ -21,10 +30,10 @@ export class ForgotPassword {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
     this.forgotPasswordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
@@ -32,26 +41,30 @@ export class ForgotPassword {
     if (this.forgotPasswordForm.valid) {
       this.isSubmitting = true;
       this.errorMessage = null;
-      
-      this.authService.forgotPassword(this.forgotPasswordForm.value.email).subscribe({
-        next: () => {
-          this.isSubmitting = false;
-          this.isSubmitted = true;
-          this.cdr.markForCheck();
-        },
-        error: (err) => {
-          this.isSubmitting = false;
-          this.errorMessage = err?.error?.message || 'Failed to send reset email. Please try again.';
-          this.cdr.markForCheck();
-        }
-      });
+
+      this.authService
+        .forgotPassword(this.forgotPasswordForm.value.email)
+        .subscribe({
+          next: () => {
+            this.isSubmitting = false;
+            this.isSubmitted = true;
+            this.cdr.markForCheck();
+          },
+          error: (err) => {
+            this.isSubmitting = false;
+            this.errorMessage =
+              err?.error?.message ||
+              'Failed to send reset email. Please try again.';
+            this.cdr.markForCheck();
+          },
+        });
     } else {
       this.markFormGroupTouched();
     }
   }
 
   private markFormGroupTouched() {
-    Object.keys(this.forgotPasswordForm.controls).forEach(key => {
+    Object.keys(this.forgotPasswordForm.controls).forEach((key) => {
       const control = this.forgotPasswordForm.get(key);
       control?.markAsTouched();
     });

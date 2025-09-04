@@ -26,6 +26,7 @@ This BaseService provides a comprehensive CRUD (Create, Read, Update, Delete) im
 ### Resource API Methods (Recommended)
 
 #### Read Operations
+
 ```typescript
 // Get all records
 findAll<T>(): ResourceRef<T[]>
@@ -41,6 +42,7 @@ findPaginated<T>(page: number, limit: number, filters?: Record<string, any>): Re
 ```
 
 #### Write Operations
+
 ```typescript
 // Create new record
 create<T>(data: Partial<T>): ResourceRef<T>
@@ -56,6 +58,7 @@ delete<T>(id: string | number): ResourceRef<T>
 ```
 
 #### Bulk Operations
+
 ```typescript
 // Bulk create records
 bulkCreate<T>(data: Partial<T>[]): ResourceRef<T[]>
@@ -87,8 +90,8 @@ findPaginatedObservable<T>(page: number, limit: number, filters?: Record<string,
 ### 1. Create a Service
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { BaseService } from './base.service';
+import { Injectable } from "@angular/core";
+import { BaseService } from "./base.service";
 
 export interface User {
   id: string;
@@ -101,11 +104,11 @@ export interface User {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class UserService extends BaseService {
   constructor() {
-    super('users'); // API endpoint
+    super("users"); // API endpoint
   }
 
   // Custom methods
@@ -114,7 +117,7 @@ export class UserService extends BaseService {
   }
 
   getActiveUsers() {
-    return this.findWithQuery<User>({ status: 'active' });
+    return this.findWithQuery<User>({ status: "active" });
   }
 
   searchUsers(searchTerm: string) {
@@ -135,12 +138,12 @@ import { UserService, User } from './user.service';
     <div>
       <!-- Loading state -->
       <div *ngIf="usersResource.isLoading()">Loading...</div>
-      
+
       <!-- Error state -->
       <div *ngIf="usersResource.error()">
         Error: {{ usersResource.error() }}
       </div>
-      
+
       <!-- Data -->
       <div *ngIf="usersResource.value()">
         <div *ngFor="let user of usersResource.value()">
@@ -152,13 +155,13 @@ import { UserService, User } from './user.service';
 })
 export class UserListComponent {
   private userService = inject(UserService);
-  
+
   // Resource automatically manages loading states
   usersResource = this.userService.findAll<User>();
-  
+
   // Filtered data
   activeUsersResource = this.userService.getActiveUsers();
-  
+
   // Search results
   searchResults = this.userService.searchUsers('john');
 }
@@ -169,31 +172,31 @@ export class UserListComponent {
 ```typescript
 export class UserManagementComponent {
   private userService = inject(UserService);
-  
+
   // Create user
   createUser(userData: Partial<User>) {
     const createResource = this.userService.create<User>(userData);
-    
+
     // Resource provides automatic loading states
     if (createResource.isLoading()) {
-      console.log('Creating user...');
+      console.log("Creating user...");
     }
-    
+
     if (createResource.error()) {
-      console.error('Error creating user:', createResource.error());
+      console.error("Error creating user:", createResource.error());
     }
-    
+
     if (createResource.value()) {
-      console.log('User created:', createResource.value());
+      console.log("User created:", createResource.value());
     }
   }
-  
+
   // Update user
   updateUser(userId: string, userData: Partial<User>) {
     const updateResource = this.userService.update<User>(userId, userData);
     // Handle resource states similarly
   }
-  
+
   // Delete user
   deleteUser(userId: string) {
     const deleteResource = this.userService.delete(userId);
@@ -207,34 +210,22 @@ export class UserManagementComponent {
 ```typescript
 export class PaginatedUserListComponent {
   private userService = inject(UserService);
-  
+
   currentPage = 1;
   pageSize = 10;
-  filters = { role: 'user', status: 'active' };
-  
-  paginatedUsersResource = this.userService.findPaginated<User>(
-    this.currentPage,
-    this.pageSize,
-    this.filters
-  );
-  
+  filters = { role: "user", status: "active" };
+
+  paginatedUsersResource = this.userService.findPaginated<User>(this.currentPage, this.pageSize, this.filters);
+
   nextPage() {
     this.currentPage++;
-    this.paginatedUsersResource = this.userService.findPaginated<User>(
-      this.currentPage,
-      this.pageSize,
-      this.filters
-    );
+    this.paginatedUsersResource = this.userService.findPaginated<User>(this.currentPage, this.pageSize, this.filters);
   }
-  
+
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.paginatedUsersResource = this.userService.findPaginated<User>(
-        this.currentPage,
-        this.pageSize,
-        this.filters
-      );
+      this.paginatedUsersResource = this.userService.findPaginated<User>(this.currentPage, this.pageSize, this.filters);
     }
   }
 }
@@ -245,19 +236,19 @@ export class PaginatedUserListComponent {
 ```typescript
 export class TraditionalUserComponent implements OnInit {
   private userService = inject(UserService);
-  
+
   users: User[] = [];
   loading = false;
   error: string | null = null;
-  
+
   ngOnInit() {
     this.loadUsers();
   }
-  
+
   loadUsers() {
     this.loading = true;
     this.error = null;
-    
+
     this.userService.findAllObservable<User>().subscribe({
       next: (users) => {
         this.users = users;
@@ -266,19 +257,19 @@ export class TraditionalUserComponent implements OnInit {
       error: (error) => {
         this.error = error.message;
         this.loading = false;
-      }
+      },
     });
   }
-  
+
   createUser(userData: Partial<User>) {
     this.userService.createObservable<User>(userData).subscribe({
       next: (createdUser) => {
-        console.log('User created:', createdUser);
+        console.log("User created:", createdUser);
         this.loadUsers(); // Refresh list
       },
       error: (error) => {
-        console.error('Error creating user:', error);
-      }
+        console.error("Error creating user:", error);
+      },
     });
   }
 }
@@ -289,31 +280,31 @@ export class TraditionalUserComponent implements OnInit {
 ```typescript
 export class BulkUserManagementComponent {
   private userService = inject(UserService);
-  
+
   // Bulk create users
   bulkCreateUsers(usersData: Partial<User>[]) {
     const bulkCreateResource = this.userService.bulkCreate<User>(usersData);
-    
+
     if (bulkCreateResource.value()) {
-      console.log('Users created:', bulkCreateResource.value());
+      console.log("Users created:", bulkCreateResource.value());
     }
   }
-  
+
   // Bulk update users
   bulkUpdateUsers(updates: Array<{ id: string; data: Partial<User> }>) {
     const bulkUpdateResource = this.userService.bulkUpdate<User>(updates);
-    
+
     if (bulkUpdateResource.value()) {
-      console.log('Users updated:', bulkUpdateResource.value());
+      console.log("Users updated:", bulkUpdateResource.value());
     }
   }
-  
+
   // Bulk delete users
   bulkDeleteUsers(userIds: string[]) {
     const bulkDeleteResource = this.userService.bulkDelete(userIds);
-    
+
     if (bulkDeleteResource.value()) {
-      console.log('Users deleted successfully');
+      console.log("Users deleted successfully");
     }
   }
 }
@@ -330,6 +321,7 @@ export class BulkUserManagementComponent {
 ## API Expected Response Format
 
 ### Single Resource
+
 ```json
 {
   "id": "1",
@@ -343,6 +335,7 @@ export class BulkUserManagementComponent {
 ```
 
 ### Array of Resources
+
 ```json
 [
   {
@@ -359,6 +352,7 @@ export class BulkUserManagementComponent {
 ```
 
 ### Paginated Response
+
 ```json
 {
   "data": [
@@ -380,10 +374,10 @@ export class BulkUserManagementComponent {
 The service automatically handles HTTP errors and provides them through the resource's error state:
 
 ```typescript
-const userResource = this.userService.findOne<User>('123');
+const userResource = this.userService.findOne<User>("123");
 
 if (userResource.error()) {
-  console.error('Error loading user:', userResource.error());
+  console.error("Error loading user:", userResource.error());
 }
 ```
 
@@ -393,14 +387,14 @@ Make sure to provide the `API_BASE_URL` token in your app configuration:
 
 ```typescript
 // app.config.ts
-import { ApplicationConfig } from '@angular/core';
-import { API_BASE_URL } from './core/tokens';
+import { ApplicationConfig } from "@angular/core";
+import { API_BASE_URL } from "./core/tokens";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    { provide: API_BASE_URL, useValue: 'https://api.example.com' },
+    { provide: API_BASE_URL, useValue: "https://api.example.com" },
     // other providers
-  ]
+  ],
 };
 ```
 

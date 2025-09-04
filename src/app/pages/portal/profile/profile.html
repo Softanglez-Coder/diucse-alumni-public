@@ -1,286 +1,360 @@
 <div class="max-w-4xl mx-auto">
-    <div class="flex justify-between items-center mb-8 pb-4 border-b-2 border-gray-200">
-        <h1 class="text-3xl font-bold text-gray-900">My Profile</h1>
-        <button
-            class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            (click)="toggleEdit()"
-            [disabled]="isEditing() || isLoading()">
-            <i class="fa-solid fa-edit"></i>
-            {{ isEditing() ? 'Editing...' : 'Edit Profile' }}
-        </button>
+  <div
+    class="flex justify-between items-center mb-8 pb-4 border-b-2 border-gray-200"
+  >
+    <h1 class="text-3xl font-bold text-gray-900">My Profile</h1>
+    <button
+      class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+      (click)="toggleEdit()"
+      [disabled]="isEditing() || isLoading()"
+    >
+      <i class="fa-solid fa-edit"></i>
+      {{ isEditing() ? 'Editing...' : 'Edit Profile' }}
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading() && !userData()) {
+  <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+    <div class="flex items-center justify-center py-12">
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"
+      ></div>
+      <span class="ml-3 text-gray-600">Loading profile...</span>
+    </div>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !userData()) {
+  <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+    <div class="text-center py-12">
+      <div class="text-red-500 mb-4">
+        <i class="fa-solid fa-exclamation-triangle text-4xl"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">
+        Error Loading Profile
+      </h3>
+      <p class="text-gray-600 mb-4">{{ error() }}</p>
+      <button
+        class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-600 transition-all duration-300"
+        (click)="retryLoad()"
+      >
+        <i class="fa-solid fa-refresh"></i>
+        Retry
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Profile Content -->
+  @if (userData()) {
+  <!-- Error Banner for Save Errors -->
+  @if (error()) {
+  <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+    <div class="flex items-center">
+      <div class="text-red-500 mr-3">
+        <i class="fa-solid fa-exclamation-circle"></i>
+      </div>
+      <div class="flex-1">
+        <p class="text-red-800">{{ error() }}</p>
+      </div>
+      <button class="text-red-500 hover:text-red-700" (click)="error.set(null)">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Content Sections -->
+  <div class="space-y-8">
+    <!-- Account Information (Read-only) -->
+    <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">Account Information</h2>
+
+      <!-- Profile Photo Section -->
+      <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-200">
+        <div class="flex-shrink-0 relative">
+          @if (profilePhoto()) {
+          <img
+            [src]="profilePhoto()"
+            [alt]="displayName() + ' profile photo'"
+            class="w-20 h-20 rounded-full object-cover border-2 border-gray-300"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          }
+          <div
+            class="w-20 h-20 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center text-white text-2xl font-semibold"
+            [style.display]="profilePhoto() ? 'none' : 'flex'"
+          >
+            {{ displayName().charAt(0).toUpperCase() }}
+          </div>
+
+          <!-- Photo upload overlay -->
+          <div
+            class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+            (click)="triggerPhotoUpload()"
+            [class.opacity-100]="isUploadingPhoto()"
+          >
+            @if (isUploadingPhoto()) {
+            <div
+              class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"
+            ></div>
+            } @else {
+            <i class="fa-solid fa-camera text-white text-lg"></i>
+            }
+          </div>
+
+          <!-- Hidden file input -->
+          <input
+            type="file"
+            id="photo-upload"
+            accept="image/*"
+            class="hidden"
+            (change)="onPhotoSelected($event)"
+          />
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">
+            {{ displayName() }}
+          </h3>
+          <p class="text-gray-600">{{ batchInfo() }}</p>
+          <button
+            class="mt-2 inline-flex items-center gap-2 px-3 py-1.5 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+            (click)="triggerPhotoUpload()"
+            [disabled]="isUploadingPhoto()"
+          >
+            @if (isUploadingPhoto()) {
+            <div
+              class="animate-spin rounded-full h-3 w-3 border-b-2 border-primary-600"
+            ></div>
+            Uploading... } @else {
+            <i class="fa-solid fa-camera"></i>
+            {{ profilePhoto() ? 'Change Photo' : 'Upload Photo' }} }
+          </button>
+          <div class="flex items-center flex-wrap gap-2 mt-2">
+            <!-- Role chips -->
+            @for (role of userRolesArray(); track role) {
+            <span
+              class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800"
+            >
+              {{ role }}
+            </span>
+            }
+
+            <!-- Email verification status -->
+            @if (accountStatus().emailVerified) {
+            <span
+              class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+            >
+              <i class="fa-solid fa-check-circle mr-1"></i>
+              Verified
+            </span>
+            } @else {
+            <span
+              class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+            >
+              <i class="fa-solid fa-exclamation-circle mr-1"></i>
+              Unverified
+            </span>
+            }
+          </div>
+
+          <!-- Send verification email button -->
+          @if (!accountStatus().emailVerified) {
+          <div class="mt-3">
+            <button
+              class="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-600 text-white text-xs rounded-lg font-medium hover:bg-yellow-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              (click)="sendVerificationEmail()"
+              [disabled]="isSendingVerification()"
+            >
+              @if (isSendingVerification()) {
+              <div
+                class="animate-spin rounded-full h-3 w-3 border-b-2 border-white"
+              ></div>
+              } @else {
+              <i class="fa-solid fa-envelope"></i>
+              } {{ isSendingVerification() ? 'Sending...' : 'Send Verification
+              Email' }}
+            </button>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2"
+            >Account Status</label
+          >
+          <div
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl"
+          >
+            <div class="flex items-center gap-2">
+              <div
+                class="w-2 h-2 rounded-full"
+                [class]="accountStatus().active ? 'bg-green-500' : 'bg-red-500'"
+              ></div>
+              <span
+                class="text-sm"
+                [class]="accountStatus().active ? 'text-green-700' : 'text-red-700'"
+              >
+                {{ accountStatus().active ? 'Active Account' : 'Inactive
+                Account' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2"
+            >Member Since</label
+          >
+          <div
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-600"
+          >
+            {{ userData()?.createdAt | date:'mediumDate' }}
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Loading State -->
-    @if (isLoading() && !userData()) {
-        <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
-            <div class="flex items-center justify-center py-12">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                <span class="ml-3 text-gray-600">Loading profile...</span>
-            </div>
+    <!-- Personal Information (Editable) -->
+    <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">Personal Information</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="col-span-1 md:col-span-2">
+          <label
+            for="name"
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            >Full Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
+            [(ngModel)]="profile().name"
+            [readonly]="!isEditing()"
+            [disabled]="isLoading()"
+          />
         </div>
-    }
 
-    <!-- Error State -->
-    @if (error() && !userData()) {
-        <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
-            <div class="text-center py-12">
-                <div class="text-red-500 mb-4">
-                    <i class="fa-solid fa-exclamation-triangle text-4xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Error Loading Profile</h3>
-                <p class="text-gray-600 mb-4">{{ error() }}</p>
-                <button
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-600 transition-all duration-300"
-                    (click)="retryLoad()">
-                    <i class="fa-solid fa-refresh"></i>
-                    Retry
-                </button>
-            </div>
+        <div>
+          <label
+            for="email"
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
+            [(ngModel)]="profile().email"
+            [readonly]="!isEditing()"
+            [disabled]="isLoading()"
+          />
         </div>
-    }
 
-    <!-- Profile Content -->
-    @if (userData()) {
-        <!-- Error Banner for Save Errors -->
-        @if (error()) {
-            <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
-                <div class="flex items-center">
-                    <div class="text-red-500 mr-3">
-                        <i class="fa-solid fa-exclamation-circle"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-red-800">{{ error() }}</p>
-                    </div>
-                    <button
-                        class="text-red-500 hover:text-red-700"
-                        (click)="error.set(null)">
-                        <i class="fa-solid fa-times"></i>
-                    </button>
-                </div>
-            </div>
-        }
-
-        <!-- Content Sections -->
-        <div class="space-y-8">
-            <!-- Account Information (Read-only) -->
-            <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-6">Account Information</h2>
-
-                <!-- Profile Photo Section -->
-                <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-200">
-                    <div class="flex-shrink-0 relative">
-                        @if (profilePhoto()) {
-                            <img
-                                [src]="profilePhoto()"
-                                [alt]="displayName() + ' profile photo'"
-                                class="w-20 h-20 rounded-full object-cover border-2 border-gray-300"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        }
-                        <div
-                            class="w-20 h-20 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center text-white text-2xl font-semibold"
-                            [style.display]="profilePhoto() ? 'none' : 'flex'">
-                            {{ displayName().charAt(0).toUpperCase() }}
-                        </div>
-
-                        <!-- Photo upload overlay -->
-                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-                             (click)="triggerPhotoUpload()"
-                             [class.opacity-100]="isUploadingPhoto()">
-                            @if (isUploadingPhoto()) {
-                                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                            } @else {
-                                <i class="fa-solid fa-camera text-white text-lg"></i>
-                            }
-                        </div>
-
-                        <!-- Hidden file input -->
-                        <input
-                            type="file"
-                            id="photo-upload"
-                            accept="image/*"
-                            class="hidden"
-                            (change)="onPhotoSelected($event)">
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">{{ displayName() }}</h3>
-                        <p class="text-gray-600">{{ batchInfo() }}</p>
-                        <button
-                            class="mt-2 inline-flex items-center gap-2 px-3 py-1.5 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
-                            (click)="triggerPhotoUpload()"
-                            [disabled]="isUploadingPhoto()">
-                            @if (isUploadingPhoto()) {
-                                <div class="animate-spin rounded-full h-3 w-3 border-b-2 border-primary-600"></div>
-                                Uploading...
-                            } @else {
-                                <i class="fa-solid fa-camera"></i>
-                                {{ profilePhoto() ? 'Change Photo' : 'Upload Photo' }}
-                            }
-                        </button>
-                        <div class="flex items-center flex-wrap gap-2 mt-2">
-                            <!-- Role chips -->
-                            @for (role of userRolesArray(); track role) {
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-                                    {{ role }}
-                                </span>
-                            }
-
-                            <!-- Email verification status -->
-                            @if (accountStatus().emailVerified) {
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    <i class="fa-solid fa-check-circle mr-1"></i>
-                                    Verified
-                                </span>
-                            } @else {
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                    <i class="fa-solid fa-exclamation-circle mr-1"></i>
-                                    Unverified
-                                </span>
-                            }
-                        </div>
-
-                        <!-- Send verification email button -->
-                        @if (!accountStatus().emailVerified) {
-                            <div class="mt-3">
-                                <button
-                                    class="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-600 text-white text-xs rounded-lg font-medium hover:bg-yellow-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    (click)="sendVerificationEmail()"
-                                    [disabled]="isSendingVerification()">
-                                    @if (isSendingVerification()) {
-                                        <div class="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
-                                    } @else {
-                                        <i class="fa-solid fa-envelope"></i>
-                                    }
-                                    {{ isSendingVerification() ? 'Sending...' : 'Send Verification Email' }}
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Account Status</label>
-                        <div class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl">
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full" [class]="accountStatus().active ? 'bg-green-500' : 'bg-red-500'"></div>
-                                <span class="text-sm" [class]="accountStatus().active ? 'text-green-700' : 'text-red-700'">
-                                    {{ accountStatus().active ? 'Active Account' : 'Inactive Account' }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Member Since</label>
-                        <div class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-600">
-                            {{ userData()?.createdAt | date:'mediumDate' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Personal Information (Editable) -->
-            <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-6">Personal Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="col-span-1 md:col-span-2">
-                        <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
-                            [(ngModel)]="profile().name"
-                            [readonly]="!isEditing()"
-                            [disabled]="isLoading()">
-                    </div>
-
-                    <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
-                            [(ngModel)]="profile().email"
-                            [readonly]="!isEditing()"
-                            [disabled]="isLoading()">
-                    </div>
-
-                    <div>
-                        <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
-                            [(ngModel)]="profile().phone"
-                            [readonly]="!isEditing()"
-                            [disabled]="isLoading()">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Academic Information -->
-            <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-6">Academic Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Batch</label>
-                        <div class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-600">
-                            {{ batchInfo() }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Professional Information -->
-            <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-6">Professional Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="currentPosition" class="block text-sm font-semibold text-gray-700 mb-2">Current Position</label>
-                        <input
-                            type="text"
-                            id="currentPosition"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
-                            [(ngModel)]="profile().currentPosition"
-                            [readonly]="!isEditing()"
-                            [disabled]="isLoading()">
-                    </div>
-
-                    <div>
-                        <label for="company" class="block text-sm font-semibold text-gray-700 mb-2">Company</label>
-                        <input
-                            type="text"
-                            id="company"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
-                            [(ngModel)]="profile().company"
-                            [readonly]="!isEditing()"
-                            [disabled]="isLoading()">
-                    </div>
-                </div>
-            </div>
-
-            @if (isEditing()) {
-                <div class="flex justify-end space-x-4 mt-6">
-                    <button
-                        class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                        (click)="saveProfile()"
-                        [disabled]="isLoading()">
-                        @if (isLoading()) {
-                            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                        } @else {
-                            <i class="fa-solid fa-save"></i>
-                        }
-                        {{ isLoading() ? 'Saving...' : 'Save Changes' }}
-                    </button>
-                    <button
-                        class="inline-flex items-center gap-2 px-6 py-3 bg-gray-500 text-white rounded-xl font-semibold hover:bg-gray-600 transition-all duration-300"
-                        (click)="cancelEdit()"
-                        [disabled]="isLoading()">
-                        <i class="fa-solid fa-times"></i>
-                        Cancel
-                    </button>
-                </div>
-            }
+        <div>
+          <label
+            for="phone"
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            >Phone</label
+          >
+          <input
+            type="tel"
+            id="phone"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
+            [(ngModel)]="profile().phone"
+            [readonly]="!isEditing()"
+            [disabled]="isLoading()"
+          />
         </div>
+      </div>
+    </div>
+
+    <!-- Academic Information -->
+    <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">Academic Information</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2"
+            >Batch</label
+          >
+          <div
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-600"
+          >
+            {{ batchInfo() }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Professional Information -->
+    <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">
+        Professional Information
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label
+            for="currentPosition"
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            >Current Position</label
+          >
+          <input
+            type="text"
+            id="currentPosition"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
+            [(ngModel)]="profile().currentPosition"
+            [readonly]="!isEditing()"
+            [disabled]="isLoading()"
+          />
+        </div>
+
+        <div>
+          <label
+            for="company"
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            >Company</label
+          >
+          <input
+            type="text"
+            id="company"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 read-only:bg-gray-50 read-only:text-gray-600"
+            [(ngModel)]="profile().company"
+            [readonly]="!isEditing()"
+            [disabled]="isLoading()"
+          />
+        </div>
+      </div>
+    </div>
+
+    @if (isEditing()) {
+    <div class="flex justify-end space-x-4 mt-6">
+      <button
+        class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        (click)="saveProfile()"
+        [disabled]="isLoading()"
+      >
+        @if (isLoading()) {
+        <div
+          class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"
+        ></div>
+        } @else {
+        <i class="fa-solid fa-save"></i>
+        } {{ isLoading() ? 'Saving...' : 'Save Changes' }}
+      </button>
+      <button
+        class="inline-flex items-center gap-2 px-6 py-3 bg-gray-500 text-white rounded-xl font-semibold hover:bg-gray-600 transition-all duration-300"
+        (click)="cancelEdit()"
+        [disabled]="isLoading()"
+      >
+        <i class="fa-solid fa-times"></i>
+        Cancel
+      </button>
+    </div>
     }
+  </div>
+  }
 </div>

@@ -14,9 +14,11 @@ export const authGuard: CanActivateFn = (route, state) => {
     catchError(() => {
       // Authentication failed, redirect to login
       authService.markAsUnauthenticated();
-      return of(router.createUrlTree(['/login'], { 
-        queryParams: { returnUrl: state.url } 
-      }));
-    })
+      return of(
+        router.createUrlTree(['/login'], {
+          queryParams: { returnUrl: state.url },
+        }),
+      );
+    }),
   );
 };

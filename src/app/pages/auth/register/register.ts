@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ChangeDetectorRef,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ResourceRef } from '@angular/core';
@@ -33,36 +42,43 @@ export class Register {
     private router: Router,
     private authService: AuthService,
     private batchService: BatchService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
     // Initialize batches data from API
     this.batches = this.batchService.findAll();
-    this.registerForm = this.fb.group({
-      // Personal Information
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]],
+    this.registerForm = this.fb.group(
+      {
+        // Personal Information
+        name: ['', [Validators.required, Validators.minLength(2)]],
+        email: ['', [Validators.required, Validators.email]],
+        phone: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]],
 
-      // Academic Information
-      batch: ['', [Validators.required]],
+        // Academic Information
+        batch: ['', [Validators.required]],
 
-      // Professional Information
-      currentPosition: [''],
-      company: [''],
+        // Professional Information
+        currentPosition: [''],
+        company: [''],
 
-      // Account Security
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required]],
-      acceptTerms: [false, [Validators.requiredTrue]],
-      newsletter: [true]
-    }, { validators: this.passwordMatchValidator });
+        // Account Security
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', [Validators.required]],
+        acceptTerms: [false, [Validators.requiredTrue]],
+        newsletter: [true],
+      },
+      { validators: this.passwordMatchValidator },
+    );
   }
 
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
 
-    if (password && confirmPassword && password.value !== confirmPassword?.value) {
+    if (
+      password &&
+      confirmPassword &&
+      password.value !== confirmPassword?.value
+    ) {
       confirmPassword?.setErrors({ passwordMismatch: true });
     } else if (confirmPassword?.errors?.['passwordMismatch']) {
       delete confirmPassword?.errors['passwordMismatch'];
@@ -104,7 +120,7 @@ export class Register {
         break;
     }
 
-    return fieldsToCheck.every(field => {
+    return fieldsToCheck.every((field) => {
       const control = this.registerForm.get(field);
       return control?.valid;
     });
@@ -129,7 +145,7 @@ export class Register {
         break;
     }
 
-    fieldsToMark.forEach(field => {
+    fieldsToMark.forEach((field) => {
       this.registerForm.get(field)?.markAsTouched();
     });
   }
@@ -147,22 +163,26 @@ export class Register {
         currentPosition: this.registerForm.value.currentPosition,
         company: this.registerForm.value.company,
         password: this.registerForm.value.password,
-        newsletter: this.registerForm.value.newsletter
+        newsletter: this.registerForm.value.newsletter,
       };
 
       this.authService.register(formData).subscribe({
         next: () => {
           this.isSubmitting = false;
           this.router.navigate(['/login'], {
-            queryParams: { message: 'Registration successful! Please log in with your credentials.' }
+            queryParams: {
+              message:
+                'Registration successful! Please log in with your credentials.',
+            },
           });
           this.cdr.markForCheck();
         },
         error: (err) => {
           this.isSubmitting = false;
-          this.registrationError = err?.error?.message || 'Registration failed. Please try again.';
+          this.registrationError =
+            err?.error?.message || 'Registration failed. Please try again.';
           this.cdr.markForCheck();
-        }
+        },
       });
     } else {
       this.markFormGroupTouched();
@@ -178,7 +198,7 @@ export class Register {
   }
 
   private markFormGroupTouched() {
-    Object.keys(this.registerForm.controls).forEach(key => {
+    Object.keys(this.registerForm.controls).forEach((key) => {
       const control = this.registerForm.get(key);
       control?.markAsTouched();
     });
@@ -187,12 +207,16 @@ export class Register {
   getFieldError(fieldName: string): string {
     const control = this.registerForm.get(fieldName);
     if (control?.errors && control?.touched) {
-      if (control?.errors['required']) return `${this.getFieldLabel(fieldName)} is required`;
+      if (control?.errors['required'])
+        return `${this.getFieldLabel(fieldName)} is required`;
       if (control?.errors['email']) return 'Please enter a valid email';
-      if (control?.errors['minlength']) return `${this.getFieldLabel(fieldName)} must be at least ${control?.errors['minlength'].requiredLength} characters`;
-      if (control?.errors['pattern']) return 'Please enter a valid phone number (11 digits)';
+      if (control?.errors['minlength'])
+        return `${this.getFieldLabel(fieldName)} must be at least ${control?.errors['minlength'].requiredLength} characters`;
+      if (control?.errors['pattern'])
+        return 'Please enter a valid phone number (11 digits)';
       if (control?.errors['passwordMismatch']) return 'Passwords do not match';
-      if (control?.errors['requiredTrue']) return 'You must accept the terms and conditions';
+      if (control?.errors['requiredTrue'])
+        return 'You must accept the terms and conditions';
     }
     return '';
   }
@@ -204,7 +228,7 @@ export class Register {
       phone: 'Phone number',
       batch: 'Batch',
       password: 'Password',
-      confirmPassword: 'Confirm password'
+      confirmPassword: 'Confirm password',
     };
     return labels[fieldName] || fieldName;
   }

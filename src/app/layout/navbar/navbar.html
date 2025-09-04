@@ -1,68 +1,72 @@
 <div class="h-8 bg-primary">
-    <div class="container mx-auto flex items-center justify-between h-full px-4 md:px-0">
-
-        <div class="flex items-center">
-            <span class="text-white text-xs">
-                <i class="fas fa-envelope"></i>
-                <a href="mailto:support@csediualumni.com" class="hover:underline">
-                    support&commat;csediualumni.com
-                </a>
-            </span>
-        </div>
-
-        <div class="flex items-center space-x-4">
-            @if (isAuthenticated | async) {
-                <a
-                    routerLink="/portal"
-                    class="flex items-center text-white text-xs hover:underline gap-2"
-                >
-                    <i class="fas fa-user"></i>
-                    <span>Member Portal</span>
-                </a>
-                <button
-                    (click)="logout()"
-                    class="flex items-center text-white text-xs hover:underline gap-2"
-                >
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </button>
-            } @else {
-                <a
-                    routerLink="/login"
-                    class="flex items-center text-white text-xs hover:underline gap-2"
-                >
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span>Login</span>
-                </a>
-                <a
-                    routerLink="/register"
-                    class="flex items-center text-white text-xs hover:underline gap-2"
-                >
-                    <i class="fas fa-user-plus"></i>
-                    <span>Register</span>
-                </a>
-            }
-        </div>
+  <div
+    class="container mx-auto flex items-center justify-between h-full px-4 md:px-0"
+  >
+    <div class="flex items-center">
+      <span class="text-white text-xs">
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:support@csediualumni.com" class="hover:underline">
+          support&commat;csediualumni.com
+        </a>
+      </span>
     </div>
+
+    <div class="flex items-center space-x-4">
+      @if (isAuthenticated | async) {
+      <a
+        routerLink="/portal"
+        class="flex items-center text-white text-xs hover:underline gap-2"
+      >
+        <i class="fas fa-user"></i>
+        <span>Member Portal</span>
+      </a>
+      <button
+        (click)="logout()"
+        class="flex items-center text-white text-xs hover:underline gap-2"
+      >
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+      } @else {
+      <a
+        routerLink="/login"
+        class="flex items-center text-white text-xs hover:underline gap-2"
+      >
+        <i class="fas fa-sign-in-alt"></i>
+        <span>Login</span>
+      </a>
+      <a
+        routerLink="/register"
+        class="flex items-center text-white text-xs hover:underline gap-2"
+      >
+        <i class="fas fa-user-plus"></i>
+        <span>Register</span>
+      </a>
+      }
+    </div>
+  </div>
 </div>
 
 <div class="h-20 shadow-lg border-b border-gray-200 bg-white">
-    <div class="container mx-auto flex items-center justify-between h-full px-4 md:px-0">
-        <a routerLink="/" class="">
-            <img src="/images/logo.png" class="h-16" />
-        </a>
+  <div
+    class="container mx-auto flex items-center justify-between h-full px-4 md:px-0"
+  >
+    <a routerLink="/" class="">
+      <img src="/images/logo.png" class="h-16" />
+    </a>
 
-        <ul class="flex items-center h-full">
-            @for (link of linksRequest.value(); track link.url) {
-                <li class="h-full">
-                    <a
-                        [routerLink]="link.url"
-                        routerLinkActive="text-primary border-primary"
-                        [routerLinkActiveOptions]="{ exact: true }"
-                        class="h-full flex items-center justify-center px-2 md:px-4 py-2 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors"
-                    >{{ link.label }}</a>
-                </li>
-            }
-        </ul>
-    </div>
+    <ul class="flex items-center h-full">
+      @for (link of linksRequest.value(); track link.url) {
+      <li class="h-full">
+        <a
+          [routerLink]="link.url"
+          routerLinkActive="text-primary border-primary"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="h-full flex items-center justify-center px-2 md:px-4 py-2 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors"
+          >{{ link.label }}</a
+        >
+      </li>
+      }
+    </ul>
+  </div>
 </div>

@@ -41,8 +41,8 @@ delete<T>(id: string | number): ResourceRef<T>
 ### 1. Create a Service
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { BaseService } from './base.service';
+import { Injectable } from "@angular/core";
+import { BaseService } from "./base.service";
 
 export interface User {
   id: string;
@@ -55,11 +55,11 @@ export interface User {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class UserService extends BaseService {
   constructor() {
-    super('users'); // API endpoint: /api/users
+    super("users"); // API endpoint: /api/users
   }
 
   // Custom convenience methods
@@ -68,7 +68,7 @@ export class UserService extends BaseService {
   }
 
   getActiveUsers() {
-    return this.findAll<User>({ status: 'active' });
+    return this.findAll<User>({ status: "active" });
   }
 
   searchUsers(searchTerm: string) {
@@ -76,9 +76,9 @@ export class UserService extends BaseService {
   }
 
   getPaginatedUsers(page: number = 1, limit: number = 10) {
-    return this.findAll<User>({ 
-      page: page.toString(), 
-      limit: limit.toString() 
+    return this.findAll<User>({
+      page: page.toString(),
+      limit: limit.toString(),
     });
   }
 }
@@ -87,16 +87,16 @@ export class UserService extends BaseService {
 ### 2. Component Usage
 
 ```typescript
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from "@angular/core";
 
 @Component({
-  selector: 'app-user-management',
+  selector: "app-user-management",
   template: `
     <div>
       <!-- All Users -->
       <div *ngIf="allUsers.isLoading()">Loading...</div>
       <div *ngIf="allUsers.error()">Error: {{ allUsers.error() }}</div>
-      
+
       <div *ngIf="allUsers.value()">
         <h2>All Users ({{ allUsers.value().length }})</h2>
         <div *ngFor="let user of allUsers.value()">
@@ -108,7 +108,7 @@ import { Component, inject, signal } from '@angular/core';
 
       <!-- Filters -->
       <div class="filters">
-        <input [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search users...">
+        <input [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search users..." />
         <select [(ngModel)]="selectedRole" (change)="onRoleChange()">
           <option value="">All Roles</option>
           <option value="admin">Admin</option>
@@ -119,9 +119,7 @@ import { Component, inject, signal } from '@angular/core';
       <!-- Filtered Results -->
       <div *ngIf="filteredUsers.value()">
         <h3>Filtered Users</h3>
-        <div *ngFor="let user of filteredUsers.value()">
-          {{ user.name }} - {{ user.role }}
-        </div>
+        <div *ngFor="let user of filteredUsers.value()">{{ user.name }} - {{ user.role }}</div>
       </div>
 
       <!-- Single User Details -->
@@ -134,20 +132,20 @@ import { Component, inject, signal } from '@angular/core';
         <button (click)="deleteUser()">Delete</button>
       </div>
     </div>
-  `
+  `,
 })
 export class UserManagementComponent {
   private userService = inject(UserService);
 
   // Reactive state
-  searchTerm = signal('');
-  selectedRole = signal('');
+  searchTerm = signal("");
+  selectedRole = signal("");
   selectedUserId = signal<string | null>(null);
 
   // Resources
   allUsers = this.userService.findAll<User>();
   filteredUsers = this.userService.findAll<User>();
-  selectedUser = this.userService.findOne<User>('');
+  selectedUser = this.userService.findOne<User>("");
 
   onSearch() {
     this.updateFilters();
@@ -159,11 +157,11 @@ export class UserManagementComponent {
 
   updateFilters() {
     const params: any = {};
-    
+
     if (this.searchTerm()) {
       params.search = this.searchTerm();
     }
-    
+
     if (this.selectedRole()) {
       params.role = this.selectedRole();
     }
@@ -178,11 +176,8 @@ export class UserManagementComponent {
 
   editUser() {
     if (this.selectedUser.value()) {
-      const updateResult = this.userService.update<User>(
-        this.selectedUser.value().id,
-        { name: 'Updated Name' }
-      );
-      
+      const updateResult = this.userService.update<User>(this.selectedUser.value().id, { name: "Updated Name" });
+
       // Refresh after update
       if (updateResult.value()) {
         this.allUsers = this.userService.findAll<User>();
@@ -193,7 +188,7 @@ export class UserManagementComponent {
   deleteUser() {
     if (this.selectedUser.value()) {
       const deleteResult = this.userService.delete(this.selectedUser.value().id);
-      
+
       // Clear selection and refresh
       if (deleteResult.value() !== undefined) {
         this.selectedUserId.set(null);
@@ -214,52 +209,52 @@ export class ExampleUsageComponent {
   allUsers = this.userService.findAll<User>();
 
   // Filter by role
-  adminUsers = this.userService.findAll<User>({ role: 'admin' });
+  adminUsers = this.userService.findAll<User>({ role: "admin" });
 
   // Search users
-  searchResults = this.userService.findAll<User>({ search: 'john' });
+  searchResults = this.userService.findAll<User>({ search: "john" });
 
   // Multiple filters
-  activeAdmins = this.userService.findAll<User>({ 
-    role: 'admin', 
-    status: 'active' 
+  activeAdmins = this.userService.findAll<User>({
+    role: "admin",
+    status: "active",
   });
 
   // Pagination
-  page1Users = this.userService.findAll<User>({ 
-    page: '1', 
-    limit: '10' 
+  page1Users = this.userService.findAll<User>({
+    page: "1",
+    limit: "10",
   });
 
   // Complex filtering
   complexFilter = this.userService.findAll<User>({
-    role: 'user',
-    status: 'active',
-    search: 'developer',
-    page: '2',
-    limit: '20'
+    role: "user",
+    status: "active",
+    search: "developer",
+    page: "2",
+    limit: "20",
   });
 
   // CRUD operations
   createUser() {
     const newUser = this.userService.create<User>({
-      name: 'John Doe',
-      email: 'john@example.com',
-      role: 'user',
-      status: 'active'
+      name: "John Doe",
+      email: "john@example.com",
+      role: "user",
+      status: "active",
     });
   }
 
   updateUser(userId: string) {
     const updatedUser = this.userService.update<User>(userId, {
-      name: 'Updated Name',
-      role: 'admin'
+      name: "Updated Name",
+      role: "admin",
     });
   }
 
   patchUser(userId: string) {
     const patchedUser = this.userService.patch<User>(userId, {
-      status: 'inactive'
+      status: "inactive",
     });
   }
 
@@ -272,6 +267,7 @@ export class ExampleUsageComponent {
 ## API Expected Response Format
 
 ### Array Response (findAll)
+
 ```json
 [
   {
@@ -296,6 +292,7 @@ export class ExampleUsageComponent {
 ```
 
 ### Single Object Response (findOne, create, update, patch)
+
 ```json
 {
   "id": "1",
@@ -309,10 +306,13 @@ export class ExampleUsageComponent {
 ```
 
 ### Delete Response
+
 ```json
 {}
 ```
+
 or
+
 ```json
 {
   "message": "User deleted successfully"
@@ -346,14 +346,14 @@ Ensure you provide the `API_BASE_URL` token:
 
 ```typescript
 // app.config.ts
-import { ApplicationConfig } from '@angular/core';
-import { API_BASE_URL } from './core/tokens';
+import { ApplicationConfig } from "@angular/core";
+import { API_BASE_URL } from "./core/tokens";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    { provide: API_BASE_URL, useValue: 'https://api.example.com' },
+    { provide: API_BASE_URL, useValue: "https://api.example.com" },
     // other providers
-  ]
+  ],
 };
 ```
 

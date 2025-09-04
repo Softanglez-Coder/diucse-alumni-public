@@ -1,23 +1,25 @@
 <!-- Banners -->
 <div class="py-4">
-    <div class="container mx-auto px-4">
-        <banner-carousel
-            [banners]="banners.value() || []"
-            [autoPlay]="true"
-            [autoPlayDelay]="5000"
-            [showControls]="true"
-            [showPagination]="true">
-        </banner-carousel>
-    </div>
+  <div class="container mx-auto px-4">
+    <banner-carousel
+      [banners]="banners.value() || []"
+      [autoPlay]="true"
+      [autoPlayDelay]="5000"
+      [showControls]="true"
+      [showPagination]="true"
+    >
+    </banner-carousel>
+  </div>
 </div>
 
 <!-- Featured Members -->
 <members-list
-    [members]="featuredMembers()"
-    [title]="'Meet Our Alumni'"
-    [subtitle]="'Connect with our diverse community of talented professionals'"
-    [showViewAllLink]="true"
-    [showContact]="false">
+  [members]="featuredMembers()"
+  [title]="'Meet Our Alumni'"
+  [subtitle]="'Connect with our diverse community of talented professionals'"
+  [showViewAllLink]="true"
+  [showContact]="false"
+>
 </members-list>
 
 <!-- Contact & Location -->

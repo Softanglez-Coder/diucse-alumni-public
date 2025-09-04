@@ -1,62 +1,78 @@
 <div class="py-8 min-h-screen">
   <div class="container mx-auto px-4 max-w-4xl">
     @if (loading()) {
-      <!-- Loading State -->
-      <div class="flex items-center justify-center min-h-96">
-        <div class="text-center">
-          <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-          <p class="text-xl text-gray-600">Loading blog...</p>
-        </div>
+    <!-- Loading State -->
+    <div class="flex items-center justify-center min-h-96">
+      <div class="text-center">
+        <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
+        <p class="text-xl text-gray-600">Loading blog...</p>
       </div>
+    </div>
     } @else if (error() || !blog().id) {
-      <!-- Error State (when blog not found) -->
-      <div class="text-center py-12">
-        <div class="p-8">
-          <i class="fas fa-blog text-5xl text-gray-300 mb-4"></i>
-          <h2 class="text-2xl font-semibold text-gray-600 mb-2">Blog Not Found</h2>
-          <p class="text-gray-500 mb-6">The blog you're looking for doesn't exist or has been removed.</p>
-          <button
-            onclick="history.back()"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Go Back
-          </button>
-        </div>
-      </div>
-    } @else {
-      <!-- Blog Content -->
-      <article class="mb-8">
+    <!-- Error State (when blog not found) -->
+    <div class="text-center py-12">
+      <div class="p-8">
+        <i class="fas fa-blog text-5xl text-gray-300 mb-4"></i>
+        <h2 class="text-2xl font-semibold text-gray-600 mb-2">
+          Blog Not Found
+        </h2>
+        <p class="text-gray-500 mb-6">
+          The blog you're looking for doesn't exist or has been removed.
+        </p>
         <button
           onclick="history.back()"
-          class="inline-flex items-center text-gray-600 hover:text-gray-800 mb-6">
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+        >
           <i class="fas fa-arrow-left mr-2"></i>
-          Back
+          Go Back
         </button>
+      </div>
+    </div>
+    } @else {
+    <!-- Blog Content -->
+    <article class="mb-8">
+      <button
+        onclick="history.back()"
+        class="inline-flex items-center text-gray-600 hover:text-gray-800 mb-6"
+      >
+        <i class="fas fa-arrow-left mr-2"></i>
+        Back
+      </button>
 
-        <header class="mb-8">
-          <h1 class="text-4xl font-bold text-gray-900 mb-6 leading-tight">{{ blog().title }}</h1>
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-6 leading-tight">
+          {{ blog().title }}
+        </h1>
 
-          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
-            <div class="flex items-center gap-2">
-              <span class="badge text-xs px-3 py-1 rounded-full font-medium" [class]="getStatusClass(blog().status)">
-                {{ getStatusText(blog().status) }}
-              </span>
-            </div>
-
-            @if (blog().author) {
-              <div class="flex items-center">
-                <i class="fas fa-user mr-2"></i>
-                <span>by {{ blog().author.name }}</span>
-              </div>
-            }
+        <div
+          class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6"
+        >
+          <div class="flex items-center gap-2">
+            <span
+              class="badge text-xs px-3 py-1 rounded-full font-medium"
+              [class]="getStatusClass(blog().status)"
+            >
+              {{ getStatusText(blog().status) }}
+            </span>
           </div>
-        </header>
 
-        <!-- Blog Content -->
-        <div class="blog-content-wrapper">
-          <quill-view-html [content]="blog().content" theme="snow"></quill-view-html>
+          @if (blog().author) {
+          <div class="flex items-center">
+            <i class="fas fa-user mr-2"></i>
+            <span>by {{ blog().author.name }}</span>
+          </div>
+          }
         </div>
-      </article>
+      </header>
+
+      <!-- Blog Content -->
+      <div class="blog-content-wrapper">
+        <quill-view-html
+          [content]="blog().content"
+          theme="snow"
+        ></quill-view-html>
+      </div>
+    </article>
     }
   </div>
 </div>

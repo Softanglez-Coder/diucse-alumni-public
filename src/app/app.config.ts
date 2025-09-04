@@ -56,7 +56,7 @@ export const appConfig: ApplicationConfig = {
           })
           .catch(() => {
             console.log(
-              'Auth check failed during bootstrap - user not authenticated'
+              'Auth check failed during bootstrap - user not authenticated',
             );
             resolve();
           });

@@ -2,219 +2,249 @@
   <div class="container mx-auto px-4">
     <!-- Header -->
     <div class="mb-8">
-      <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+      <div
+        class="flex flex-col md:flex-row md:justify-between md:items-center gap-4"
+      >
         <h2 class="text-3xl font-bold text-gray-900">My Blog Posts</h2>
         @if (!isEditing()) {
-          <button
-            type="button"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
-            (click)="toggleCreateForm()">
-            <i class="fas fa-plus mr-2"></i>
-            {{ showCreateForm() ? 'Cancel' : 'Create New Blog' }}
-          </button>
+        <button
+          type="button"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
+          (click)="toggleCreateForm()"
+        >
+          <i class="fas fa-plus mr-2"></i>
+          {{ showCreateForm() ? 'Cancel' : 'Create New Blog' }}
+        </button>
         } @else {
-          <div class="text-sm text-gray-600 bg-gray-100 px-4 py-2 rounded-lg">
-            <i class="fas fa-edit mr-2"></i>
-            Editing: {{ editingBlog()?.title }}
-          </div>
+        <div class="text-sm text-gray-600 bg-gray-100 px-4 py-2 rounded-lg">
+          <i class="fas fa-edit mr-2"></i>
+          Editing: {{ editingBlog()?.title }}
+        </div>
         }
       </div>
     </div>
 
     <!-- Create/Edit Blog Form -->
     @if (showCreateForm() || isEditing()) {
-      <div class="mb-8">
-        <div class="bg-white rounded-lg shadow-lg border border-gray-200">
-          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 rounded-t-lg">
-            <div class="flex justify-between items-center">
-              <h5 class="text-lg font-semibold text-gray-900 mb-0">
-                {{ isEditing() ? 'Edit Blog Post' : 'Create New Blog Post' }}
-              </h5>
-              @if (isEditing()) {
-                <button
-                  type="button"
-                  class="text-gray-500 hover:text-gray-700"
-                  (click)="cancelEdit()">
-                  <i class="fas fa-times"></i>
-                </button>
-              }
-            </div>
-          </div>
-          <div class="p-6">
-            <form [formGroup]="blogForm" (ngSubmit)="submitBlog()">
-              <!-- Title Field -->
-              <div class="mb-6">
-                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Title *</label>
-                <input
-                  type="text"
-                  id="title"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  [class.border-red-500]="blogForm.get('title')?.touched && blogForm.get('title')?.invalid"
-                  formControlName="title"
-                  placeholder="Enter blog title">
-                @if (blogForm.get('title')?.touched && blogForm.get('title')?.invalid) {
-                  <div class="mt-1 text-sm text-red-600">
-                    @if (blogForm.get('title')?.errors?.['required']) {
-                      Title is required
-                    }
-                    @if (blogForm.get('title')?.errors?.['minlength']) {
-                      Title must be at least 5 characters long
-                    }
-                  </div>
-                }
-              </div>
-
-              <!-- Content Field with Rich Text Editor -->
-              <div class="mb-6">
-                <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Content *</label>
-                <div class="border border-gray-300 rounded-md"
-                     [class.border-red-500]="blogForm.get('content')?.touched && blogForm.get('content')?.invalid">
-                  <quill-editor
-                    formControlName="content"
-                    [modules]="quillConfig.modules"
-                    [theme]="quillConfig.theme"
-                    placeholder="Write your blog content here..."
-                    [class.is-invalid]="blogForm.get('content')?.touched && blogForm.get('content')?.invalid">
-                  </quill-editor>
-                </div>
-                @if (blogForm.get('content')?.touched && blogForm.get('content')?.invalid) {
-                  <div class="mt-1 text-sm text-red-600">
-                    @if (blogForm.get('content')?.errors?.['required']) {
-                      Content is required
-                    }
-                    @if (blogForm.get('content')?.errors?.['minlength']) {
-                      Content must be at least 50 characters long
-                    }
-                  </div>
-                }
-              </div>
-
-              <!-- Form Actions -->
-              <div class="flex flex-col sm:flex-row gap-3">
-                <button
-                  type="submit"
-                  class="bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 flex items-center justify-center"
-                  [disabled]="isSubmitting() || blogForm.invalid">
-                  @if (isSubmitting()) {
-                    <i class="fas fa-spinner fa-spin mr-2"></i>
-                    {{ isEditing() ? 'Updating...' : 'Creating...' }}
-                  } @else {
-                    <i class="fas fa-save mr-2"></i>
-                    {{ isEditing() ? 'Update Blog' : 'Save as Draft' }}
-                  }
-                </button>
-                <button
-                  type="button"
-                  class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200"
-                  (click)="isEditing() ? cancelEdit() : toggleCreateForm()">
-                  Cancel
-                </button>
-              </div>
-            </form>
+    <div class="mb-8">
+      <div class="bg-white rounded-lg shadow-lg border border-gray-200">
+        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 rounded-t-lg">
+          <div class="flex justify-between items-center">
+            <h5 class="text-lg font-semibold text-gray-900 mb-0">
+              {{ isEditing() ? 'Edit Blog Post' : 'Create New Blog Post' }}
+            </h5>
+            @if (isEditing()) {
+            <button
+              type="button"
+              class="text-gray-500 hover:text-gray-700"
+              (click)="cancelEdit()"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+            }
           </div>
         </div>
+        <div class="p-6">
+          <form [formGroup]="blogForm" (ngSubmit)="submitBlog()">
+            <!-- Title Field -->
+            <div class="mb-6">
+              <label
+                for="title"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Title *</label
+              >
+              <input
+                type="text"
+                id="title"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                [class.border-red-500]="blogForm.get('title')?.touched && blogForm.get('title')?.invalid"
+                formControlName="title"
+                placeholder="Enter blog title"
+              />
+              @if (blogForm.get('title')?.touched &&
+              blogForm.get('title')?.invalid) {
+              <div class="mt-1 text-sm text-red-600">
+                @if (blogForm.get('title')?.errors?.['required']) { Title is
+                required } @if (blogForm.get('title')?.errors?.['minlength']) {
+                Title must be at least 5 characters long }
+              </div>
+              }
+            </div>
+
+            <!-- Content Field with Rich Text Editor -->
+            <div class="mb-6">
+              <label
+                for="content"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Content *</label
+              >
+              <div
+                class="border border-gray-300 rounded-md"
+                [class.border-red-500]="blogForm.get('content')?.touched && blogForm.get('content')?.invalid"
+              >
+                <quill-editor
+                  formControlName="content"
+                  [modules]="quillConfig.modules"
+                  [theme]="quillConfig.theme"
+                  placeholder="Write your blog content here..."
+                  [class.is-invalid]="blogForm.get('content')?.touched && blogForm.get('content')?.invalid"
+                >
+                </quill-editor>
+              </div>
+              @if (blogForm.get('content')?.touched &&
+              blogForm.get('content')?.invalid) {
+              <div class="mt-1 text-sm text-red-600">
+                @if (blogForm.get('content')?.errors?.['required']) { Content is
+                required } @if (blogForm.get('content')?.errors?.['minlength'])
+                { Content must be at least 50 characters long }
+              </div>
+              }
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button
+                type="submit"
+                class="bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 flex items-center justify-center"
+                [disabled]="isSubmitting() || blogForm.invalid"
+              >
+                @if (isSubmitting()) {
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+                {{ isEditing() ? 'Updating...' : 'Creating...' }} } @else {
+                <i class="fas fa-save mr-2"></i>
+                {{ isEditing() ? 'Update Blog' : 'Save as Draft' }} }
+              </button>
+              <button
+                type="button"
+                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200"
+                (click)="isEditing() ? cancelEdit() : toggleCreateForm()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+    </div>
     }
 
     <!-- Blog List -->
     <div>
       @if (myBlogs.value().length === 0) {
-        <div class="bg-white rounded-lg shadow-lg border border-gray-200">
-          <div class="text-center py-12">
-            <i class="fas fa-blog text-5xl text-gray-300 mb-4"></i>
-            <h5 class="text-xl font-semibold text-gray-600 mb-2">No blog posts yet</h5>
-            <p class="text-gray-500 mb-6">Start by creating your first blog post!</p>
-            @if (!showCreateForm()) {
-              <button
-                type="button"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-                (click)="toggleCreateForm()">
-                <i class="fas fa-plus mr-2"></i>
-                Create Your First Blog
-              </button>
-            }
-          </div>
-        </div>
-      } @else {
-        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          @for (blog of myBlogs.value(); track blog.id) {
-            <div class="bg-white rounded-lg shadow-lg border transition-all duration-300 flex flex-col h-full"
-                 [class.border-indigo-500]="isEditing() && editingBlog()?.id === blog.id"
-                 [class.border-gray-200]="!(isEditing() && editingBlog()?.id === blog.id)"
-                 [class.shadow-xl]="isEditing() && editingBlog()?.id === blog.id"
-                 [class.hover:shadow-xl]="!(isEditing() && editingBlog()?.id === blog.id)">
-              <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 rounded-t-lg flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                  <span class="badge text-xs px-3 py-1 rounded-full font-medium" [class]="getStatusClass(blog.status)">
-                    {{ getStatusText(blog.status) }}
-                  </span>
-                  @if (isEditing() && editingBlog()?.id === blog.id) {
-                    <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full font-medium">
-                      <i class="fas fa-edit mr-1"></i>
-                      Editing
-                    </span>
-                  }
-                </div>
-                <small class="text-gray-500">
-                  @if (blog.author) {
-                    by {{ blog.author.name || 'You' }}
-                  }
-                </small>
-              </div>
-              <div class="p-4 flex-grow flex flex-col">
-                <h5 class="text-lg font-semibold text-gray-900 mb-3">{{ blog.title }}</h5>
-                <div class="flex-grow">
-                  <div class="blog-content-preview max-h-36 overflow-hidden relative text-sm leading-relaxed text-gray-600" [innerHTML]="blog.content"></div>
-                </div>
-              </div>
-              <div class="p-4 border-t border-gray-100 bg-gray-50 rounded-b-lg">
-                <div class="flex flex-col sm:flex-row gap-2">
-                  <!-- View Details Button - Always visible -->
-                  <a
-                    [routerLink]="['/blogs', blog.id]"
-                    class="text-gray-600 hover:text-gray-700 hover:bg-gray-100 border border-gray-600 hover:border-gray-700 px-3 py-1 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center no-underline">
-                    <i class="fas fa-eye mr-1"></i>
-                    View Details
-                  </a>
-
-                  @if (canEdit(blog)) {
-                    <button
-                      type="button"
-                      class="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 border border-indigo-600 hover:border-indigo-700 px-3 py-1 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center"
-                      (click)="startEdit(blog)">
-                      <i class="fas fa-edit mr-1"></i>
-                      Edit
-                    </button>
-                  }
-                  @if (canSubmitForReview(blog)) {
-                    <button
-                      type="button"
-                      class="text-blue-600 hover:text-blue-700 hover:bg-blue-50 border border-blue-600 hover:border-blue-700 px-3 py-1 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center"
-                      (click)="submitForReview(blog.id)">
-                      <i class="fas fa-paper-plane mr-1"></i>
-                      Submit for Review
-                    </button>
-                  }
-                  @if (canMarkAsDraft(blog)) {
-                    <button
-                      type="button"
-                      class="text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50 border border-yellow-600 hover:border-yellow-700 px-3 py-1 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center"
-                      (click)="markAsDraft(blog.id)">
-                      <i class="fas fa-undo mr-1"></i>
-                      Mark as Draft
-                    </button>
-                  }
-                  @if (blog.status === BlogStatus.PUBLISHED) {
-                    <span class="text-green-600 text-sm flex items-center">
-                      <i class="fas fa-check-circle mr-1"></i>
-                      Published
-                    </span>
-                  }
-                </div>
-              </div>
-            </div>
+      <div class="bg-white rounded-lg shadow-lg border border-gray-200">
+        <div class="text-center py-12">
+          <i class="fas fa-blog text-5xl text-gray-300 mb-4"></i>
+          <h5 class="text-xl font-semibold text-gray-600 mb-2">
+            No blog posts yet
+          </h5>
+          <p class="text-gray-500 mb-6">
+            Start by creating your first blog post!
+          </p>
+          @if (!showCreateForm()) {
+          <button
+            type="button"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+            (click)="toggleCreateForm()"
+          >
+            <i class="fas fa-plus mr-2"></i>
+            Create Your First Blog
+          </button>
           }
         </div>
+      </div>
+      } @else {
+      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        @for (blog of myBlogs.value(); track blog.id) {
+        <div
+          class="bg-white rounded-lg shadow-lg border transition-all duration-300 flex flex-col h-full"
+          [class.border-indigo-500]="isEditing() && editingBlog()?.id === blog.id"
+          [class.border-gray-200]="!(isEditing() && editingBlog()?.id === blog.id)"
+          [class.shadow-xl]="isEditing() && editingBlog()?.id === blog.id"
+          [class.hover:shadow-xl]="!(isEditing() && editingBlog()?.id === blog.id)"
+        >
+          <div
+            class="bg-gray-50 px-4 py-3 border-b border-gray-200 rounded-t-lg flex justify-between items-center"
+          >
+            <div class="flex items-center gap-2">
+              <span
+                class="badge text-xs px-3 py-1 rounded-full font-medium"
+                [class]="getStatusClass(blog.status)"
+              >
+                {{ getStatusText(blog.status) }}
+              </span>
+              @if (isEditing() && editingBlog()?.id === blog.id) {
+              <span
+                class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full font-medium"
+              >
+                <i class="fas fa-edit mr-1"></i>
+                Editing
+              </span>
+              }
+            </div>
+            <small class="text-gray-500">
+              @if (blog.author) { by {{ blog.author.name || 'You' }} }
+            </small>
+          </div>
+          <div class="p-4 flex-grow flex flex-col">
+            <h5 class="text-lg font-semibold text-gray-900 mb-3">
+              {{ blog.title }}
+            </h5>
+            <div class="flex-grow">
+              <div
+                class="blog-content-preview max-h-36 overflow-hidden relative text-sm leading-relaxed text-gray-600"
+                [innerHTML]="blog.content"
+              ></div>
+            </div>
+          </div>
+          <div class="p-4 border-t border-gray-100 bg-gray-50 rounded-b-lg">
+            <div class="flex flex-col sm:flex-row gap-2">
+              <!-- View Details Button - Always visible -->
+              <a
+                [routerLink]="['/blogs', blog.id]"
+                class="text-gray-600 hover:text-gray-700 hover:bg-gray-100 border border-gray-600 hover:border-gray-700 px-3 py-1 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center no-underline"
+              >
+                <i class="fas fa-eye mr-1"></i>
+                View Details
+              </a>
+
+              @if (canEdit(blog)) {
+              <button
+                type="button"
+                class="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 border border-indigo-600 hover:border-indigo-700 px-3 py-1 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center"
+                (click)="startEdit(blog)"
+              >
+                <i class="fas fa-edit mr-1"></i>
+                Edit
+              </button>
+              } @if (canSubmitForReview(blog)) {
+              <button
+                type="button"
+                class="text-blue-600 hover:text-blue-700 hover:bg-blue-50 border border-blue-600 hover:border-blue-700 px-3 py-1 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center"
+                (click)="submitForReview(blog.id)"
+              >
+                <i class="fas fa-paper-plane mr-1"></i>
+                Submit for Review
+              </button>
+              } @if (canMarkAsDraft(blog)) {
+              <button
+                type="button"
+                class="text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50 border border-yellow-600 hover:border-yellow-700 px-3 py-1 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center"
+                (click)="markAsDraft(blog.id)"
+              >
+                <i class="fas fa-undo mr-1"></i>
+                Mark as Draft
+              </button>
+              } @if (blog.status === BlogStatus.PUBLISHED) {
+              <span class="text-green-600 text-sm flex items-center">
+                <i class="fas fa-check-circle mr-1"></i>
+                Published
+              </span>
+              }
+            </div>
+          </div>
+        </div>
+        }
+      </div>
       }
     </div>
   </div>

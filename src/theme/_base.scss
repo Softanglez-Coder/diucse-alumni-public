@@ -4,7 +4,7 @@ h3,
 h4,
 h5,
 h6 {
-    @apply font-heading;
+  @apply font-heading;
 }
 
 p,
@@ -14,16 +14,16 @@ li,
 button,
 input,
 textarea {
-    @apply font-regular;
+  @apply font-regular;
 }
 
 /* Custom placeholder styles */
 input::placeholder,
 textarea::placeholder {
-    @apply text-gray-400;
+  @apply text-gray-400;
 }
 
 /* Make sure placeholder color is more visible */
 .placeholder-gray-400::placeholder {
-    color: #9CA3AF !important;
+  color: #9ca3af !important;
 }

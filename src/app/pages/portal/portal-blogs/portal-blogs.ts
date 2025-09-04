@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 import { BlogService } from '../../../services';
@@ -11,7 +21,7 @@ import { Blog, BlogStatus } from '../../../shared';
   imports: [CommonModule, ReactiveFormsModule, QuillModule, RouterLink],
   templateUrl: './portal-blogs.html',
   styleUrl: './portal-blogs.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PortalBlogs {
   private blogService = inject(BlogService);
@@ -26,7 +36,7 @@ export class PortalBlogs {
   // Form for creating/editing blogs
   blogForm: FormGroup = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(5)]],
-    content: ['', [Validators.required, Validators.minLength(50)]]
+    content: ['', [Validators.required, Validators.minLength(50)]],
   });
 
   // Quill editor configuration
@@ -35,15 +45,15 @@ export class PortalBlogs {
       toolbar: [
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
-        [{ 'header': 1 }, { 'header': 2 }],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'script': 'sub'}, { 'script': 'super' }],
-        [{ 'indent': '-1'}, { 'indent': '+1' }],
+        [{ header: 1 }, { header: 2 }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ script: 'sub' }, { script: 'super' }],
+        [{ indent: '-1' }, { indent: '+1' }],
         ['link', 'image'],
-        ['clean']
-      ]
+        ['clean'],
+      ],
     },
-    theme: 'snow'
+    theme: 'snow',
   };
 
   // Get user's blogs
@@ -53,7 +63,7 @@ export class PortalBlogs {
   BlogStatus = BlogStatus;
 
   toggleCreateForm() {
-    this.showCreateForm.update(value => !value);
+    this.showCreateForm.update((value) => !value);
     if (!this.showCreateForm()) {
       this.blogForm.reset();
     }
@@ -71,7 +81,7 @@ export class PortalBlogs {
     // Populate form with blog data
     this.blogForm.patchValue({
       title: blog.title,
-      content: blog.content
+      content: blog.content,
     });
   }
 
@@ -94,12 +104,15 @@ export class PortalBlogs {
       const blogData: Partial<Blog> = {
         title: formValue.title,
         content: formValue.content,
-        status: BlogStatus.DRAFT
+        status: BlogStatus.DRAFT,
       };
 
       if (this.isEditing() && this.editingBlog()) {
         // Update existing blog
-        await this.blogService.updateBlog(this.editingBlog()!.id!, blogData as Blog);
+        await this.blogService.updateBlog(
+          this.editingBlog()!.id!,
+          blogData as Blog,
+        );
 
         // Reset edit state
         this.cancelEdit();
@@ -114,7 +127,6 @@ export class PortalBlogs {
 
       // Refresh blog list
       this.refreshBlogList();
-
     } catch (error) {
       console.error('Error saving blog:', error);
     } finally {
@@ -186,7 +198,7 @@ export class PortalBlogs {
   }
 
   private markFormGroupTouched(formGroup: FormGroup) {
-    Object.keys(formGroup.controls).forEach(key => {
+    Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
       control?.markAsTouched();
     });

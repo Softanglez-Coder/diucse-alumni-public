@@ -6,6 +6,6 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   imports: [Layout, RouterOutlet],
   templateUrl: './app.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {}

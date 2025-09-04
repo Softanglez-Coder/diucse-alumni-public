@@ -11,7 +11,7 @@ import { computed } from '@angular/core';
   imports: [CommonModule, QuillModule],
   templateUrl: './blog-details.html',
   styleUrl: './blog-details.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogDetails {
   private blogService = inject(BlogService);
@@ -25,7 +25,9 @@ export class BlogDetails {
 
   // Computed properties for the template
   blog = computed(() => this.blogResource.value());
-  loading = computed(() => !this.blog() || Object.keys(this.blog()).length === 0);
+  loading = computed(
+    () => !this.blog() || Object.keys(this.blog()).length === 0,
+  );
   error = computed(() => this.blog() && !this.blog().id && !this.loading());
 
   // Expose BlogStatus enum to template

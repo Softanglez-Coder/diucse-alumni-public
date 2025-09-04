@@ -62,7 +62,12 @@
   // Blog content preview styling
   .blog-content-preview {
     // Reset rich text editor styles in preview
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-size: 1rem;
       font-weight: 600;
       margin: 0.5rem 0;
@@ -74,7 +79,8 @@
       color: #6b7280;
     }
 
-    ul, ol {
+    ul,
+    ol {
       margin: 0.5rem 0;
       padding-left: 1.5rem;
     }
@@ -89,7 +95,7 @@
 
     // Gradient fade effect
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: 0;
       left: 0;

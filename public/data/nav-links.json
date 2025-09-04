@@ -1,18 +1,18 @@
 [
-    {
-        "label": "Membership",
-        "url": "/membership"
-    },
-    {
-        "label": "Members",
-        "url": "/members"
-    },
-    {
-        "label": "About",
-        "url": "/about"
-    },
-    {
-        "label": "Contact",
-        "url": "/contact"
-    }
+  {
+    "label": "Membership",
+    "url": "/membership"
+  },
+  {
+    "label": "Members",
+    "url": "/members"
+  },
+  {
+    "label": "About",
+    "url": "/about"
+  },
+  {
+    "label": "Contact",
+    "url": "/contact"
+  }
 ]
