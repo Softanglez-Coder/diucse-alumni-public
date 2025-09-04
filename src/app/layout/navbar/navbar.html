@@ -11,7 +11,8 @@
       </span>
     </div>
 
-    <div class="flex items-center space-x-4">
+    <!-- Desktop auth links -->
+    <div class="hidden md:flex items-center space-x-4">
       @if (isAuthenticated | async) {
       <a
         routerLink="/portal"
@@ -47,7 +48,7 @@
   </div>
 </div>
 
-<div class="h-20 shadow-lg border-b border-gray-200 bg-white">
+<div class="h-20 shadow-lg border-b border-gray-200 bg-white relative">
   <div
     class="container mx-auto flex items-center justify-between h-full px-4 md:px-0"
   >
@@ -55,7 +56,8 @@
       <img src="/images/logo.png" class="h-16" />
     </a>
 
-    <ul class="flex items-center h-full">
+    <!-- Desktop menu -->
+    <ul class="hidden md:flex items-center h-full">
       @for (link of linksRequest.value(); track link.url) {
       <li class="h-full">
         <a
@@ -68,5 +70,92 @@
       </li>
       }
     </ul>
+
+    <!-- Mobile hamburger button -->
+    <button
+      (click)="toggleMobileMenu()"
+      class="md:hidden flex flex-col items-center justify-center w-8 h-8 space-y-1.5 focus:outline-none"
+      [attr.aria-expanded]="isMobileMenuOpen()"
+      aria-label="Toggle mobile menu"
+    >
+      <span
+        class="block w-6 h-0.5 bg-gray-700 transition-transform duration-300 ease-in-out"
+        [class.rotate-45]="isMobileMenuOpen()"
+        [class.translate-y-2]="isMobileMenuOpen()"
+      ></span>
+      <span
+        class="block w-6 h-0.5 bg-gray-700 transition-opacity duration-300 ease-in-out"
+        [class.opacity-0]="isMobileMenuOpen()"
+      ></span>
+      <span
+        class="block w-6 h-0.5 bg-gray-700 transition-transform duration-300 ease-in-out"
+        [class.-rotate-45]="isMobileMenuOpen()"
+        [class.-translate-y-2]="isMobileMenuOpen()"
+      ></span>
+    </button>
   </div>
+
+  <!-- Mobile menu overlay -->
+  @if (isMobileMenuOpen()) {
+  <div
+    class="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-50"
+    (click)="closeMobileMenu()"
+  >
+    <div class="container mx-auto px-4 py-4">
+      <!-- Mobile navigation links -->
+      <ul class="space-y-3 border-b border-gray-200 pb-4 mb-4">
+        @for (link of linksRequest.value(); track link.url) {
+        <li>
+          <a
+            [routerLink]="link.url"
+            routerLinkActive="text-primary font-semibold"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block py-2 px-3 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
+            (click)="closeMobileMenu()"
+            >{{ link.label }}</a
+          >
+        </li>
+        }
+      </ul>
+
+      <!-- Mobile auth links -->
+      <div class="space-y-3">
+        @if (isAuthenticated | async) {
+        <a
+          routerLink="/portal"
+          class="flex items-center text-gray-700 hover:text-primary gap-3 py-2 px-3 hover:bg-gray-50 rounded-md transition-colors"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-user w-4"></i>
+          <span>Member Portal</span>
+        </a>
+        <button
+          (click)="logout()"
+          class="flex items-center text-gray-700 hover:text-primary gap-3 py-2 px-3 hover:bg-gray-50 rounded-md transition-colors w-full text-left"
+        >
+          <i class="fas fa-sign-out-alt w-4"></i>
+          <span>Logout</span>
+        </button>
+        } @else {
+        <a
+          routerLink="/login"
+          class="flex items-center text-gray-700 hover:text-primary gap-3 py-2 px-3 hover:bg-gray-50 rounded-md transition-colors"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-sign-in-alt w-4"></i>
+          <span>Login</span>
+        </a>
+        <a
+          routerLink="/register"
+          class="flex items-center text-gray-700 hover:text-primary gap-3 py-2 px-3 hover:bg-gray-50 rounded-md transition-colors"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-user-plus w-4"></i>
+          <span>Register</span>
+        </a>
+        }
+      </div>
+    </div>
+  </div>
+  }
 </div>
