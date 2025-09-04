@@ -53,6 +53,17 @@ export class BlogService extends BaseService<Blog> {
         });
     }
 
+    // Get blog by ID
+    getBlogById(id: string): ResourceRef<Blog> {
+        return resource<Blog, unknown>({
+            loader: () => firstValueFrom(
+                this.httpClient.get<Blog>(`${this.apiBaseUrl}/blogs/${id}`)
+                    .pipe(map(response => this.transformResponse(response)))
+            ),
+            defaultValue: {} as Blog
+        });
+    }
+
     // Create blog
     async createBlog(data: Blog): Promise<Blog> {
         const response = await firstValueFrom(

@@ -46,6 +46,13 @@ export const routes: Routes = [
         loadComponent: () => import('./pages').then(c => c.Members)
     },
 
+    // Blog Details
+    {
+        path: 'blogs/:id',
+        title: 'Blog Details - DIUCSE Alumni',
+        loadComponent: () => import('./pages').then(c => c.BlogDetails)
+    },
+
     // Misc
     {
         path: 'about',

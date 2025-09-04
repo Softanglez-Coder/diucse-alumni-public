@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 import { BlogService } from '../../../services';
 import { Blog, BlogStatus } from '../../../shared';
 
 @Component({
   selector: 'portal-blogs',
-  imports: [CommonModule, ReactiveFormsModule, QuillModule],
+  imports: [CommonModule, ReactiveFormsModule, QuillModule, RouterLink],
   templateUrl: './portal-blogs.html',
   styleUrl: './portal-blogs.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -19,6 +20,8 @@ export class PortalBlogs {
   // Signals for state management
   showCreateForm = signal(false);
   isSubmitting = signal(false);
+  isEditing = signal(false);
+  editingBlog = signal<Blog | null>(null);
   refreshTrigger = signal(0); // Used to trigger resource reload
 
   // Form for creating/editing blogs
@@ -55,6 +58,28 @@ export class PortalBlogs {
     if (!this.showCreateForm()) {
       this.blogForm.reset();
     }
+    // Close edit mode if opening create form
+    if (this.showCreateForm()) {
+      this.cancelEdit();
+    }
+  }
+
+  startEdit(blog: Blog) {
+    this.isEditing.set(true);
+    this.editingBlog.set(blog);
+    this.showCreateForm.set(false); // Close create form if open
+
+    // Populate form with blog data
+    this.blogForm.patchValue({
+      title: blog.title,
+      content: blog.content
+    });
+  }
+
+  cancelEdit() {
+    this.isEditing.set(false);
+    this.editingBlog.set(null);
+    this.blogForm.reset();
   }
 
   async submitBlog() {
@@ -73,17 +98,26 @@ export class PortalBlogs {
         status: BlogStatus.DRAFT
       };
 
-      await this.blogService.createBlog(blogData as Blog);
+      if (this.isEditing() && this.editingBlog()) {
+        // Update existing blog
+        await this.blogService.updateBlog(this.editingBlog()!.id!, blogData as Blog);
 
-      // Reset form and hide create form
-      this.blogForm.reset();
-      this.showCreateForm.set(false);
+        // Reset edit state
+        this.cancelEdit();
+      } else {
+        // Create new blog
+        await this.blogService.createBlog(blogData as Blog);
 
-      // Refresh blog list by recreating the resource
+        // Reset form and hide create form
+        this.blogForm.reset();
+        this.showCreateForm.set(false);
+      }
+
+      // Refresh blog list
       this.refreshBlogList();
 
     } catch (error) {
-      console.error('Error creating blog:', error);
+      console.error('Error saving blog:', error);
     } finally {
       this.isSubmitting.set(false);
     }
@@ -120,6 +154,10 @@ export class PortalBlogs {
 
   canMarkAsDraft(blog: Blog): boolean {
     return blog.status === BlogStatus.IN_REVIEW;
+  }
+
+  canEdit(blog: Blog): boolean {
+    return blog.status === BlogStatus.DRAFT;
   }
 
   getStatusClass(status: BlogStatus): string {

@@ -23,6 +23,15 @@
     }
   }
 
+  // Remove text decoration from router links styled as buttons
+  a.no-underline {
+    text-decoration: none !important;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+
   // Rich text editor styling
   .ql-container {
     min-height: 200px;
