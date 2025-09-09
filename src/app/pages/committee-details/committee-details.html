@@ -1,0 +1,188 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="container mx-auto px-4">
+    <!-- Loading State -->
+    @if (isLoading()) {
+      <div class="flex justify-center items-center min-h-64">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p class="text-gray-600">Loading committee details...</p>
+        </div>
+      </div>
+    } @else {
+      <!-- Committee Header -->
+      @if (committee.value(); as committeeData) {
+        <div class="max-w-6xl mx-auto mb-8">
+          <!-- Breadcrumb -->
+          <nav class="mb-6">
+            <ol class="flex items-center space-x-2 text-sm text-gray-600">
+              <li><a routerLink="/" class="hover:text-blue-600">Home</a></li>
+              <li><i class="fas fa-chevron-right text-gray-400"></i></li>
+              <li><a routerLink="/committees" class="hover:text-blue-600">Committees</a></li>
+              <li><i class="fas fa-chevron-right text-gray-400"></i></li>
+              <li class="text-gray-900 font-medium">{{ committeeData.name }}</li>
+            </ol>
+          </nav>
+
+          <!-- Committee Info Card -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-8 text-white">
+              <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                <div class="mb-4 lg:mb-0">
+                  <h1 class="text-4xl font-bold mb-3">{{ committeeData.name }}</h1>
+                  <div class="flex flex-wrap items-center gap-4 text-blue-100">
+                    <span class="flex items-center">
+                      <i class="fas fa-calendar mr-2"></i>
+                      {{ formatDate(committeeData.startDate) }} - {{ formatDate(committeeData.endDate) }}
+                    </span>
+                    <span class="flex items-center">
+                      <i class="fas fa-clock mr-2"></i>
+                      {{ getCommitteeDuration(committeeData.startDate, committeeData.endDate) }}
+                    </span>
+                  </div>
+                </div>
+                <div class="text-left lg:text-right">
+                  <span [class]="getStatusBadgeClass(committeeData)" class="px-4 py-2 rounded-full text-sm font-semibold">
+                    {{ getStatusText(committeeData) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="px-8 py-6 bg-gray-50 border-b">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="bg-white rounded-lg p-4 shadow-sm">
+                  <div class="text-2xl font-bold text-blue-600">{{ committeeMembers()?.length || 0 }}</div>
+                  <div class="text-sm text-gray-600">Total Members</div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-sm">
+                  <div class="text-2xl font-bold text-green-600">{{ groupedMembers().length }}</div>
+                  <div class="text-sm text-gray-600">Designations</div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-sm">
+                  <div class="text-2xl font-bold text-purple-600">
+                    @if (getCommitteeStatus(committeeData) === 'current') {
+                      Active
+                    } @else if (getCommitteeStatus(committeeData) === 'upcoming') {
+                      Upcoming
+                    } @else {
+                      Completed
+                    }
+                  </div>
+                  <div class="text-sm text-gray-600">Status</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Committee Members Section -->
+        @if (hasMembers()) {
+          <div class="max-w-6xl mx-auto">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div class="px-8 py-6 border-b">
+                <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+                  <i class="fas fa-users mr-3 text-blue-600"></i>
+                  Committee Members
+                </h2>
+                <p class="text-gray-600 mt-2">Meet the dedicated individuals serving in this committee</p>
+              </div>
+
+              <div class="p-8">
+                @for (group of groupedMembers(); track group.designation) {
+                  <div class="mb-10 last:mb-0">
+                    <!-- Designation Header -->
+                    <div class="mb-6">
+                      <h3 class="text-xl font-semibold text-gray-900 mb-2 flex items-center">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mr-3">
+                          {{ group.designation }}
+                        </span>
+                        <span class="text-sm text-gray-500">({{ group.members.length }} member{{ group.members.length !== 1 ? 's' : '' }})</span>
+                      </h3>
+                    </div>
+
+                    <!-- Members Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      @for (member of group.members; track member._id) {
+                        <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200 cursor-pointer border border-gray-200 hover:border-blue-300"
+                             [routerLink]="['/members', member.user?.id || member.user?._id]">
+                          <!-- Member Photo -->
+                          <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden bg-gray-200">
+                            <img
+                              [src]="getMemberPhotoUrl(member.user?.photo)"
+                              [alt]="member.user?.name || 'Member'"
+                              class="w-full h-full object-cover"
+                              loading="lazy">
+                          </div>
+
+                          <!-- Member Info -->
+                          <div class="text-center">
+                            <h4 class="font-semibold text-gray-900 mb-1 truncate">
+                              {{ member.user?.name || 'Unknown Member' }}
+                            </h4>
+                            <p class="text-sm text-blue-600 font-medium mb-2">
+                              {{ member.designation?.name || group.designation }}
+                            </p>
+                            
+                            @if (member.user?.currentPosition) {
+                              <p class="text-xs text-gray-600 truncate">
+                                {{ member.user.currentPosition }}
+                              </p>
+                            }
+                            
+                            @if (member.user?.company) {
+                              <p class="text-xs text-gray-500 truncate">
+                                {{ member.user.company }}
+                              </p>
+                            }
+
+                            @if (member.user?.batch?.name) {
+                              <p class="text-xs text-gray-500 mt-1">
+                                Batch: {{ member.user.batch.name }}
+                              </p>
+                            }
+
+                            <!-- Assignment Date -->
+                            <div class="mt-3 pt-3 border-t border-gray-200">
+                              <p class="text-xs text-gray-500">
+                                <i class="fas fa-calendar-plus mr-1"></i>
+                                Joined: {{ formatDate(member.assignedDate) }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        } @else {
+          <!-- No Members State -->
+          <div class="max-w-2xl mx-auto text-center">
+            <div class="bg-white rounded-xl shadow-lg p-12">
+              <div class="text-gray-400 mb-4">
+                <i class="fas fa-user-friends text-6xl"></i>
+              </div>
+              <h3 class="text-2xl font-semibold text-gray-700 mb-4">No Members Assigned</h3>
+              <p class="text-gray-600">
+                This committee doesn't have any members assigned yet.
+              </p>
+            </div>
+          </div>
+        }
+
+        <!-- Back to Committees Button -->
+        <div class="max-w-6xl mx-auto mt-8 text-center">
+          <button
+            routerLink="/committees"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center"
+          >
+            <i class="fas fa-arrow-left mr-2"></i>
+            Back to All Committees
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

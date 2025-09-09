@@ -1,0 +1,52 @@
+.tab-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.committee-card {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.status-badge {
+  &.current {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  &.upcoming {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+  
+  &.previous {
+    background-color: #f3f4f6;
+    color: #374151;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .tab-navigation {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
