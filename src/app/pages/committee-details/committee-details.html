@@ -10,7 +10,7 @@
       </div>
     } @else {
       <!-- Committee Header -->
-      @if (committee.value(); as committeeData) {
+      @if (committeeData(); as committeeData) {
         <div class="max-w-6xl mx-auto mb-8">
           <!-- Breadcrumb -->
           <nav class="mb-6">
@@ -104,12 +104,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                       @for (member of group.members; track member._id) {
                         <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200 cursor-pointer border border-gray-200 hover:border-blue-300"
-                             [routerLink]="['/members', member.user?.id || member.user?._id]">
+                             [routerLink]="['/members', (member.userId && typeof member.userId === 'object') ? member.userId._id : (member.user?.id || member.user?._id)]">
                           <!-- Member Photo -->
                           <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden bg-gray-200">
                             <img
-                              [src]="getMemberPhotoUrl(member.user?.photo)"
-                              [alt]="member.user?.name || 'Member'"
+                              [src]="getMemberPhotoUrl((member.userId && typeof member.userId === 'object') ? member.userId.photo : member.user?.photo)"
+                              [alt]="(member.userId && typeof member.userId === 'object') ? member.userId.name : (member.user?.name || 'Member')"
                               class="w-full h-full object-cover"
                               loading="lazy">
                           </div>
@@ -117,15 +117,15 @@
                           <!-- Member Info -->
                           <div class="text-center">
                             <h4 class="font-semibold text-gray-900 mb-1 truncate">
-                              {{ member.user?.name || 'Unknown Member' }}
+                              {{ (member.userId && typeof member.userId === 'object') ? member.userId.name : (member.user?.name || 'Unknown Member') }}
                             </h4>
                             <p class="text-sm text-blue-600 font-medium mb-2">
-                              {{ member.designation?.name || group.designation }}
+                              {{ (member.designationId && typeof member.designationId === 'object') ? member.designationId.name : (member.designation?.name || group.designation) }}
                             </p>
                             
-                            @if (member.user?.currentPosition) {
+                            @if ((member.userId && typeof member.userId === 'object' && member.userId.currentPosition) || member.user?.currentPosition) {
                               <p class="text-xs text-gray-600 truncate">
-                                {{ member.user.currentPosition }}
+                                {{ (member.userId && typeof member.userId === 'object') ? member.userId.currentPosition : member.user?.currentPosition }}
                               </p>
                             }
                             

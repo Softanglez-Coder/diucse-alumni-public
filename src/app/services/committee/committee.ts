@@ -30,8 +30,25 @@ export interface CommitteeMember {
   _id: string;
   id?: string;
   committeeId: string;
-  designationId: string;
-  userId: string;
+  designationId: string | {
+    _id: string;
+    name: string;
+    description?: string;
+    committeeId: string;
+    roles: string[];
+    displayOrder: number;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+  };
+  userId: string | {
+    _id: string;
+    email: string;
+    name: string;
+    batch: string | null;
+    photo?: string;
+    currentPosition?: string;
+  };
   assignedDate: string;
   unassignedDate?: string;
   isActive: boolean;

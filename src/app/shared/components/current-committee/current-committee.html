@@ -18,12 +18,12 @@
           <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
             @for (member of displayMembers(); track member._id) {
               <div class="text-center group cursor-pointer"
-                   [routerLink]="['/members', member.user?.id || member.user?._id]">
+                   [routerLink]="['/members', (member.userId && typeof member.userId === 'object') ? member.userId._id : (member.user?.id || member.user?._id)]">
                 <!-- Member Photo -->
                 <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-gray-200 ring-4 ring-white shadow-lg group-hover:ring-blue-300 transition-all duration-300">
                   <img
-                    [src]="getMemberPhotoUrl(member.user?.photo)"
-                    [alt]="member.user?.name || 'Member'"
+                    [src]="getMemberPhotoUrl((member.userId && typeof member.userId === 'object') ? member.userId.photo : member.user?.photo)"
+                    [alt]="(member.userId && typeof member.userId === 'object') ? member.userId.name : (member.user?.name || 'Member')"
                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     loading="lazy">
                 </div>
@@ -31,10 +31,10 @@
                 <!-- Member Info -->
                 <div>
                   <h4 class="font-semibold text-gray-900 text-sm mb-1 group-hover:text-blue-600 transition-colors duration-200 truncate">
-                    {{ member.user?.name || 'Unknown Member' }}
+                    {{ (member.userId && typeof member.userId === 'object') ? member.userId.name : (member.user?.name || 'Unknown Member') }}
                   </h4>
                   <p class="text-xs text-blue-600 font-medium truncate">
-                    {{ member.designation?.name || 'Member' }}
+                    {{ (member.designationId && typeof member.designationId === 'object') ? member.designationId.name : (member.designation?.name || 'Member') }}
                   </p>
                 </div>
               </div>

@@ -3,13 +3,14 @@ import {
   Component,
   computed,
   inject,
-  input,
+  effect,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CommitteeService, Committee, CommitteeMember } from '../../services';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { switchMap, map } from 'rxjs';
 
 @Component({
   selector: 'committee-details',
@@ -21,19 +22,46 @@ import { switchMap } from 'rxjs';
 })
 export class CommitteeDetails {
   private committeeService = inject(CommitteeService);
+  private route = inject(ActivatedRoute);
 
-  // Input from route parameter
-  protected id = input.required<string>();
+  // Get ID from route parameters
+  protected id = toSignal(this.route.params.pipe(map(params => params['id'])));
 
-  // Get committee details and members
-  protected committee = this.committeeService.findOne(this.id());
+  // Create a signal to hold the committee resource
+  private committeeResource = signal<any>(null);
+
+  // Effect to load committee when ID changes
+  private loadCommitteeEffect = effect(() => {
+    const committeeId = this.id();
+    if (committeeId) {
+      this.committeeResource.set(this.committeeService.findOne(committeeId));
+    }
+  });
+
+  // Get committee data from the resource
+  protected committeeData = computed(() => {
+    const resource = this.committeeResource();
+    return resource?.value() ?? null;
+  });
+
+  // Check if committee is loading
+  protected isCommitteeLoading = computed(() => {
+    const resource = this.committeeResource();
+    return resource?.isLoading() ?? true;
+  });
 
   protected committeeMembers = toSignal(
-    this.committeeService.getCommitteeMembers(this.id())
+    this.route.params.pipe(
+      map(params => params['id']),
+      switchMap(id => this.committeeService.getCommitteeMembers(id))
+    )
   );
 
   // Computed values
-  protected isLoading = computed(() => this.committee.isLoading() || !this.committeeMembers());
+  protected isLoading = computed(() => {
+    return this.isCommitteeLoading() || !this.committeeMembers();
+  });
+
   protected hasMembers = computed(() => (this.committeeMembers()?.length ?? 0) > 0);
 
   protected formatDate(dateStr: string): string {
@@ -116,7 +144,11 @@ export class CommitteeDetails {
     const grouped: { [key: string]: CommitteeMember[] } = {};
     
     members.forEach(member => {
-      const designationName = member.designation?.name || 'Unassigned';
+      // Use the updated interface to access designation name
+      const designationName = (member.designationId && typeof member.designationId === 'object') 
+        ? member.designationId.name 
+        : (member.designation?.name || 'Unassigned');
+      
       if (!grouped[designationName]) {
         grouped[designationName] = [];
       }
@@ -129,16 +161,24 @@ export class CommitteeDetails {
       sortedGroups.push({
         designation,
         members: grouped[designation].sort((a, b) => {
-          const orderA = a.designation?.order ?? 999;
-          const orderB = b.designation?.order ?? 999;
+          const orderA = (a.designationId && typeof a.designationId === 'object') 
+            ? a.designationId.displayOrder 
+            : (a.designation?.order ?? 999);
+          const orderB = (b.designationId && typeof b.designationId === 'object') 
+            ? b.designationId.displayOrder 
+            : (b.designation?.order ?? 999);
           return orderA - orderB;
         })
       });
     });
     
     return sortedGroups.sort((a, b) => {
-      const orderA = a.members[0]?.designation?.order ?? 999;
-      const orderB = b.members[0]?.designation?.order ?? 999;
+      const orderA = (a.members[0]?.designationId && typeof a.members[0]?.designationId === 'object') 
+        ? a.members[0].designationId.displayOrder 
+        : (a.members[0]?.designation?.order ?? 999);
+      const orderB = (b.members[0]?.designationId && typeof b.members[0]?.designationId === 'object') 
+        ? b.members[0].designationId.displayOrder 
+        : (b.members[0]?.designation?.order ?? 999);
       return orderA - orderB;
     });
   });
