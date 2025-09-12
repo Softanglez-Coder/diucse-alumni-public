@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, resource, ResourceRef } from '@angular/core';
+import { inject, resource, ResourceRef, Signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs';
 import { API_BASE_URL } from '../../core';

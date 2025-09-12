@@ -3,8 +3,6 @@ import {
   Component,
   computed,
   inject,
-  effect,
-  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
@@ -27,28 +25,22 @@ export class CommitteeDetails {
   // Get ID from route parameters
   protected id = toSignal(this.route.params.pipe(map(params => params['id'])));
 
-  // Create a signal to hold the committee resource
-  private committeeResource = signal<any>(null);
+  // Use observables instead of resource for committee data
+  protected committeeData = toSignal(
+    this.route.params.pipe(
+      map(params => params['id']),
+      switchMap(id => {
+        if (!id) {
+          return [];
+        }
+        // Use the new observable method instead of resource-based findOne
+        return this.committeeService.getCommitteeById(id);
+      })
+    )
+  );
 
-  // Effect to load committee when ID changes
-  private loadCommitteeEffect = effect(() => {
-    const committeeId = this.id();
-    if (committeeId) {
-      this.committeeResource.set(this.committeeService.findOne(committeeId));
-    }
-  });
-
-  // Get committee data from the resource
-  protected committeeData = computed(() => {
-    const resource = this.committeeResource();
-    return resource?.value() ?? null;
-  });
-
-  // Check if committee is loading
-  protected isCommitteeLoading = computed(() => {
-    const resource = this.committeeResource();
-    return resource?.isLoading() ?? true;
-  });
+  // For loading state, we'll check if we have data
+  protected isCommitteeLoading = computed(() => !this.committeeData());
 
   protected committeeMembers = toSignal(
     this.route.params.pipe(

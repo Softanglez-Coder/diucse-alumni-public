@@ -82,6 +82,13 @@ export class CommitteeService extends BaseService<Committee> {
   }
 
   /**
+   * Get committee by ID (Observable version, not using resource)
+   */
+  getCommitteeById(id: string): Observable<Committee> {
+    return this.httpClient.get<Committee>(`${this.apiBaseUrl}/committees/${id}`);
+  }
+
+  /**
    * Get previous committees
    */
   getPreviousCommittees(): Observable<Committee[]> {
