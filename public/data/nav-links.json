@@ -8,6 +8,10 @@
     "url": "/members"
   },
   {
+    "label": "Committees",
+    "url": "/committees"
+  },
+  {
     "label": "Blogs",
     "url": "/blogs"
   },
