@@ -45,7 +45,9 @@ export class Register {
     private cdr: ChangeDetectorRef,
   ) {
     // Initialize batches data from API
-    this.batches = this.batchService.findAll();
+    this.batches = this.batchService.findAll({
+      limit: 1000
+    });
     this.registerForm = this.fb.group(
       {
         // Personal Information
