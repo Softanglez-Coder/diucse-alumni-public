@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap, catchError, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, tap, catchError, throwError, map } from 'rxjs';
 import { API_BASE_URL } from '../../core';
 import { EnvironmentService } from './environment.service';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -11,93 +12,104 @@ export class AuthService {
 
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly envService = inject(EnvironmentService);
+  private readonly auth0 = inject(Auth0Service);
 
   constructor(private http: HttpClient) {
     // Auth status will be checked during app initialization
+    // Subscribe to Auth0 authentication state
+    this.auth0.isAuthenticated$.subscribe(isAuth => {
+      this.authState.next(isAuth);
+    });
   }
 
   get isAuthenticated$(): Observable<boolean> {
     return this.authState.asObservable();
   }
 
-  login(email: string, password: string): Observable<any> {
-    const url = `${this.baseUrl}/auth/login`;
-    return this.http
-      .post(
-        url,
-        { email, password },
-        {
-          withCredentials: true,
-          observe: 'response',
-        },
-      )
-      .pipe(
-        tap((response: any) => {
-          // Backend sets the cookie automatically via Set-Cookie header
-          // Update auth state since login was successful
-          this.authState.next(true);
-        }),
-      );
+  /**
+   * Initiates Auth0 login flow with Universal Login
+   */
+  login(email?: string, password?: string): Observable<any> {
+    // Redirect to Auth0 Universal Login
+    this.auth0.loginWithRedirect({
+      appState: { target: '/portal' }
+    });
+    // Return empty observable as redirect will handle navigation
+    return new Observable(observer => observer.complete());
   }
 
+  /**
+   * Logout from Auth0 and clear local state
+   */
   logout(): Observable<any> {
-    const url = `${this.baseUrl}/auth/logout`;
-    return this.http.post(url, {}, { withCredentials: true }).pipe(
-      tap(() => {
-        this.authState.next(false);
-      }),
-    );
+    this.auth0.logout({
+      logoutParams: {
+        returnTo: window.location.origin
+      }
+    });
+    this.authState.next(false);
+    // Return empty observable as redirect will handle navigation
+    return new Observable(observer => observer.complete());
   }
 
+  /**
+   * Initiates Auth0 signup flow
+   * Auth0 will handle user registration
+   */
   register(userData: any): Observable<any> {
-    const url = `${this.baseUrl}/auth/register`;
-    return this.http.post(url, userData, { withCredentials: true });
+    // Redirect to Auth0 signup
+    this.auth0.loginWithRedirect({
+      authorizationParams: {
+        screen_hint: 'signup'
+      },
+      appState: { target: '/portal' }
+    });
+    // Return empty observable as redirect will handle navigation
+    return new Observable(observer => observer.complete());
   }
 
+  // Password reset is now handled by Auth0
   forgotPassword(email: string): Observable<any> {
-    const url = `${this.baseUrl}/auth/forgot-password`;
-    return this.http.post(url, { email });
+    // Redirect to Auth0 password reset
+    const auth0Domain = 'dev-your-domain.us.auth0.com'; // Replace with your Auth0 domain
+    const clientId = 'your-client-id'; // Replace with your Auth0 client ID
+    window.location.href = `https://${auth0Domain}/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(window.location.origin)}&screen_hint=forgot-password`;
+    return new Observable(observer => observer.complete());
   }
 
   resetPassword(token: string, password: string): Observable<any> {
-    const url = `${this.baseUrl}/auth/reset-password?token=${encodeURIComponent(token)}`;
-    return this.http.patch(url, { password });
+    // Auth0 handles password reset, this is kept for compatibility
+    return throwError(() => new Error('Password reset is handled by Auth0'));
   }
 
   verifyEmail(token: string): Observable<any> {
-    const url = `${this.baseUrl}/auth/verify-email?token=${encodeURIComponent(token)}`;
-    return this.http.patch(url, {});
+    // Auth0 handles email verification
+    return throwError(() => new Error('Email verification is handled by Auth0'));
   }
 
   resendVerificationEmail(): Observable<any> {
-    const url = `${this.baseUrl}/auth/resend-verification-email`;
-    return this.http.post(url, {}, { withCredentials: true });
+    // Auth0 handles email verification
+    return throwError(() => new Error('Email verification is handled by Auth0'));
   }
 
+  /**
+   * Get fresh access token from Auth0
+   */
   refreshToken(): Observable<any> {
-    const url = `${this.baseUrl}/auth/refresh`;
-    return this.http
-      .post(
-        url,
-        {},
-        {
-          withCredentials: true,
-          observe: 'response',
-        },
-      )
-      .pipe(
-        tap((response: any) => {
-          // Backend refreshes the cookie automatically via Set-Cookie header
-          this.authState.next(true);
-        }),
-      );
-  }
-
-  checkAuthStatus(): Observable<any> {
-    const url = `${this.baseUrl}/auth/me`;
-    return this.http.get(url, { withCredentials: true }).pipe(
+    return this.auth0.getAccessTokenSilently().pipe(
       tap(() => {
         this.authState.next(true);
+      })
+    );
+  }
+
+  /**
+   * Check authentication status with Auth0
+   */
+  checkAuthStatus(): Observable<any> {
+    return this.auth0.isAuthenticated$.pipe(
+      tap(isAuth => {
+        this.authState.next(isAuth);
       }),
       catchError((error: any) => {
         this.authState.next(false);
@@ -107,19 +119,29 @@ export class AuthService {
   }
 
   /**
-   * Get current authenticated user profile data
+   * Get current authenticated user profile data from Auth0
    */
   getCurrentUser(): Observable<any> {
-    const url = `${this.baseUrl}/auth/me`;
-    return this.http.get(url, { withCredentials: true }).pipe(
-      tap(() => {
-        this.authState.next(true);
+    return this.auth0.user$.pipe(
+      tap((user) => {
+        if (user) {
+          this.authState.next(true);
+        } else {
+          this.authState.next(false);
+        }
       }),
       catchError((error: any) => {
         this.authState.next(false);
         return throwError(() => error);
       }),
     );
+  }
+
+  /**
+   * Get Auth0 access token for API calls
+   */
+  getAccessToken(): Observable<string> {
+    return this.auth0.getAccessTokenSilently();
   }
 
   isAuthenticated(): boolean {

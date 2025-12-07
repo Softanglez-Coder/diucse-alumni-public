@@ -12,6 +12,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { API_BASE_URL } from './core';
 import { authInterceptor, AuthService } from './shared/services';
 import { firstValueFrom } from 'rxjs';
+import { provideAuth0 } from '@auth0/auth0-angular';
 
 function getBaseUrl(): string {
   const isProduction = window.location.hostname.includes('csediualumni.com');
@@ -37,6 +38,28 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
+    // Auth0 configuration
+    provideAuth0({
+      domain: 'dev-your-domain.us.auth0.com', // Replace with your Auth0 domain
+      clientId: 'your-client-id', // Replace with your Auth0 client ID
+      authorizationParams: {
+        redirect_uri: window.location.origin + '/portal',
+        audience: 'https://api.csediualumni.com', // Replace with your Auth0 API identifier
+        scope: 'openid profile email'
+      },
+      httpInterceptor: {
+        allowedList: [
+          {
+            uri: `${getBaseUrl()}/*`,
+            tokenOptions: {
+              authorizationParams: {
+                audience: 'https://api.csediualumni.com', // Replace with your Auth0 API identifier
+              }
+            }
+          }
+        ]
+      }
+    }),
     // Combined initializer: Load config first, then check auth
     provideAppInitializer(() => {
       const authService = inject(AuthService);
