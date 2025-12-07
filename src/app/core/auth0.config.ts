@@ -41,6 +41,8 @@ export const AUTH0_PROD_CONFIG: Auth0Config = {
  * Get Auth0 configuration based on environment
  */
 export function getAuth0Config(): Auth0Config {
-  const isProduction = window.location.hostname.includes('csediualumni.com');
+  // Use exact match or endsWith to prevent subdomain confusion
+  const hostname = window.location.hostname;
+  const isProduction = hostname === 'csediualumni.com' || hostname === 'www.csediualumni.com';
   return isProduction ? AUTH0_PROD_CONFIG : AUTH0_DEV_CONFIG;
 }
