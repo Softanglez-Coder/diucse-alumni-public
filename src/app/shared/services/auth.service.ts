@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap, catchError, throwError, map } from 'rxjs';
-import { API_BASE_URL } from '../../core';
+import { API_BASE_URL, getAuth0Config } from '../../core';
 import { EnvironmentService } from './environment.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 
@@ -71,9 +71,8 @@ export class AuthService {
   // Password reset is now handled by Auth0
   forgotPassword(email: string): Observable<any> {
     // Redirect to Auth0 password reset
-    const auth0Domain = 'dev-your-domain.us.auth0.com'; // Replace with your Auth0 domain
-    const clientId = 'your-client-id'; // Replace with your Auth0 client ID
-    window.location.href = `https://${auth0Domain}/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(window.location.origin)}&screen_hint=forgot-password`;
+    const auth0Config = getAuth0Config();
+    window.location.href = `https://${auth0Config.domain}/authorize?response_type=code&client_id=${auth0Config.clientId}&redirect_uri=${encodeURIComponent(window.location.origin)}&screen_hint=forgot-password`;
     return new Observable(observer => observer.complete());
   }
 

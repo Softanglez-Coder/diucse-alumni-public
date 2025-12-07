@@ -37,30 +37,31 @@ export class ForgotPassword {
     });
   }
 
+  /**
+   * Redirect to Auth0 password reset flow
+   */
   onSubmit() {
-    if (this.forgotPasswordForm.valid) {
-      this.isSubmitting = true;
-      this.errorMessage = null;
+    this.isSubmitting = true;
+    this.errorMessage = null;
 
-      this.authService
-        .forgotPassword(this.forgotPasswordForm.value.email)
-        .subscribe({
-          next: () => {
-            this.isSubmitting = false;
-            this.isSubmitted = true;
-            this.cdr.markForCheck();
-          },
-          error: (err) => {
-            this.isSubmitting = false;
-            this.errorMessage =
-              err?.error?.message ||
-              'Failed to send reset email. Please try again.';
-            this.cdr.markForCheck();
-          },
-        });
-    } else {
-      this.markFormGroupTouched();
-    }
+    // Redirect to Auth0 password reset
+    this.authService
+      .forgotPassword(this.forgotPasswordForm.value.email || '')
+      .subscribe({
+        next: () => {
+          // Won't be called as it redirects
+          this.isSubmitting = false;
+          this.isSubmitted = true;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.errorMessage =
+            err?.error?.message ||
+            'Failed to initiate password reset. Please try again.';
+          this.cdr.markForCheck();
+        },
+      });
   }
 
   private markFormGroupTouched() {

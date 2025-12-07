@@ -52,47 +52,27 @@ https://your-production-domain.com
 
 ### 4. Update Application Configuration
 
-Update the following files with your Auth0 credentials:
+Update the Auth0 configuration in your code:
 
-#### `src/app/app.config.ts`
+#### `src/app/core/auth0.config.ts`
 
-Replace the placeholder values:
-
-```typescript
-provideAuth0({
-  domain: 'your-auth0-domain.us.auth0.com', // Replace with your Auth0 domain
-  clientId: 'your-client-id', // Replace with your Auth0 client ID
-  authorizationParams: {
-    redirect_uri: window.location.origin + '/portal',
-    audience: 'https://api.csediualumni.com', // Replace with your Auth0 API identifier
-    scope: 'openid profile email'
-  },
-  httpInterceptor: {
-    allowedList: [
-      {
-        uri: `${getBaseUrl()}/*`,
-        tokenOptions: {
-          authorizationParams: {
-            audience: 'https://api.csediualumni.com', // Replace with your Auth0 API identifier
-          }
-        }
-      }
-    ]
-  }
-}),
-```
-
-#### `src/app/shared/services/auth.service.ts`
-
-Update the `forgotPassword` method with your Auth0 credentials:
+Replace the placeholder values with your Auth0 credentials:
 
 ```typescript
-forgotPassword(email: string): Observable<any> {
-  const auth0Domain = 'your-auth0-domain.us.auth0.com'; // Replace
-  const clientId = 'your-client-id'; // Replace
-  // ... rest of the code
-}
+export const AUTH0_DEV_CONFIG: Auth0Config = {
+  domain: 'your-dev-domain.us.auth0.com', // Replace with your Auth0 development domain
+  clientId: 'your-dev-client-id', // Replace with your Auth0 development client ID
+  audience: 'https://api.csediualumni.com' // Replace with your Auth0 API identifier
+};
+
+export const AUTH0_PROD_CONFIG: Auth0Config = {
+  domain: 'your-prod-domain.us.auth0.com', // Replace with your Auth0 production domain
+  clientId: 'your-prod-client-id', // Replace with your Auth0 production client ID
+  audience: 'https://api.csediualumni.com' // Replace with your Auth0 API identifier
+};
 ```
+
+The application will automatically use development or production config based on the hostname.
 
 ## Features
 
@@ -146,15 +126,19 @@ app.use(checkJwt);
 ### Files Modified
 
 1. **package.json** - Added `@auth0/auth0-angular` dependency
-2. **src/app/app.config.ts** - Added Auth0 provider configuration
-3. **src/app/shared/services/auth.service.ts** - Replaced custom auth with Auth0
-4. **src/app/shared/services/auth.guard.ts** - Updated to use Auth0 authentication state
-5. **src/app/shared/services/guest.guard.ts** - Updated to use Auth0 authentication state
-6. **src/app/shared/services/auth.interceptor.ts** - Updated to use Auth0 token handling
-7. **src/app/pages/auth/login/login.ts** - Updated to redirect to Auth0 login
-8. **src/app/pages/auth/login/login.html** - Simplified to Auth0 login button
-9. **src/app/pages/auth/register/register.ts** - Updated to redirect to Auth0 signup
-10. **src/app/pages/auth/register/register.html** - Simplified to Auth0 signup button
+2. **src/app/core/auth0.config.ts** - Created Auth0 configuration file (NEW)
+3. **src/app/core/tokens.ts** - Added Auth0 configuration tokens
+4. **src/app/core/index.ts** - Export Auth0 config
+5. **src/app/app.config.ts** - Added Auth0 provider configuration
+6. **src/app/shared/services/auth.service.ts** - Replaced custom auth with Auth0
+7. **src/app/shared/services/auth.guard.ts** - Updated to use Auth0 authentication state
+8. **src/app/shared/services/guest.guard.ts** - Updated to use Auth0 authentication state
+9. **src/app/shared/services/auth.interceptor.ts** - Updated to use Auth0 token handling
+10. **src/app/pages/auth/login/login.ts** - Updated to redirect to Auth0 login
+11. **src/app/pages/auth/login/login.html** - Simplified to Auth0 login button
+12. **src/app/pages/auth/register/register.ts** - Updated to redirect to Auth0 signup
+13. **src/app/pages/auth/register/register.html** - Simplified to Auth0 signup button
+14. **src/app/pages/auth/forgot-password/forgot-password.ts** - Updated to redirect to Auth0
 
 ### Removed Functionality
 
@@ -216,7 +200,17 @@ To enable social login:
 ### Issue: "Invalid audience" error
 **Solution**: Ensure the `audience` in your config matches your Auth0 API identifier
 
-## Additional Resources
+## Legacy Pages
+
+The following pages are retained for backward compatibility but are no longer actively used with Auth0:
+
+### Password Reset (`/reset-password`)
+Auth0 handles password reset flows. Users should use the "Forgot Password" link which redirects to Auth0.
+
+### Email Verification (`/verify-email`)
+Auth0 handles email verification automatically. Users will receive verification emails from Auth0.
+
+These pages may show errors when accessed because the backend endpoints have been replaced by Auth0.
 
 - [Auth0 Angular SDK Documentation](https://auth0.com/docs/libraries/auth0-angular)
 - [Auth0 Dashboard](https://manage.auth0.com/)

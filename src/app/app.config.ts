@@ -9,7 +9,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { API_BASE_URL } from './core';
+import { API_BASE_URL, getAuth0Config } from './core';
 import { authInterceptor, AuthService } from './shared/services';
 import { firstValueFrom } from 'rxjs';
 import { provideAuth0 } from '@auth0/auth0-angular';
@@ -40,11 +40,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor])),
     // Auth0 configuration
     provideAuth0({
-      domain: 'dev-your-domain.us.auth0.com', // Replace with your Auth0 domain
-      clientId: 'your-client-id', // Replace with your Auth0 client ID
+      domain: getAuth0Config().domain,
+      clientId: getAuth0Config().clientId,
       authorizationParams: {
         redirect_uri: window.location.origin + '/portal',
-        audience: 'https://api.csediualumni.com', // Replace with your Auth0 API identifier
+        audience: getAuth0Config().audience,
         scope: 'openid profile email'
       },
       httpInterceptor: {
@@ -53,7 +53,7 @@ export const appConfig: ApplicationConfig = {
             uri: `${getBaseUrl()}/*`,
             tokenOptions: {
               authorizationParams: {
-                audience: 'https://api.csediualumni.com', // Replace with your Auth0 API identifier
+                audience: getAuth0Config().audience,
               }
             }
           }
