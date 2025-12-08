@@ -152,43 +152,36 @@ export class Register {
     });
   }
 
+  /**
+   * Redirect to Auth0 signup with screen_hint
+   * User data will need to be collected after signup in the profile page
+   */
   onSubmit() {
-    if (this.registerForm.valid) {
-      this.isSubmitting = true;
-      this.registrationError = null;
+    this.isSubmitting = true;
+    this.registrationError = null;
 
-      const formData = {
-        name: this.registerForm.value.name,
-        email: this.registerForm.value.email,
-        phone: this.registerForm.value.phone,
-        batch: this.registerForm.value.batch,
-        currentPosition: this.registerForm.value.currentPosition,
-        company: this.registerForm.value.company,
-        password: this.registerForm.value.password,
-        newsletter: this.registerForm.value.newsletter,
-      };
+    // Redirect to Auth0 signup
+    this.authService.register({}).subscribe({
+      next: () => {
+        // This won't be called as register redirects to Auth0
+        this.isSubmitting = false;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.registrationError =
+          err?.error?.message || 'Registration failed. Please try again.';
+        this.cdr.markForCheck();
+      },
+    });
+  }
 
-      this.authService.register(formData).subscribe({
-        next: () => {
-          this.isSubmitting = false;
-          this.router.navigate(['/login'], {
-            queryParams: {
-              message:
-                'Registration successful! Please log in with your credentials.',
-            },
-          });
-          this.cdr.markForCheck();
-        },
-        error: (err) => {
-          this.isSubmitting = false;
-          this.registrationError =
-            err?.error?.message || 'Registration failed. Please try again.';
-          this.cdr.markForCheck();
-        },
-      });
-    } else {
-      this.markFormGroupTouched();
-    }
+  /**
+   * Alternative: Direct Auth0 signup without form
+   */
+  registerWithAuth0() {
+    this.isSubmitting = true;
+    this.authService.register({}).subscribe();
   }
 
   togglePassword() {
