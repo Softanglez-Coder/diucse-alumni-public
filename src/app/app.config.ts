@@ -45,7 +45,7 @@ export const appConfig: ApplicationConfig = {
       domain: getAuth0Config().domain,
       clientId: getAuth0Config().clientId,
       authorizationParams: {
-        redirect_uri: window.location.origin + '/portal',
+        redirect_uri: window.location.origin + '/auth/callback',
         audience: getAuth0Config().audience,
         scope: 'openid profile email'
       },
@@ -60,7 +60,11 @@ export const appConfig: ApplicationConfig = {
             }
           }
         ]
-      }
+      },
+      // Critical: Configure callback handling
+      cacheLocation: 'localstorage',
+      useRefreshTokens: true,
+      skipRedirectCallback: false,
     }),
     // Combined initializer: Load config first, then check auth
     provideAppInitializer(() => {

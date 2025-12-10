@@ -4,6 +4,11 @@ import { authGuard, guestGuard } from './shared/services';
 export const routes: Routes = [
   // Authentication
   {
+    path: 'auth/callback',
+    title: 'Processing Login - DIUCSE Alumni',
+    loadComponent: () => import('./pages/auth/callback/callback').then((c) => c.AuthCallback),
+  },
+  {
     path: 'login',
     title: 'Login - DIUCSE Alumni',
     loadComponent: () => import('./pages').then((c) => c.Login),
