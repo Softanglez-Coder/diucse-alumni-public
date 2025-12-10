@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, switchMap, throwError, from, Observable } from 'rxjs';
+import { catchError, switchMap, throwError, from, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 import { API_BASE_URL } from '../../core';
@@ -20,7 +20,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return from(auth0.getAccessTokenSilently({ 
       detailedResponse: false,
       cacheMode: 'on' 
-    }).catch(() => null)).pipe(
+    })).pipe(
+      catchError(() => of(null)),
       switchMap((token) => {
         let authReq = req;
         
