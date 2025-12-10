@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, inject, ViewChild, ElementRef, ChangeDetectorRef, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { catchError, of, timeout } from 'rxjs';
@@ -18,6 +18,7 @@ export class MembershipCard implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly userService = inject(UserService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   membershipId: string = '';
   user: User | null = null;
@@ -48,6 +49,7 @@ export class MembershipCard implements OnInit {
 
   loadMembershipData(): void {
     this.isLoading = true;
+    this.cdr.markForCheck();
     console.log('Fetching membership data for:', this.membershipId);
     
     this.userService
@@ -58,6 +60,7 @@ export class MembershipCard implements OnInit {
           console.error('Error fetching user:', error);
           console.error('Error details:', error.status, error.message);
           this.isLoading = false;
+          this.cdr.markForCheck();
           
           if (error.name === 'TimeoutError') {
             this.errorMessage = 'Request timeout. Please check your connection and try again.';
@@ -83,12 +86,14 @@ export class MembershipCard implements OnInit {
               this.errorMessage = 'This membership ID is not valid. Please apply for membership.';
             }
           }
+          this.cdr.markForCheck();
         },
         error: (error) => {
           console.error('Subscribe error:', error);
           this.isLoading = false;
           this.isValidMembership = false;
           this.errorMessage = 'Error loading membership data. Please try again.';
+          this.cdr.markForCheck();
         }
       });
   }
