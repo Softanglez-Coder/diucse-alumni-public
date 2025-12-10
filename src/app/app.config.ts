@@ -9,13 +9,16 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { API_BASE_URL } from './core';
+import { API_BASE_URL, getAuth0Config } from './core';
 import { authInterceptor, AuthService } from './shared/services';
 import { firstValueFrom } from 'rxjs';
+import { provideAuth0 } from '@auth0/auth0-angular';
 
 function getBaseUrl(): string {
-  const isProduction = window.location.hostname.includes('csediualumni.com');
-  const isLocalhost = window.location.hostname === 'localhost';
+  // Use exact match or endsWith to prevent subdomain confusion
+  const hostname = window.location.hostname;
+  const isProduction = hostname === 'csediualumni.com' || hostname === 'www.csediualumni.com';
+  const isLocalhost = hostname === 'localhost';
 
   let baseUrl = '';
 
@@ -37,6 +40,28 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
+    // Auth0 configuration
+    provideAuth0({
+      domain: getAuth0Config().domain,
+      clientId: getAuth0Config().clientId,
+      authorizationParams: {
+        redirect_uri: window.location.origin + '/portal',
+        audience: getAuth0Config().audience,
+        scope: 'openid profile email'
+      },
+      httpInterceptor: {
+        allowedList: [
+          {
+            uri: `${getBaseUrl()}/*`,
+            tokenOptions: {
+              authorizationParams: {
+                audience: getAuth0Config().audience,
+              }
+            }
+          }
+        ]
+      }
+    }),
     // Combined initializer: Load config first, then check auth
     provideAppInitializer(() => {
       const authService = inject(AuthService);

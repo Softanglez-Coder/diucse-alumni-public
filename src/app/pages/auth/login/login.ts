@@ -41,30 +41,35 @@ export class Login {
     });
   }
 
+  /**
+   * Redirect to Auth0 Universal Login
+   */
   onSubmit() {
-    if (this.loginForm.valid) {
-      this.isSubmitting = true;
-      this.loginError = null;
-      this.auth
-        .login(this.loginForm.value.email, this.loginForm.value.password)
-        .subscribe({
-          next: () => {
-            this.isSubmitting = false;
-            const returnUrl =
-              this.route.snapshot.queryParamMap.get('returnUrl') || '/portal';
-            this.router.navigateByUrl(returnUrl);
-            this.cdr.markForCheck();
-          },
-          error: (err) => {
-            this.isSubmitting = false;
-            this.loginError =
-              err?.error?.message || 'Login failed. Please try again.';
-            this.cdr.markForCheck();
-          },
-        });
-    } else {
-      this.markFormGroupTouched();
-    }
+    this.isSubmitting = true;
+    this.loginError = null;
+    
+    // Redirect to Auth0 login - form validation is not needed as Auth0 handles it
+    this.auth.login().subscribe({
+      next: () => {
+        // This won't be called as login redirects to Auth0
+        this.isSubmitting = false;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.loginError =
+          err?.error?.message || 'Login failed. Please try again.';
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  /**
+   * Alternative: Direct Auth0 login without form
+   */
+  loginWithAuth0() {
+    this.isSubmitting = true;
+    this.auth.login().subscribe();
   }
 
   togglePassword() {
