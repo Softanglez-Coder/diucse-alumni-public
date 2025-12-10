@@ -23,6 +23,7 @@ export interface User {
   phone?: string;
   photo?: string | null;
   currentPosition?: string;
+  membershipId?: string;
   active?: boolean;
   emailVerified?: boolean;
   socialLinks?: {

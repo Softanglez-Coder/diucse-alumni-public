@@ -26,6 +26,14 @@ import { catchError, of } from "rxjs";
                     {{ member().name }}
                 </h3>
 
+                @if (member().membershipId) {
+                    <div class="mb-3">
+                        <span class="inline-block bg-gradient-to-r from-purple-600 to-purple-800 text-white text-xs font-bold px-3 py-1.5 rounded-full tracking-wider font-mono shadow-sm">
+                            {{ member().membershipId }}
+                        </span>
+                    </div>
+                }
+
                 <div class="space-y-2 text-sm text-gray-600">
                     <div class="flex items-center">
                         <i class="fas fa-briefcase w-4 mr-2 text-blue-600"></i>

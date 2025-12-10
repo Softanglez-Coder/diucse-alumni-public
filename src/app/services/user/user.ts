@@ -26,6 +26,7 @@ export interface User {
   photo: string | null;
   currentPosition: string;
   company: string;
+  membershipId?: string;
   createdAt: string;
   updatedAt: string;
   __v: number;
