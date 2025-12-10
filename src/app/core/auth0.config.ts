@@ -24,7 +24,7 @@ export interface Auth0Config {
 export const AUTH0_DEV_CONFIG: Auth0Config = {
   domain: 'csediualumni.us.auth0.com',
   clientId: '8cJDXN0svn090g4pqmS99Fqq7sOjYR6o',
-  audience: 'https://api.csediualumni.com'
+  audience: ''
 };
 
 /**
@@ -34,7 +34,7 @@ export const AUTH0_DEV_CONFIG: Auth0Config = {
 export const AUTH0_PROD_CONFIG: Auth0Config = {
   domain: 'csediualumni.us.auth0.com',
   clientId: '8cJDXN0svn090g4pqmS99Fqq7sOjYR6o',
-  audience: 'https://api.csediualumni.com'
+  audience: ''
 };
 
 /**

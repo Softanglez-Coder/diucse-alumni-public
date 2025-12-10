@@ -46,20 +46,10 @@ export const appConfig: ApplicationConfig = {
       clientId: getAuth0Config().clientId,
       authorizationParams: {
         redirect_uri: window.location.origin + '/auth/callback',
-        audience: getAuth0Config().audience,
         scope: 'openid profile email'
       },
       httpInterceptor: {
-        allowedList: [
-          {
-            uri: `${getBaseUrl()}/*`,
-            tokenOptions: {
-              authorizationParams: {
-                audience: getAuth0Config().audience,
-              }
-            }
-          }
-        ]
+        allowedList: []
       },
       // Critical: Configure callback handling
       cacheLocation: 'localstorage',
