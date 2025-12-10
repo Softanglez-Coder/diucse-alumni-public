@@ -84,7 +84,7 @@ export class UserService extends BaseService<User> {
    */
   getUserByMembershipId(membershipId: string): Observable<User | null> {
     return this.httpClient
-      .get<User>(`${this.apiBaseUrl}/membership/code/${membershipId}`)
+      .get<User>(`${this.apiBaseUrl}/memberships/code/${membershipId}`)
       .pipe(
         map((response) => this.transformResponse(response)),
         catchError((error) => {
