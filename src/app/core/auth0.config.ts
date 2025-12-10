@@ -22,8 +22,8 @@ export interface Auth0Config {
  * Replace with your Auth0 development tenant credentials
  */
 export const AUTH0_DEV_CONFIG: Auth0Config = {
-  domain: 'dev-your-domain.us.auth0.com',
-  clientId: 'your-dev-client-id',
+  domain: 'csediualumni.us.auth0.com',
+  clientId: '8cJDXN0svn090g4pqmS99Fqq7sOjYR6o',
   audience: 'https://api.csediualumni.com'
 };
 
@@ -32,8 +32,8 @@ export const AUTH0_DEV_CONFIG: Auth0Config = {
  * Replace with your Auth0 production tenant credentials
  */
 export const AUTH0_PROD_CONFIG: Auth0Config = {
-  domain: 'your-production-domain.us.auth0.com',
-  clientId: 'your-prod-client-id',
+  domain: 'csediualumni.us.auth0.com',
+  clientId: '8cJDXN0svn090g4pqmS99Fqq7sOjYR6o',
   audience: 'https://api.csediualumni.com'
 };
 
