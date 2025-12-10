@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { catchError, of } from 'rxjs';
+import { catchError, of, timeout } from 'rxjs';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { UserService, User } from '../../services';
@@ -38,28 +38,57 @@ export class MembershipCard implements OnInit {
       this.membershipId = params.get('membershipId') || '';
       if (this.membershipId) {
         this.loadMembershipData();
+      } else {
+        this.isLoading = false;
+        this.isValidMembership = false;
+        this.errorMessage = 'No membership ID provided.';
       }
     });
   }
 
   loadMembershipData(): void {
     this.isLoading = true;
+    console.log('Fetching membership data for:', this.membershipId);
+    
     this.userService
       .getUserByMembershipId(this.membershipId)
       .pipe(
+        timeout(10000), // 10 second timeout
         catchError((error) => {
           console.error('Error fetching user:', error);
+          console.error('Error details:', error.status, error.message);
+          this.isLoading = false;
+          
+          if (error.name === 'TimeoutError') {
+            this.errorMessage = 'Request timeout. Please check your connection and try again.';
+          } else if (error.status === 0) {
+            this.errorMessage = 'Cannot connect to server. Please check if the API is running.';
+          } else {
+            this.errorMessage = 'This membership ID is not valid. Please apply for membership.';
+          }
+          
           return of(null);
         })
       )
-      .subscribe((user) => {
-        this.isLoading = false;
-        if (user) {
-          this.user = user;
-          this.isValidMembership = true;
-        } else {
+      .subscribe({
+        next: (user) => {
+          console.log('Received user data:', user);
+          this.isLoading = false;
+          if (user) {
+            this.user = user;
+            this.isValidMembership = true;
+          } else {
+            this.isValidMembership = false;
+            if (!this.errorMessage) {
+              this.errorMessage = 'This membership ID is not valid. Please apply for membership.';
+            }
+          }
+        },
+        error: (error) => {
+          console.error('Subscribe error:', error);
+          this.isLoading = false;
           this.isValidMembership = false;
-          this.errorMessage = 'This membership ID is not valid. Please apply for membership.';
+          this.errorMessage = 'Error loading membership data. Please try again.';
         }
       });
   }

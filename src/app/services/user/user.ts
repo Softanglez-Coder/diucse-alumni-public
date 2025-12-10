@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError, of } from 'rxjs';
 import { BaseService } from '../../shared/services';
 import { API_BASE_URL } from '../../core';
 
@@ -84,8 +84,16 @@ export class UserService extends BaseService<User> {
    */
   getUserByMembershipId(membershipId: string): Observable<User | null> {
     return this.httpClient
-      .get<User>(`${this.apiBaseUrl}/users/membership/${membershipId}`)
-      .pipe(map((response) => this.transformResponse(response)));
+      .get<User>(`${this.apiBaseUrl}/membership/code/${membershipId}`)
+      .pipe(
+        map((response) => this.transformResponse(response)),
+        catchError((error) => {
+          if (error.status === 404) {
+            return of(null);
+          }
+          throw error;
+        })
+      );
   }
 
   /**
