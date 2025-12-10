@@ -15,22 +15,9 @@ import { firstValueFrom } from 'rxjs';
 import { provideAuth0 } from '@auth0/auth0-angular';
 
 function getBaseUrl(): string {
-  // Use exact match or endsWith to prevent subdomain confusion
-  const hostname = window.location.hostname;
-  const isProduction = hostname === 'csediualumni.com' || hostname === 'www.csediualumni.com';
-  const isLocalhost = hostname === 'localhost';
-
-  let baseUrl = '';
-
-  if (isLocalhost) {
-    baseUrl = 'http://localhost:3000';
-  } else if (isProduction) {
-    baseUrl = 'https://api.csediualumni.com';
-  } else {
-    baseUrl = 'http://localhost:3000'; // Fallback for other environments
-  }
-
-  console.log(`Base URL determined: ${baseUrl}`);
+  // Always use production API URL
+  const baseUrl = 'https://api.csediualumni.com';
+  console.log(`Base URL: ${baseUrl}`);
   return baseUrl;
 }
 

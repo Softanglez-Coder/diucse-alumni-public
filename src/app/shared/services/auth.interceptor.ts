@@ -15,7 +15,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // Check if this is an API request that needs authentication
   const isApiRequest = req.url.startsWith(apiBaseUrl);
   
-  // If it's an API request, try to attach Auth0 token
+  // If it's an API request, attach Auth0 JWT token
   if (isApiRequest) {
     return from(auth0.getAccessTokenSilently({ 
       detailedResponse: false,
@@ -25,18 +25,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       switchMap((token) => {
         let authReq = req;
         
-        // If we have a token, add it to the request
+        // Add token to Authorization header if available
         if (token) {
           authReq = req.clone({
             setHeaders: {
               Authorization: `Bearer ${token}`
-            },
-            withCredentials: true
-          });
-        } else {
-          // No token available, just use cookies
-          authReq = req.clone({
-            withCredentials: true
+            }
           });
         }
         
@@ -44,7 +38,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           catchError((error: HttpErrorResponse) => {
             // Handle 401 Unauthorized responses
             if (error.status === 401) {
-              // Mark as unauthenticated and redirect to login
               authService.markAsUnauthenticated();
               router.navigate(['/login'], {
                 queryParams: { returnUrl: router.url },
