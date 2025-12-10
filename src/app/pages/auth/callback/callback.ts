@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, filter, take, timeout, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'auth-callback',
@@ -12,8 +12,8 @@ import { Subject, takeUntil } from 'rxjs';
     <div class="callback-container">
       <div class="callback-content">
         <div class="spinner"></div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Authenticating...</h2>
-        <p class="text-gray-600">Please wait while we complete your login.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ message }}</h2>
+        <p class="text-gray-600">{{ subMessage }}</p>
       </div>
     </div>
   `,
@@ -52,6 +52,8 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AuthCallback implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+  message = 'Authenticating...';
+  subMessage = 'Please wait while we complete your login.';
 
   constructor(
     private auth0: Auth0Service,
@@ -59,21 +61,48 @@ export class AuthCallback implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.log('🔄 AuthCallback: Initializing');
+    console.log('🔄 AuthCallback: Starting callback processing');
+    console.log('🔄 AuthCallback: Current URL:', window.location.href);
     
-    // Allow Auth0 SDK to process the callback
-    // Then redirect to portal once authenticated
-    setTimeout(() => {
-      this.auth0.isAuthenticated$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((isAuthenticated) => {
-          console.log('🔄 AuthCallback: Auth status:', isAuthenticated);
-          if (isAuthenticated) {
-            console.log('🔄 AuthCallback: Redirecting to /portal');
-            this.router.navigate(['/portal'], { replaceUrl: true });
-          }
-        });
-    }, 100);
+    // Wait for Auth0 to process the callback, then check authentication
+    // Auth0 SDK automatically handles the callback when the component loads
+    this.auth0.isLoading$
+      .pipe(
+        filter(loading => !loading), // Wait until Auth0 finishes loading
+        take(1),
+        takeUntil(this.destroy$),
+        timeout(10000), // 10 second timeout
+        catchError(error => {
+          console.error('🔄 AuthCallback: Timeout or error:', error);
+          this.message = 'Authentication timed out';
+          this.subMessage = 'Redirecting to login...';
+          setTimeout(() => this.router.navigate(['/login']), 2000);
+          return of(false);
+        })
+      )
+      .subscribe(() => {
+        // Now check if authenticated
+        this.auth0.isAuthenticated$
+          .pipe(take(1))
+          .subscribe((isAuthenticated) => {
+            console.log('🔄 AuthCallback: Auth status:', isAuthenticated);
+            if (isAuthenticated) {
+              this.message = 'Success!';
+              this.subMessage = 'Redirecting to portal...';
+              console.log('🔄 AuthCallback: Redirecting to /portal');
+              setTimeout(() => {
+                this.router.navigate(['/portal'], { replaceUrl: true });
+              }, 500);
+            } else {
+              console.error('🔄 AuthCallback: Not authenticated after callback');
+              this.message = 'Authentication failed';
+              this.subMessage = 'Redirecting to login...';
+              setTimeout(() => {
+                this.router.navigate(['/login'], { replaceUrl: true });
+              }, 2000);
+            }
+          });
+      });
   }
 
   ngOnDestroy() {
