@@ -16,6 +16,7 @@ import {
 } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs/operators';
+import { AuthService } from '../../shared/services';
 
 interface Link {
   title: string;
@@ -32,6 +33,7 @@ interface Link {
 })
 export class Portal {
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   protected links = httpResource<Array<Link>>(() => '/data/portal-links.json');
   protected collapsed = document.body.clientWidth < 768;
@@ -77,5 +79,9 @@ export class Portal {
   protected onLinkClicked(link: Link) {
     // Keep this method for any additional logic if needed
     // The selected property will be automatically updated by the computed signal
+  }
+
+  protected onLogout() {
+    this.authService.logout().subscribe();
   }
 }
