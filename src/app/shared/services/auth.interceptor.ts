@@ -28,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       detailedResponse: false,
       cacheMode: 'on',
       authorizationParams: {
-        audience: 'https://api.csedialumni.com',
+        audience: 'https://api.csediualumni.com',
         scope: 'openid profile email'
       }
     })).pipe(
