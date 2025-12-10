@@ -4,6 +4,7 @@ export * from './auth';
 export * from './about';
 export * from './contact';
 export * from './membership';
+export * from './membership-card';
 export * from './members';
 export * from './member-details';
 export * from './committees';

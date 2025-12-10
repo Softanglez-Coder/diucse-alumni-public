@@ -43,6 +43,11 @@ export const routes: Routes = [
     title: 'Membership - DIUCSE Alumni',
     loadComponent: () => import('./pages').then((c) => c.Membership),
   },
+  {
+    path: 'membership/:membershipId',
+    title: 'Membership Card - DIUCSE Alumni',
+    loadComponent: () => import('./pages').then((c) => c.MembershipCard),
+  },
 
   // Members
   {

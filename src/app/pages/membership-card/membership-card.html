@@ -1,0 +1,97 @@
+<div class="membership-card-container">
+  <div class="container py-5">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Loading membership information...</p>
+    </div>
+
+    <!-- Error Message for Invalid Membership -->
+    <div *ngIf="!isLoading && !isValidMembership" class="alert alert-warning text-center" role="alert">
+      <h4 class="alert-heading">Invalid Membership ID</h4>
+      <p>{{ errorMessage }}</p>
+      <hr />
+      <p class="mb-0">
+        <a href="/membership" class="btn btn-primary">Apply for Membership</a>
+      </p>
+    </div>
+
+    <!-- Membership Card -->
+    <div *ngIf="!isLoading" class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <div class="card-preview-section">
+          <!-- Download Buttons (Only for Valid Memberships) -->
+          <div *ngIf="isValidMembership" class="download-buttons mb-4 text-center">
+            <h3 class="mb-3">Download Your Membership Card</h3>
+            <button (click)="downloadCard('png')" class="btn btn-success me-2">
+              <i class="bi bi-download"></i> Download as PNG
+            </button>
+            <button (click)="downloadCard('pdf')" class="btn btn-danger">
+              <i class="bi bi-download"></i> Download as PDF
+            </button>
+          </div>
+
+          <!-- The Actual Card -->
+          <div #membershipCard class="membership-card" [class.invalid-card]="!isValidMembership">
+            <div class="card-header-section">
+              <div class="university-logo">
+                <img src="/images/diu-logo.png" alt="DIU Logo" onerror="this.style.display='none'" />
+              </div>
+              <div class="header-text">
+                <h1 class="alumni-title">CSE DIU Alumni</h1>
+                <p class="subtitle">Daffodil International University</p>
+              </div>
+            </div>
+
+            <div class="card-body-section">
+              <div class="photo-section">
+                <div class="photo-frame">
+                  <img [src]="getPhotoUrl(getDisplayData().photo)" [alt]="getDisplayData().name" />
+                </div>
+              </div>
+
+              <div class="info-section">
+                <div class="info-item">
+                  <label>Name:</label>
+                  <span class="info-value">{{ getDisplayData().name }}</span>
+                </div>
+
+                <div class="info-item">
+                  <label>Email:</label>
+                  <span class="info-value">{{ getDisplayData().email }}</span>
+                </div>
+
+                <div class="info-item">
+                  <label>Membership ID:</label>
+                  <span class="info-value membership-id">{{ getDisplayData().membershipId }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer-section">
+              <div class="footer-text">
+                <p>This card certifies that the bearer is a member of</p>
+                <p class="footer-bold">Computer Science & Engineering Alumni Association</p>
+              </div>
+              <div class="qr-placeholder">
+                <!-- Optional: Add QR code here -->
+              </div>
+            </div>
+
+            <!-- Watermark for Invalid Cards -->
+            <div *ngIf="!isValidMembership" class="invalid-watermark">
+              <span>SAMPLE - NOT VALID</span>
+            </div>
+          </div>
+
+          <!-- Info text for invalid cards -->
+          <div *ngIf="!isValidMembership" class="mt-4 text-center">
+            <p class="text-muted">This is a sample card. To get a valid membership card, please apply for membership.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
