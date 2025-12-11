@@ -12,6 +12,10 @@
     "url": "/committees"
   },
   {
+    "label": "Gallery",
+    "url": "/gallery"
+  },
+  {
     "label": "Blogs",
     "url": "/blogs"
   },

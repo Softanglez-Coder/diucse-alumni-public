@@ -76,7 +76,12 @@ export class UserService extends BaseService<User> {
   getMembers(): Observable<User[]> {
     return this.httpClient
       .get<User[]>(`${this.apiBaseUrl}/users/members`)
-      .pipe(map((response) => this.transformResponse(response)));
+      .pipe(
+        map((response) => this.transformResponse(response)),
+        map((users: User[]) => 
+          users.filter(user => user.email !== 'csediualumni.official@gmail.com')
+        )
+      );
   }
 
   /**
