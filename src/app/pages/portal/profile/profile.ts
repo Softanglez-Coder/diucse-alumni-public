@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserService, type User } from '../../../services';
+import { UserService, type User, BatchService, Batch } from '../../../services';
 import { AuthService } from '../../../shared/services';
 
 interface ProfileData {
@@ -17,6 +17,7 @@ interface ProfileData {
   phone: string;
   currentPosition: string;
   company: string;
+  batch?: string;
 }
 
 @Component({
@@ -28,6 +29,7 @@ interface ProfileData {
 export class PortalProfile implements OnInit {
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService);
+  private readonly batchService = inject(BatchService);
 
   protected isEditing = signal(false);
   protected isLoading = signal(true);
@@ -35,6 +37,14 @@ export class PortalProfile implements OnInit {
   protected userData = signal<User | null>(null);
   protected isSendingVerification = signal(false);
   protected isUploadingPhoto = signal(false);
+  protected batches = signal<Batch[]>([]);
+  protected searchBatch = signal<string>('');
+  protected isCreatingBatch = signal(false);
+  protected showBatchDropdown = signal(false);
+  protected batchValidationError = signal<string | null>(null);
+
+  // Batch pattern: D-1, D-42, E-100, etc.
+  private readonly BATCH_PATTERN = /^[DE]-([1-9]\d*)$/;
 
   protected profile = signal<ProfileData>({
     name: '',
@@ -42,6 +52,7 @@ export class PortalProfile implements OnInit {
     phone: '',
     currentPosition: '',
     company: '',
+    batch: undefined,
   });
 
   // Computed value for display name
@@ -80,8 +91,28 @@ export class PortalProfile implements OnInit {
     return user?.photo || null;
   });
 
+  // Filtered batches based on search
+  protected filteredBatches = computed(() => {
+    const search = this.searchBatch().toLowerCase();
+    if (!search) return this.batches();
+    return this.batches().filter(b => b.name.toLowerCase().includes(search));
+  });
+
   ngOnInit() {
+    this.loadBatches();
     this.loadUserProfile();
+  }
+
+  private loadBatches() {
+    this.batchService.findAll({ limit: 1000 }).subscribe({
+      next: (data) => {
+        const batchesArray = Array.isArray(data) ? data : data?.data || [];
+        this.batches.set(batchesArray);
+      },
+      error: (error) => {
+        console.error('Error loading batches:', error);
+      },
+    });
   }
 
   private loadUserProfile() {
@@ -109,17 +140,24 @@ export class PortalProfile implements OnInit {
       phone: user.phone || '',
       currentPosition: user.currentPosition || '',
       company: user.company || '',
+      batch: user.batch?.id,
     });
   }
 
   private mapProfileToUser(profile: ProfileData): Partial<User> {
-    return {
+    const updateData: any = {
       name: profile.name,
       email: profile.email,
       phone: profile.phone,
       currentPosition: profile.currentPosition,
       company: profile.company,
     };
+
+    if (profile.batch) {
+      updateData.batch = profile.batch;
+    }
+
+    return updateData;
   }
 
   protected toggleEdit() {
@@ -160,6 +198,73 @@ export class PortalProfile implements OnInit {
     }
     this.isEditing.set(false);
     this.error.set(null);
+  }
+
+  protected getBatchName(batchId?: string): string {
+    if (!batchId) return 'Not specified';
+    const batch = this.batches().find(b => b.id === batchId);
+    return batch?.name || 'Not specified';
+  }
+
+  protected openBatchDropdown() {
+    this.showBatchDropdown.set(true);
+    this.searchBatch.set('');
+    this.batchValidationError.set(null);
+  }
+
+  protected closeBatchDropdown() {
+    this.showBatchDropdown.set(false);
+    this.searchBatch.set('');
+    this.batchValidationError.set(null);
+  }
+
+  protected selectBatch(batchId: string) {
+    this.profile.update(p => ({ ...p, batch: batchId }));
+    this.closeBatchDropdown();
+  }
+
+  protected validateBatchName(name: string): boolean {
+    return this.BATCH_PATTERN.test(name);
+  }
+
+  protected async createAndSetBatch() {
+    const batchName = this.searchBatch().trim().toUpperCase();
+
+    // Validate batch name format
+    if (!this.validateBatchName(batchName)) {
+      this.batchValidationError.set(
+        'Invalid format. Please use format like D-42 or E-100 (D/E for shift, followed by number 1 or greater)'
+      );
+      return;
+    }
+
+    // Check if batch already exists
+    const existingBatch = this.batches().find(
+      b => b.name.toUpperCase() === batchName
+    );
+    if (existingBatch) {
+      this.selectBatch(existingBatch.id);
+      return;
+    }
+
+    // Create new batch
+    this.isCreatingBatch.set(true);
+    this.batchValidationError.set(null);
+
+    try {
+      const newBatch = await this.batchService.create({ name: batchName }).toPromise();
+      if (newBatch) {
+        // Add new batch to the list
+        this.batches.update(batches => [...batches, newBatch]);
+        // Select the newly created batch
+        this.selectBatch(newBatch.id);
+      }
+    } catch (error) {
+      console.error('Error creating batch:', error);
+      this.batchValidationError.set('Failed to create batch. Please try again.');
+    } finally {
+      this.isCreatingBatch.set(false);
+    }
   }
 
   protected retryLoad() {
