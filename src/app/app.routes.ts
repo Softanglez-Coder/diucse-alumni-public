@@ -87,6 +87,18 @@ export const routes: Routes = [
     loadComponent: () => import('./pages').then((c) => c.BlogDetails),
   },
 
+  // Gallery
+  {
+    path: 'gallery',
+    title: 'Gallery - DIUCSE Alumni',
+    loadComponent: () => import('./pages/gallery').then((c) => c.GalleryComponent),
+  },
+  {
+    path: 'gallery/:id',
+    title: 'Gallery Details - DIUCSE Alumni',
+    loadComponent: () => import('./pages/gallery-detail').then((c) => c.GalleryDetailComponent),
+  },
+
   // Misc
   {
     path: 'about',

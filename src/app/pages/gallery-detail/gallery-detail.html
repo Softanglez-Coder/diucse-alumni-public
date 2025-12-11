@@ -1,0 +1,107 @@
+<div class="gallery-detail-page" (keydown)="handleKeydown($event)" tabindex="0">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading gallery...</p>
+    </div>
+  } @else if (gallery()) {
+    <!-- Header -->
+    <section class="gallery-header">
+      <div class="container mx-auto px-4">
+        <a routerLink="/gallery" class="back-link">
+          <i class="pi pi-arrow-left"></i>
+          <span>Back to Gallery</span>
+        </a>
+        
+        <div class="header-content">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="category-badge" [attr.data-category]="gallery()!.category">
+              {{ formatCategory(gallery()!.category) }}
+            </span>
+            <span class="date-badge">
+              {{ gallery()!.date | date: 'MMMM d, yyyy' }}
+            </span>
+          </div>
+          
+          <h1 class="gallery-title">{{ gallery()!.title }}</h1>
+          
+          @if (gallery()!.description) {
+            <p class="gallery-description">{{ gallery()!.description }}</p>
+          }
+          
+          <div class="gallery-meta">
+            <span class="meta-item">
+              <i class="pi pi-images"></i>
+              {{ gallery()!.images.length || 0 }} Photos
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Image Grid -->
+    <section class="images-section">
+      <div class="container mx-auto px-4">
+        <div class="images-grid">
+          @for (image of gallery()!.images; track image.url; let idx = $index) {
+            <div class="image-card" (click)="openLightbox(idx)">
+              <img
+                [src]="image.thumbnail || image.url"
+                [alt]="image.caption || gallery()!.title"
+                loading="lazy"
+              />
+              @if (image.caption) {
+                <div class="image-caption">
+                  {{ image.caption }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        @if (!gallery()!.images || gallery()!.images.length === 0) {
+          <div class="empty-state">
+            <i class="pi pi-images text-6xl text-gray-300 mb-4"></i>
+            <p>No images in this gallery yet.</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    @if (lightboxOpen()) {
+      <div class="lightbox-overlay" (click)="closeLightbox()">
+        <button class="lightbox-close" (click)="closeLightbox()">
+          <i class="pi pi-times"></i>
+        </button>
+
+        <button class="lightbox-nav lightbox-prev" (click)="previousImage(); $event.stopPropagation()">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+
+        <button class="lightbox-nav lightbox-next" (click)="nextImage(); $event.stopPropagation()">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+
+        <div class="lightbox-content" (click)="$event.stopPropagation()">
+          @if (gallery()!.images && gallery()!.images[selectedImageIndex()]) {
+            <img
+              [src]="gallery()!.images[selectedImageIndex()].url"
+              [alt]="gallery()!.images[selectedImageIndex()].caption || gallery()!.title"
+              class="lightbox-image"
+            />
+            @if (gallery()!.images[selectedImageIndex()].caption) {
+              <div class="lightbox-caption">
+                {{ gallery()!.images[selectedImageIndex()].caption }}
+              </div>
+            }
+          }
+          
+          <div class="lightbox-counter">
+            {{ selectedImageIndex() + 1 }} / {{ gallery()!.images.length || 0 }}
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

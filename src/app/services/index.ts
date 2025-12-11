@@ -5,6 +5,7 @@ export * from './blog';
 export * from './committee';
 export * from './dashboard';
 export * from './event';
+export * from './gallery';
 export * from './membership';
 export * from './news';
 export * from './user';
