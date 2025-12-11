@@ -5,6 +5,7 @@ import {
   inject,
   OnInit,
   computed,
+  effect,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -113,7 +114,13 @@ export class PortalProfile implements OnInit {
   private loadBatches() {
     // Get the batches resource which is a Signal<Batch[]>
     const batchesResource = this.batchService.findAll({ limit: 1000 });
-    this.batches.set(batchesResource() as Batch[]);
+    // Use effect to update batches whenever the resource changes
+    effect(() => {
+      const batches = batchesResource();
+      if (batches && Array.isArray(batches)) {
+        this.batches.set(batches);
+      }
+    });
   }
 
   private loadUserProfile() {
@@ -254,18 +261,22 @@ export class PortalProfile implements OnInit {
 
     try {
       const batchResource = this.batchService.create({ name: batchName });
-      const newBatch = batchResource() as Batch;
       
-      if (newBatch && newBatch.id) {
-        // Add new batch to the list
-        this.batches.update((batches: Batch[]) => [...batches, newBatch]);
-        // Select the newly created batch
-        this.selectBatch(newBatch.id);
-      }
+      // Use effect to wait for the batch to be created
+      const unsubscribe = effect(() => {
+        const newBatch = batchResource() as Batch;
+        if (newBatch && newBatch.id) {
+          // Add new batch to the list
+          this.batches.update((batches: Batch[]) => [...batches, newBatch]);
+          // Select the newly created batch
+          this.selectBatch(newBatch.id);
+          this.isCreatingBatch.set(false);
+          unsubscribe(); // Clean up the effect
+        }
+      });
     } catch (error) {
       console.error('Error creating batch:', error);
       this.batchValidationError.set('Failed to create batch. Please try again.');
-    } finally {
       this.isCreatingBatch.set(false);
     }
   }
