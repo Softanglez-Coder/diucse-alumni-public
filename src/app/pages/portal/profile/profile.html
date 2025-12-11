@@ -353,10 +353,7 @@
               }
 
               <!-- Create New Batch Option -->
-              @if (
-                searchBatch() &&
-                !filteredBatches().some(b => b.name.toUpperCase() === searchBatch().toUpperCase())
-              ) {
+              @if (shouldShowCreateOption()) {
               <div class="px-4 py-3 border-t border-gray-200 bg-blue-50">
                 <button
                   type="button"

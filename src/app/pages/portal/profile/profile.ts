@@ -95,7 +95,14 @@ export class PortalProfile implements OnInit {
   protected filteredBatches = computed(() => {
     const search = this.searchBatch().toLowerCase();
     if (!search) return this.batches();
-    return this.batches().filter(b => b.name.toLowerCase().includes(search));
+    return this.batches().filter((b: Batch) => b.name.toLowerCase().includes(search));
+  });
+
+  // Check if we should show create batch option
+  protected shouldShowCreateOption = computed(() => {
+    const search = this.searchBatch().trim();
+    if (!search) return false;
+    return !this.filteredBatches().some((b: Batch) => b.name.toUpperCase() === search.toUpperCase());
   });
 
   ngOnInit() {
@@ -104,15 +111,9 @@ export class PortalProfile implements OnInit {
   }
 
   private loadBatches() {
-    this.batchService.findAll({ limit: 1000 }).subscribe({
-      next: (data) => {
-        const batchesArray = Array.isArray(data) ? data : data?.data || [];
-        this.batches.set(batchesArray);
-      },
-      error: (error) => {
-        console.error('Error loading batches:', error);
-      },
-    });
+    // Get the batches resource which is a Signal<Batch[]>
+    const batchesResource = this.batchService.findAll({ limit: 1000 });
+    this.batches.set(batchesResource() as Batch[]);
   }
 
   private loadUserProfile() {
@@ -120,12 +121,12 @@ export class PortalProfile implements OnInit {
     this.error.set(null);
 
     this.userService.getCurrentUser().subscribe({
-      next: (user) => {
+      next: (user: User) => {
         this.userData.set(user);
         this.mapUserToProfile(user);
         this.isLoading.set(false);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading user profile:', error);
         this.error.set('Failed to load profile. Please try again.');
         this.isLoading.set(false);
@@ -161,7 +162,7 @@ export class PortalProfile implements OnInit {
   }
 
   protected toggleEdit() {
-    this.isEditing.update((editing) => !editing);
+    this.isEditing.update((editing: boolean) => !editing);
   }
 
   protected saveProfile() {
@@ -174,7 +175,7 @@ export class PortalProfile implements OnInit {
     const updateData = this.mapProfileToUser(profileData);
 
     this.userService.updateCurrentUser(updateData).subscribe({
-      next: (updatedUser) => {
+      next: (updatedUser: User) => {
         this.userData.set(updatedUser);
         this.mapUserToProfile(updatedUser);
         this.isEditing.set(false);
@@ -182,7 +183,7 @@ export class PortalProfile implements OnInit {
         console.log('Profile updated successfully');
         // You could add a toast notification here
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error updating profile:', error);
         this.error.set('Failed to save profile. Please try again.');
         this.isLoading.set(false);
@@ -202,7 +203,7 @@ export class PortalProfile implements OnInit {
 
   protected getBatchName(batchId?: string): string {
     if (!batchId) return 'Not specified';
-    const batch = this.batches().find(b => b.id === batchId);
+    const batch = this.batches().find((b: Batch) => b.id === batchId);
     return batch?.name || 'Not specified';
   }
 
@@ -219,7 +220,7 @@ export class PortalProfile implements OnInit {
   }
 
   protected selectBatch(batchId: string) {
-    this.profile.update(p => ({ ...p, batch: batchId }));
+    this.profile.update((p: ProfileData) => ({ ...p, batch: batchId }));
     this.closeBatchDropdown();
   }
 
@@ -240,7 +241,7 @@ export class PortalProfile implements OnInit {
 
     // Check if batch already exists
     const existingBatch = this.batches().find(
-      b => b.name.toUpperCase() === batchName
+      (b: Batch) => b.name.toUpperCase() === batchName
     );
     if (existingBatch) {
       this.selectBatch(existingBatch.id);
@@ -252,10 +253,12 @@ export class PortalProfile implements OnInit {
     this.batchValidationError.set(null);
 
     try {
-      const newBatch = await this.batchService.create({ name: batchName }).toPromise();
-      if (newBatch) {
+      const batchResource = this.batchService.create({ name: batchName });
+      const newBatch = batchResource() as Batch;
+      
+      if (newBatch && newBatch.id) {
         // Add new batch to the list
-        this.batches.update(batches => [...batches, newBatch]);
+        this.batches.update((batches: Batch[]) => [...batches, newBatch]);
         // Select the newly created batch
         this.selectBatch(newBatch.id);
       }
@@ -286,7 +289,7 @@ export class PortalProfile implements OnInit {
         this.isSendingVerification.set(false);
         // You could add a success toast notification here
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error sending verification email:', error);
         this.error.set('Failed to send verification email. Please try again.');
         this.isSendingVerification.set(false);
@@ -321,14 +324,14 @@ export class PortalProfile implements OnInit {
     this.error.set(null);
 
     this.userService.uploadPhoto(file).subscribe({
-      next: (updatedUser) => {
+      next: (updatedUser: User) => {
         this.userData.set(updatedUser);
         this.mapUserToProfile(updatedUser);
         this.isUploadingPhoto.set(false);
         console.log('Photo uploaded successfully');
         // You could add a success toast notification here
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error uploading photo:', error);
         this.error.set('Failed to upload photo. Please try again.');
         this.isUploadingPhoto.set(false);
