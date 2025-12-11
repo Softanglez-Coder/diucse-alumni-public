@@ -6,7 +6,9 @@ export interface Batch {
   name: string;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BatchService extends BaseService<Batch> {
   constructor() {
     super('batches');
