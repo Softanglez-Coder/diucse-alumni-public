@@ -116,7 +116,7 @@ export class PortalProfile implements OnInit {
     const batchesResource = this.batchService.findAll({ limit: 1000 });
     // Use effect to update batches whenever the resource changes
     effect(() => {
-      const batches = batchesResource();
+      const batches = batchesResource.value();
       if (batches && Array.isArray(batches)) {
         this.batches.set(batches);
       }
@@ -263,15 +263,15 @@ export class PortalProfile implements OnInit {
       const batchResource = this.batchService.create({ name: batchName });
       
       // Use effect to wait for the batch to be created
-      const unsubscribe = effect(() => {
-        const newBatch = batchResource() as Batch;
+      const effectRef = effect(() => {
+        const newBatch = batchResource.value() as Batch;
         if (newBatch && newBatch.id) {
           // Add new batch to the list
           this.batches.update((batches: Batch[]) => [...batches, newBatch]);
           // Select the newly created batch
           this.selectBatch(newBatch.id);
           this.isCreatingBatch.set(false);
-          unsubscribe(); // Clean up the effect
+          effectRef.destroy(); // Clean up the effect
         }
       });
     } catch (error) {
