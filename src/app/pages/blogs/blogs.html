@@ -37,9 +37,9 @@
   <!-- Blogs Grid -->
   <section class="py-16">
     <div class="container mx-auto px-4">
-      @if (blogs.value() && blogs.value().length > 0) {
+      @if (blogs() && blogs().length > 0) {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          @for (blog of blogs.value(); track blog.id) {
+          @for (blog of blogs(); track blog.id) {
             <article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 ease-in-out">
               <!-- Blog Image Placeholder -->
               <div class="relative h-48 bg-gradient-to-r from-blue-500 to-purple-600">

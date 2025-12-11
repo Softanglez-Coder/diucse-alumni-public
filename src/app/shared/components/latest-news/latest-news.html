@@ -8,9 +8,9 @@
         Stay informed about the latest happenings in our community
       </p>
     </div>
-    @if (news.value() && news.value().length > 0) {
+    @if (news() && news().length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      @for (article of news.value(); track article.id; let i = $index) {
+      @for (article of news(); track article.id; let i = $index) {
       <article
         class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out"
         [class.lg:col-span-2]="article.featured"

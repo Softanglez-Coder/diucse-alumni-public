@@ -1,19 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, resource, ResourceRef, Signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
-import { map } from 'rxjs';
+import { inject } from '@angular/core';
+import { Observable, map } from 'rxjs';
 import { API_BASE_URL } from '../../core';
 
 /**
- * BaseService provides a comprehensive CRUD implementation using Angular's Resource API
+ * BaseService provides a comprehensive CRUD implementation using RxJS Observables
  * with automatic transformation between MongoDB-style _id and frontend-style id fields.
  *
  * Features:
  * - Automatic _id to id transformation for incoming API responses
  * - Automatic id to _id transformation for outgoing API requests
- * - Full CRUD operations with Angular Resource API
+ * - Full CRUD operations with RxJS Observables
  * - Type safety with TypeScript generics
- * - Error handling and loading states
+ * - Error handling with RxJS operators
  */
 export class BaseService<T> {
   private baseUrl: string = inject(API_BASE_URL);
@@ -135,97 +134,59 @@ export class BaseService<T> {
   /**
    * Get all records with optional filtering and pagination
    */
-  findAll(params?: Record<string, any>): ResourceRef<T[]> {
+  findAll(params?: Record<string, any>): Observable<T[]> {
     const flattenedParams = params ? this.flattenParams(params) : undefined;
 
-    return resource<T[], unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.http
-            .get<
-              T[]
-            >(`${this.baseUrl}/${this.endpoint}`, { params: flattenedParams })
-            .pipe(map((response) => this.transformObject(response))),
-        ),
-      defaultValue: [] as T[],
-    });
+    return this.http
+      .get<T[]>(`${this.baseUrl}/${this.endpoint}`, { params: flattenedParams })
+      .pipe(map((response) => this.transformObject(response)));
   }
 
   /**
    * Get a single record by ID
    */
-  findOne(id: string | number): ResourceRef<T> {
-    return resource<T, unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.http
-            .get<T>(`${this.baseUrl}/${this.endpoint}/${id}`)
-            .pipe(map((response) => this.transformObject(response))),
-        ),
-      defaultValue: {} as T,
-    });
+  findOne(id: string | number): Observable<T> {
+    return this.http
+      .get<T>(`${this.baseUrl}/${this.endpoint}/${id}`)
+      .pipe(map((response) => this.transformObject(response)));
   }
 
   /**
    * Create a new record
    */
-  create(data: Partial<T>): ResourceRef<T> {
+  create(data: Partial<T>): Observable<T> {
     const transformedData = this.transformOutgoingData(data);
-    return resource<T, unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.http
-            .post<T>(`${this.baseUrl}/${this.endpoint}`, transformedData)
-            .pipe(map((response) => this.transformObject(response))),
-        ),
-      defaultValue: {} as T,
-    });
+    return this.http
+      .post<T>(`${this.baseUrl}/${this.endpoint}`, transformedData)
+      .pipe(map((response) => this.transformObject(response)));
   }
 
   /**
    * Update an existing record (full update)
    */
-  update(id: string | number, data: Partial<T>): ResourceRef<T> {
+  update(id: string | number, data: Partial<T>): Observable<T> {
     const transformedData = this.transformOutgoingData(data);
-    return resource<T, unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.http
-            .put<T>(`${this.baseUrl}/${this.endpoint}/${id}`, transformedData)
-            .pipe(map((response) => this.transformObject(response))),
-        ),
-      defaultValue: {} as T,
-    });
+    return this.http
+      .put<T>(`${this.baseUrl}/${this.endpoint}/${id}`, transformedData)
+      .pipe(map((response) => this.transformObject(response)));
   }
 
   /**
    * Partially update an existing record
    */
-  patch(id: string | number, data: Partial<T>): ResourceRef<T> {
+  patch(id: string | number, data: Partial<T>): Observable<T> {
     const transformedData = this.transformOutgoingData(data);
-    return resource<T, unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.http
-            .patch<T>(`${this.baseUrl}/${this.endpoint}/${id}`, transformedData)
-            .pipe(map((response) => this.transformObject(response))),
-        ),
-      defaultValue: {} as T,
-    });
+    return this.http
+      .patch<T>(`${this.baseUrl}/${this.endpoint}/${id}`, transformedData)
+      .pipe(map((response) => this.transformObject(response)));
   }
 
   /**
    * Delete a record
    */
-  delete(id: string | number): ResourceRef<T> {
-    return resource<T, unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.http
-            .delete<T>(`${this.baseUrl}/${this.endpoint}/${id}`)
-            .pipe(map((response) => this.transformObject(response))),
-        ),
-      defaultValue: undefined as T,
-    });
+  delete(id: string | number): Observable<T> {
+    return this.http
+      .delete<T>(`${this.baseUrl}/${this.endpoint}/${id}`)
+      .pipe(map((response) => this.transformObject(response)));
   }
 }

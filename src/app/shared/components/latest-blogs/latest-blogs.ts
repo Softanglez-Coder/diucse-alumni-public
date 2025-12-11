@@ -3,6 +3,7 @@ import { BlogService } from '../../../services';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { QuillViewHTMLComponent } from 'ngx-quill';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'latest-blogs',
@@ -12,7 +13,7 @@ import { QuillViewHTMLComponent } from 'ngx-quill';
   imports: [CommonModule, RouterLink, QuillViewHTMLComponent],
 })
 export class LatestBlogs {
-  protected blogs = inject(BlogService).getLatestBlogs(4);
+  protected blogs = toSignal(inject(BlogService).getLatestBlogs(4), { initialValue: [] });
 
   protected formatDate(dateString: string): string {
     const date = new Date(dateString);

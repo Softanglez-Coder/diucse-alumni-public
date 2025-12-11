@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 import { BlogService } from '../../services';
 import { Blog, BlogStatus } from '../../shared';
-import { computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'blog-details',
@@ -20,11 +20,10 @@ export class BlogDetails {
   // Get the blog ID from route parameters
   private blogId = this.route.snapshot.paramMap.get('id') || '';
 
-  // Blog resource - created in field initializer
-  private blogResource = this.blogService.getBlogById(this.blogId);
+  // Blog signal from Observable
+  blog = toSignal(this.blogService.getBlogById(this.blogId), { initialValue: {} as Blog });
 
   // Computed properties for the template
-  blog = computed(() => this.blogResource.value());
   loading = computed(
     () => !this.blog() || Object.keys(this.blog()).length === 0,
   );

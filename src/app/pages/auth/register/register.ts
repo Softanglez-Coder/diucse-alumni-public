@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ChangeDetectorRef,
+  Signal,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -11,7 +12,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ResourceRef } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../shared/services';
 import { BatchService, Batch } from '../../../services';
 
@@ -35,7 +36,7 @@ export class Register {
   Math = Math;
 
   // Batch data from API
-  batches: ResourceRef<Batch[]>;
+  batches: Signal<Batch[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -45,9 +46,9 @@ export class Register {
     private cdr: ChangeDetectorRef,
   ) {
     // Initialize batches data from API
-    this.batches = this.batchService.findAll({
+    this.batches = toSignal(this.batchService.findAll({
       limit: 1000
-    });
+    }), { initialValue: [] });
     this.registerForm = this.fb.group(
       {
         // Personal Information

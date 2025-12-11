@@ -2,8 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Blog } from '../../shared';
 import { BaseService } from '../../shared/services';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, map } from 'rxjs';
-import { resource, ResourceRef } from '@angular/core';
+import { Observable, map } from 'rxjs';
 import { API_BASE_URL } from '../../core';
 
 @Injectable({
@@ -18,99 +17,63 @@ export class BlogService extends BaseService<Blog> {
   }
 
   // Get published blogs for public view
-  getPublishedBlogs(): ResourceRef<Blog[]> {
-    return resource<Blog[], unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.httpClient
-            .get<Blog[]>(`${this.apiBaseUrl}/blogs/published`)
-            .pipe(map((response) => this.transformResponse(response))),
-        ),
-      defaultValue: [] as Blog[],
-    });
+  getPublishedBlogs(): Observable<Blog[]> {
+    return this.httpClient
+      .get<Blog[]>(`${this.apiBaseUrl}/blogs/published`)
+      .pipe(map((response) => this.transformResponse(response)));
   }
 
   // Get latest published blogs (for homepage)
-  getLatestBlogs(limit = 4): ResourceRef<Blog[]> {
-    return resource<Blog[], unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.httpClient
-            .get<Blog[]>(`${this.apiBaseUrl}/blogs/published`)
-            .pipe(
-              map((response) => {
-                const blogs = this.transformResponse(response);
-                return blogs.slice(0, limit);
-              }),
-            ),
-        ),
-      defaultValue: [] as Blog[],
-    });
+  getLatestBlogs(limit = 4): Observable<Blog[]> {
+    return this.httpClient
+      .get<Blog[]>(`${this.apiBaseUrl}/blogs/published`)
+      .pipe(
+        map((response) => {
+          const blogs = this.transformResponse(response);
+          return blogs.slice(0, limit);
+        }),
+      );
   }
 
   // Get my blogs (authenticated user)
-  getMyBlogs(): ResourceRef<Blog[]> {
-    return resource<Blog[], unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.httpClient
-            .get<Blog[]>(`${this.apiBaseUrl}/blogs/me`)
-            .pipe(map((response) => this.transformResponse(response))),
-        ),
-      defaultValue: [] as Blog[],
-    });
+  getMyBlogs(): Observable<Blog[]> {
+    return this.httpClient
+      .get<Blog[]>(`${this.apiBaseUrl}/blogs/me`)
+      .pipe(map((response) => this.transformResponse(response)));
   }
 
   // Get blog by ID
-  getBlogById(id: string): ResourceRef<Blog> {
-    return resource<Blog, unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.httpClient
-            .get<Blog>(`${this.apiBaseUrl}/blogs/${id}`)
-            .pipe(map((response) => this.transformResponse(response))),
-        ),
-      defaultValue: {} as Blog,
-    });
+  getBlogById(id: string): Observable<Blog> {
+    return this.httpClient
+      .get<Blog>(`${this.apiBaseUrl}/blogs/${id}`)
+      .pipe(map((response) => this.transformResponse(response)));
   }
 
   // Create blog
-  async createBlog(data: Blog): Promise<Blog> {
-    const response = await firstValueFrom(
-      this.httpClient
-        .post<Blog>(`${this.apiBaseUrl}/blogs`, data)
-        .pipe(map((response) => this.transformResponse(response))),
-    );
-    return response;
+  createBlog(data: Blog): Observable<Blog> {
+    return this.httpClient
+      .post<Blog>(`${this.apiBaseUrl}/blogs`, data)
+      .pipe(map((response) => this.transformResponse(response)));
   }
 
   // Update blog
-  async updateBlog(id: string, data: Blog): Promise<Blog> {
-    const response = await firstValueFrom(
-      this.httpClient
-        .patch<Blog>(`${this.apiBaseUrl}/blogs/${id}`, data)
-        .pipe(map((response) => this.transformResponse(response))),
-    );
-    return response;
+  updateBlog(id: string, data: Blog): Observable<Blog> {
+    return this.httpClient
+      .patch<Blog>(`${this.apiBaseUrl}/blogs/${id}`, data)
+      .pipe(map((response) => this.transformResponse(response)));
   }
 
   // Change blog status
-  async draftBlog(id: string): Promise<Blog> {
-    const response = await firstValueFrom(
-      this.httpClient
-        .patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/draft`, {})
-        .pipe(map((response) => this.transformResponse(response))),
-    );
-    return response;
+  draftBlog(id: string): Observable<Blog> {
+    return this.httpClient
+      .patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/draft`, {})
+      .pipe(map((response) => this.transformResponse(response)));
   }
 
-  async reviewBlog(id: string): Promise<Blog> {
-    const response = await firstValueFrom(
-      this.httpClient
-        .patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/review`, {})
-        .pipe(map((response) => this.transformResponse(response))),
-    );
-    return response;
+  reviewBlog(id: string): Observable<Blog> {
+    return this.httpClient
+      .patch<Blog>(`${this.apiBaseUrl}/blogs/${id}/review`, {})
+      .pipe(map((response) => this.transformResponse(response)));
   }
 
   // Helper method to transform API responses

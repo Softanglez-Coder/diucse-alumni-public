@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { EventService } from '../../../services';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'upcoming-events',
@@ -8,11 +9,11 @@ import { EventService } from '../../../services';
   providers: [EventService],
 })
 export class UpcomingEvents {
-  protected events = inject(EventService).findAll({
+  protected events = toSignal(inject(EventService).findAll({
     active: true,
     sortBy: 'date',
     sort: 'asc',
-  });
+  }), { initialValue: [] });
 
   protected formatDate(dateString: string): { day: string; month: string } {
     const date = new Date(dateString);

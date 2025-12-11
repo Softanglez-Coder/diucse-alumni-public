@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AlumniService } from '../../services';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-about',
@@ -14,10 +15,10 @@ import { AlumniService } from '../../services';
 export class About {
   protected alumniService = inject(AlumniService);
 
-  protected featuredAlumni = this.alumniService.findAll({
+  protected featuredAlumni = toSignal(this.alumniService.findAll({
     featured: true,
     active: true,
-  });
+  }), { initialValue: [] });
 
   stats = [
     { number: '2500+', label: 'Alumni Worldwide', icon: 'users' },

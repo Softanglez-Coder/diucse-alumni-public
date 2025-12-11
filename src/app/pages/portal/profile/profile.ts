@@ -112,13 +112,15 @@ export class PortalProfile implements OnInit {
   }
 
   private loadBatches() {
-    // Get the batches resource which is a Signal<Batch[]>
-    const batchesResource = this.batchService.findAll({ limit: 1000 });
-    // Use effect to update batches whenever the resource changes
-    effect(() => {
-      const batches = batchesResource.value();
-      if (batches && Array.isArray(batches)) {
-        this.batches.set(batches);
+    // Subscribe to the batches observable
+    this.batchService.findAll({ limit: 1000 }).subscribe({
+      next: (batches) => {
+        if (batches && Array.isArray(batches)) {
+          this.batches.set(batches);
+        }
+      },
+      error: (error) => {
+        console.error('Error loading batches:', error);
       }
     });
   }
@@ -260,18 +262,20 @@ export class PortalProfile implements OnInit {
     this.batchValidationError.set(null);
 
     try {
-      const batchResource = this.batchService.create({ name: batchName });
-      
-      // Use effect to wait for the batch to be created
-      const effectRef = effect(() => {
-        const newBatch = batchResource.value() as Batch;
-        if (newBatch && newBatch.id) {
-          // Add new batch to the list
-          this.batches.update((batches: Batch[]) => [...batches, newBatch]);
-          // Select the newly created batch
-          this.selectBatch(newBatch.id);
+      this.batchService.create({ name: batchName }).subscribe({
+        next: (newBatch) => {
+          if (newBatch && newBatch.id) {
+            // Add new batch to the list
+            this.batches.update((batches: Batch[]) => [...batches, newBatch]);
+            // Select the newly created batch
+            this.selectBatch(newBatch.id);
+            this.isCreatingBatch.set(false);
+          }
+        },
+        error: (error) => {
+          console.error('Error creating batch:', error);
+          this.batchValidationError.set('Failed to create batch. Please try again.');
           this.isCreatingBatch.set(false);
-          effectRef.destroy(); // Clean up the effect
         }
       });
     } catch (error) {

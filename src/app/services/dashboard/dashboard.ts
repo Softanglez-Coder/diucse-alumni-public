@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, firstValueFrom } from 'rxjs';
-import { resource } from '@angular/core';
+import { Observable } from 'rxjs';
 import { BaseService } from '../../shared/services';
 import { API_BASE_URL } from '../../core';
 
@@ -35,33 +34,16 @@ export class DashboardService {
   /**
    * Get dashboard statistics
    */
-  getStats() {
-    return resource<DashboardStats, unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.http.get<DashboardStats>(`${this.baseUrl}/dashboard/stats`),
-        ),
-      defaultValue: {
-        totalAlumni: 0,
-        upcomingEvents: 0,
-        recentNews: 0,
-        latestGraduation: 'N/A',
-      },
-    });
+  getStats(): Observable<DashboardStats> {
+    return this.http.get<DashboardStats>(`${this.baseUrl}/dashboard/stats`);
   }
 
   /**
    * Get recent activities
    */
-  getRecentActivities() {
-    return resource<RecentActivity[], unknown>({
-      loader: () =>
-        firstValueFrom(
-          this.http.get<RecentActivity[]>(
-            `${this.baseUrl}/dashboard/recent-activities`,
-          ),
-        ),
-      defaultValue: [],
-    });
+  getRecentActivities(): Observable<RecentActivity[]> {
+    return this.http.get<RecentActivity[]>(
+      `${this.baseUrl}/dashboard/recent-activities`,
+    );
   }
 }

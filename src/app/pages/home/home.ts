@@ -20,11 +20,11 @@ export class Home {
   private bannerService = inject(BannerService);
   private userService = inject(UserService);
 
-  protected banners = this.bannerService.findAll({
+  protected banners = toSignal(this.bannerService.findAll({
     active: true,
     sortBy: 'order',
     sort: 'asc',
-  });
+  }), { initialValue: [] });
 
   // Get all members and take first 4-5 for homepage
   private allMembers = toSignal(this.userService.getMembers(), {

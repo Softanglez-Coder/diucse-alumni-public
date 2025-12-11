@@ -342,7 +342,7 @@
   </section>
 
   <!-- Featured Alumni Section -->
-  @if (featuredAlumni.value().length) {
+  @if (featuredAlumni().length) {
   <section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
       <div class="max-w-6xl mx-auto">
@@ -356,7 +356,7 @@
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          @for (alumni of featuredAlumni.value() | slice:0:6; track alumni.id) {
+          @for (alumni of featuredAlumni() | slice:0:6; track alumni.id) {
           <div
             class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group"
           >

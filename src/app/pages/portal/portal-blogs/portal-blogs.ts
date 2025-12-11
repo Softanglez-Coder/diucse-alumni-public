@@ -15,6 +15,8 @@ import { RouterLink } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 import { BlogService } from '../../../services';
 import { Blog, BlogStatus } from '../../../shared';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'portal-blogs',
@@ -57,7 +59,13 @@ export class PortalBlogs {
   };
 
   // Get user's blogs
-  myBlogs = this.blogService.getMyBlogs();
+  private myBlogsSubject$ = new BehaviorSubject<void>(undefined);
+  myBlogs = toSignal(
+    this.myBlogsSubject$.pipe(
+      switchMap(() => this.blogService.getMyBlogs())
+    ),
+    { initialValue: [] }
+  );
 
   // Expose BlogStatus enum to template
   BlogStatus = BlogStatus;
@@ -155,8 +163,8 @@ export class PortalBlogs {
   }
 
   private refreshBlogList() {
-    // Reload the resource to get fresh data from server
-    this.myBlogs.reload();
+    // Trigger reload by emitting a new value
+    this.myBlogsSubject$.next(undefined);
   }
 
   canSubmitForReview(blog: Blog): boolean {

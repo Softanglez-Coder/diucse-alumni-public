@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { BlogService } from '../../services';
 import { QuillViewHTMLComponent } from 'ngx-quill';
 import { FormsModule } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-blogs',
@@ -16,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 export class Blogs {
   private blogService = inject(BlogService);
 
-  protected blogs = this.blogService.getPublishedBlogs();
+  protected blogs = toSignal(this.blogService.getPublishedBlogs(), { initialValue: [] });
   protected searchTerm = signal('');
   protected isLoading = signal(false);
 

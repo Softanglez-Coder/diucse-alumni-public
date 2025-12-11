@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NewsService } from '../../../services';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'latest-news',
@@ -8,11 +9,11 @@ import { NewsService } from '../../../services';
   providers: [NewsService],
 })
 export class LatestNews {
-  protected news = inject(NewsService).findAll({
+  protected news = toSignal(inject(NewsService).findAll({
     active: true,
     sortBy: 'date',
     sort: 'desc',
-  });
+  }), { initialValue: [] });
 
   protected formatDate(dateString: string): string {
     const date = new Date(dateString);

@@ -8,9 +8,9 @@
         Don't miss out on networking and learning opportunities
       </p>
     </div>
-    @if (events.value() && events.value().length > 0) {
+    @if (events() && events().length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8">
-      @for (event of events.value(); track event.id; let i = $index) {
+      @for (event of events(); track event.id; let i = $index) {
       <div
         class="bg-white rounded-2xl p-8 shadow-md border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex gap-6 max-md:flex-col max-md:text-center"
         [class]="event.featured ? 'bg-gradient-to-br from-primary-500 to-primary-700 text-white border-none' : ''"
