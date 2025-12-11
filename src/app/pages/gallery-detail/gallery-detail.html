@@ -9,7 +9,7 @@
     <section class="gallery-header">
       <div class="container mx-auto px-4">
         <a routerLink="/gallery" class="back-link">
-          <i class="pi pi-arrow-left"></i>
+          <i class="fas fa-arrow-left"></i>
           <span>Back to Gallery</span>
         </a>
         
@@ -31,7 +31,7 @@
           
           <div class="gallery-meta">
             <span class="meta-item">
-              <i class="pi pi-images"></i>
+              <i class="fas fa-images"></i>
               {{ gallery()!.images.length || 0 }} Photos
             </span>
           </div>
@@ -61,7 +61,7 @@
 
         @if (!gallery()!.images || gallery()!.images.length === 0) {
           <div class="empty-state">
-            <i class="pi pi-images text-6xl text-gray-300 mb-4"></i>
+            <i class="fas fa-images text-6xl text-gray-300 mb-4"></i>
             <p>No images in this gallery yet.</p>
           </div>
         }
@@ -72,15 +72,15 @@
     @if (lightboxOpen()) {
       <div class="lightbox-overlay" (click)="closeLightbox()">
         <button class="lightbox-close" (click)="closeLightbox()">
-          <i class="pi pi-times"></i>
+          <i class="fas fa-times"></i>
         </button>
 
         <button class="lightbox-nav lightbox-prev" (click)="previousImage(); $event.stopPropagation()">
-          <i class="pi pi-chevron-left"></i>
+          <i class="fas fa-chevron-left"></i>
         </button>
 
         <button class="lightbox-nav lightbox-next" (click)="nextImage(); $event.stopPropagation()">
-          <i class="pi pi-chevron-right"></i>
+          <i class="fas fa-chevron-right"></i>
         </button>
 
         <div class="lightbox-content" (click)="$event.stopPropagation()">
